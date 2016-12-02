@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="396.424 256.179 29.947 28.071">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-linecap: square;
+      }
+    </style>
+  </defs>
+  <g id="group-208" transform="translate(-94 -136)">
+    <path id="path" class="cls-1" d="M8,18.5V35.271h7.892V28.694h5.262v6.577h7.892V18.5" transform="translate(486.875 384.229)"/>
+    <path id="path-2" data-name="path" class="cls-1" d="M2,17.154,16.469,4,30.938,17.154" transform="translate(488.929 389.192)"/>
+    <rect id="rectangle" class="cls-2" width="5.262" height="5.262" transform="translate(502.767 402.4)"/>
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+﻿<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tab-header w-clearfix">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h3 class="tab-title">Policy List</h3>
+                    </div>
+                    <div class="col-lg-4">
+                        <ui-select ng-model="data.status" on-select="changeStatus($item)">
+                            <ui-select-match placeholder="Select status">
+                                <span ng-bind="$select.selected.value"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="item in (status | filter: $select.search) track by item.key">
+                                <span ng-bind="item.value"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-lg-4">
+                        <input class="default-input w-input" data-name="search" id="search" maxlength="256" name="search" placeholder="Search policy" type="text" ng-model="data.search" ng-keyup="search($event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Policy Number</th>
+                        <th>Insurer</th>
+                        <th>Owner Name</th>
+                        <th>Owner Email</th>
+                        <th>Created Date</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="policy in policiesAdmin">
+                        <td>{{getPrevNumber() + $index + 1}}</td>
+                        <td>{{policy.id}}</td>
+                        <td>{{policy.policyNumber}}</td>
+                        <td>{{policy.insurer.name}}</td>
+                        <td>{{policy.createdBy.firstName}}</td>
+                        <td>{{policy.createdBy.email}}</td>
+                        <td>{{policy.createdDate  | date:'dd/MM/yyyy'}}</td>
+                        <td>{{getStatus(policy.status)}}</td>
+                        <td><a class="small-button w-button" ng-href="#/policy/update/{{policy.id}}">Update</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="text-center" ng-if="!policiesAdmin.length">Policies not found.</p>
+        </div>
+    </div>
+    <nav ng-show="policiesAdmin.length" ng-include="'/Angular/Dashboard/templates/page/pager.html'" ng-init="path = '/admin/policies'"></nav>
+</div><!--wrapper-->

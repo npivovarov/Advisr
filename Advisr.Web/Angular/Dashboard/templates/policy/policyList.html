@@ -1,0 +1,154 @@
+﻿<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="tab-header">
+            <div class="portfolio-mobile-header-text-div">
+                <h3 class="tab-title">{{proccessing.count}} Policies</h3>
+                <h5 class="tab-subtitle">{{proccessing.countOfProcessing}} Processing</h5>
+            </div>
+            <a class="default-button portfolio-cta w-button" ng-href="#/policy/create">+add new</a></div>
+        </div><!--tab-header-->
+    </div><!-- /.row -->
+</div>
+<!-- Page Heading -->
+<div class="row-heading-4">
+    <div class="col-lg-12">
+    <div class="dropdown sort">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Sort by: <strong>{{sortBy}} first</strong>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a ng-href="" ng-click="sortPolicy(0)">All</a></li>
+        <li><a ng-href="" ng-click="sortPolicy(1)">Active</a></li>
+        <li><a ng-href="" ng-click="sortPolicy(2)">Expired</a></li>
+      </ul>
+    </div>
+    </div>
+</div>
+<!-- Heading 4 -->
+<div class="card-container policies">
+  <div ng-repeat="policy in policies">
+    <div ng-if="policy.status == 0" class="card grey mobile">
+      <div class="mobile-card-title w-hidden-main w-hidden-medium w-row">
+        <div class="mobile-card-left-col w-col w-col-6 w-col-small-6 w-col-tiny-6 w-hidden-main">
+          <div class="mobile-card-left-div"><img class="mobile-card-image" src="/Content/images/Card_processing_Icon2x.png" width="32">
+          </div>
+          <div>Your uploaded policy is being processed.</div>
+          <div>This typically takes 24-48 hours.</div>
+        </div>
+        <div class="mobile-card-right-col w-col w-col-3 w-col-small-3 w-col-tiny-3">
+          <div class="mobile-card-right-div">
+            <h5 class="mobile-card-title-header">
+              {{policy.fileNames[0] | limitTo : 40}}{{policy.fileNames[0] > 40 ? '...' : ''}}
+            </h5>
+            <div>Uploaded on 27.10.16 at 15:32</div>
+          </div>
+        </div>
+        <div class="moble-card-arrow-col w-clearfix w-col w-col-3 w-col-small-3 w-col-tiny-3">
+          <div class="mobile-card-arrow w-clearfix"><a class="processing-link text-link" ng-href="#policy/view-upload/{{policy.id}}">View Upload</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-title processing w-clearfix w-hidden-small w-hidden-tiny"><img class="card-title-image symbol" src="/Content/images/Card_processing_Icon2x.png">
+        <div class="card-columns w-row">
+          <div class="w-col w-col-5">
+            <div class="card-processing">Your uploaded policy is being processed.</div>
+            <div class="card-processing">This typically takes 24-48 hours.</div>
+          </div>
+          <div class="w-col w-col-3">
+            <h5>
+              {{policy.fileNames[0] | limitTo : 40}}{{policy.fileNames[0] > 40 ? '...' : ''}}
+            </h5>
+            <div>
+              Uploaded on {{policy.createdDate | date:'dd.MM.yyyy'}} at {{policy.createdDate | date:'hh:mm'}}
+            </div>
+          </div>
+          <div class="w-col w-col-1"></div>
+          <div class="w-col w-col-1"></div>
+          <div class="processing-cta w-col w-col-2"><a class="processing-link text-link" ng-href="#policy/view-upload/{{policy.id}}">View Upload</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Confirmed-->
+    <div ng-if="policy.status == 1" class="card mobile" ng-style="{'border-left-color' : policy.insurer.color}">
+      <div class="mobile-card-title w-hidden-main w-hidden-medium w-row">
+        <div class="mobile-card-left-col w-col w-col-7 w-col-small-7 w-col-tiny-7 w-hidden-main">
+          <div class="mobile-card-left-div">
+            <img class="mobile-card-image" ng-src={{policy.insurer.logoUrl}}>
+            <h5 class="mobile-card-heading">{{policy.title}}</h5>
+          </div>
+          <div>{{policy.subTitle}}</div>
+          <div>{{policy.policyGroup.groupName}}</div>
+        </div>
+        <div class="mobile-card-right-col w-col w-col-3 w-col-small-3 w-col-tiny-3">
+          <div class="mobile-card-right-div">
+            <h5 class="mobile-card-title-header">${{policy.policyPaymentAmount}}/{{getPayment(policy.policyPaymentFrequency)}}</h5>
+            <div>Expires on {{policy.endDate | date:'dd.MM.yyyy'}}</div>
+          </div>
+        </div>
+        <div class="moble-card-arrow-col w-clearfix w-col w-col-2 w-col-small-2 w-col-tiny-2">
+          <div class="mobile-card-arrow w-clearfix"><img class="mobile-card-arrow-image" data-ix="show-policy-details" src="/Content/images/mobile_card_arrow2x.png">
+          </div>
+        </div>
+      </div>
+      <div class="card-title w-clearfix w-hidden-small w-hidden-tiny">
+        <img class="aami card-title-image" ng-src={{policy.insurer.logoUrl}}>
+        <div class="card-columns w-row">
+          <div class="w-col w-col-2">
+            <h5>{{policy.title}}</h5>
+            <div>{{policy.subTitle}}</div>
+          </div>
+          <div class="w-col w-col-3">
+            <h5>${{policy.policyPaymentAmount}}/{{getPayment(policy.policyPaymentFrequency)}}</h5>
+            <div>{{policy.policyGroup.groupName}}</div>
+          </div>
+          <div class="w-col w-col-3">
+            <h5>Insurance</h5>
+            <div>Expires on {{policy.endDate | date:'dd.MM.yyyy'}}</div>
+          </div>
+          <div class="w-col w-col-2">
+            <h5>Policy Number</h5>
+            <div>{{policy.policyNumber}}</div>
+          </div>
+          <div class="w-col w-col-2"></div>
+        </div>
+        <div class="accordian w-dropdown" data-delay="0" ng-click="openDetails($index, policy.id)">
+          <div class="card-accordian w-dropdown-toggle" data-ix="accordion-openclose">
+            <div class="card-drop-down-icon w-icon-dropdown-toggle"></div>
+          </div>
+          <nav class="drop-down-card w-dropdown-list"></nav>
+        </div>
+      </div>
+      <div class="card-body w-hidden-small w-hidden-tiny fadeAnimate" ng-show="policyDetails[$index]">
+        <div class="w-row">
+          <div class="w-col w-col-6">
+            <h5 class="heading-5">Policy Details</h5>
+            <p class="paragraph">
+              {{ policyInfo[$index].descrition | limitTo: 200 }}{{policyInfo[$index].descrition.length > 200 ? '...' : ''}}
+              </p><a class="card-links link-text"
+              data-ix="show-policy-details" ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;" ng-show="policyInfo[$index].descrition.length > 200">Continue Reading</a>
+          </div>
+          <div class="contact-col w-col w-col-2">
+            <h5 class="heading-5">Contact</h5>
+            <a target="_blank" class="card-links contact link-text" ng-href="http://{{policyInfo[$index].insurer.url}}">
+            {{policyInfo[$index].insurer.url}}
+            </a>
+            <a class="card-links link-text" href="#">
+              {{policyInfo[$index].insurer.phone}}
+            </a>
+            <h5 class="contact-sub-title heading-5">Overseas no.</h5>
+            <a class="card-links contact link-text" href="#">{{policyInfo[$index].insurer.phoneOverseas}}</a>
+          </div>
+          <div class="right-col w-col w-col-4"><a class="default-button w-button" href="#">Make a claim</a><a class="card-links link-text" data-ix="show-policy-details"
+              ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;">View Insurance Documents</a><a class="card-links link-text"
+              data-ix="show-policy-details" ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;">Standard &amp; Optional Cover</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--policies-->
+  </div>
+  <!--card-container-->
+  <nav ng-show="policies.length" ng-include="'/Angular/Dashboard/templates/page/pager.html'" ng-init="path = '/policies'"></nav>
+</div>

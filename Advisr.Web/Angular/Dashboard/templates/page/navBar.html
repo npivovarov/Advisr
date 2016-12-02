@@ -1,0 +1,25 @@
+<ul class="nav navbar-right top-nav hidden-xs">
+    <li class="dropdown">
+        <a href="" class="dropdown-toggle pull-left" data-toggle="dropdown" ng-href=""> {{currentUser.username}} <b class="w-icon-arrow-down"></b></a>
+        <a class="navlink-dropdown profile w-hidden-medium w-hidden-small w-hidden-tiny w-nav-link pull-right" href="#"></a>
+        <ul class="dropdown-menu">
+            <li ng-if="checkRole(['ADMIN'])">
+                <a href="#/admin/policies"><i class="fa fa-fw fa-file"></i>Policies</a>
+            </li>
+            <li ng-if="checkRole(['ADMIN'])">
+                <a href="#/admin/insurers"><i class="fa fa-fw fa-file"></i>Insurers</a>
+            </li>
+            <li ng-if="checkRole(['ADMIN'])" class="divider"></li>
+            <li>
+                <a href="#/user/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+            </li>
+            <li>
+                <a href="#/user/change-password"><i class="fa fa-fw fa-gear"></i> Change Password</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="javascript:document.getElementById('logoutForm').submit()" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+            </li>
+        </ul>
+    </li>
+</ul>

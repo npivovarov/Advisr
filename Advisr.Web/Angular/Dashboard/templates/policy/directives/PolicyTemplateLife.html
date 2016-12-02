@@ -1,0 +1,19 @@
+﻿<h3>Life</h3>
+<div class="bordered-box">
+    <label class="field-label required" for="LifePolicyMedication">Medication</label>
+    <input class="default-input w-input" data-name="LifePolicyMedication" id="LifePolicyMedication" maxlength="256" name="LifePolicyMedication"
+        placeholder="Enter Medication" required="required" type="text" ng-model="data.LifePolicyModel.Medication"
+        ng-change="clearError('lifePolicyModel.Medication', validationErrors)"
+        >
+    <div ng-show="paramExists('lifePolicyModel.Medication', validationErrors)" class="field-validation-error">
+        <div ng-repeat="error in validationErrors['lifePolicyModel.Medication']">{{error}} <br /></div>
+    </div>
+    <label class="field-label required" for="LifePolicyMedicationCondition">Medication Condition</label>
+    <input class="default-input w-input" data-name="LifePolicyMedicationCondition" id="LifePolicyMedicationCondition" maxlength="256" name="LifePolicyMedicationCondition"
+        placeholder="Enter Make" required="required" type="text" ng-model="data.LifePolicyModel.MedicationCondition"
+        ng-change="clearError('lifePolicyModel.MedicationCondition', validationErrors)"
+        >
+    <div ng-show="paramExists('lifePolicyModel.MedicationCondition', validationErrors)" class="field-validation-error">
+        <div ng-repeat="error in validationErrors['lifePolicyModel.MedicationCondition']">{{error}} <br /></div>
+    </div>
+</div>

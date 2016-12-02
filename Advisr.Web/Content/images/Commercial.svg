@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="416.056 314.088 27.808 29.688">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: square;
+        stroke-miterlimit: 10;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="group-187" transform="translate(59 -35)">
+    <path id="path" class="cls-1" d="M26.523,16.523V9.946H23.892V6H18.631V9.946H16V20.469" transform="translate(349.698 345.719)"/>
+    <line id="line" class="cls-1" x2="10.523" transform="translate(365.698 378.027)"/>
+    <line id="line-2" data-name="line" class="cls-1" y2="2.631" transform="translate(370.96 349.088)"/>
+    <rect id="rectangle" class="cls-1" width="10.523" height="11.838" transform="translate(357.806 366.188)"/>
+    <rect id="rectangle-2" data-name="rectangle" class="cls-1" width="10.523" height="15.785" transform="translate(373.59 362.242)"/>
+    <line id="line-3" data-name="line" class="cls-1" x2="2.631" transform="translate(377.537 366.188)"/>
+    <line id="line-4" data-name="line" class="cls-1" x2="2.631" transform="translate(377.537 370.135)"/>
+    <line id="line-5" data-name="line" class="cls-1" x2="2.631" transform="translate(377.537 374.081)"/>
+    <line id="line-6" data-name="line" class="cls-1" x2="2.631" transform="translate(361.752 370.135)"/>
+    <line id="line-7" data-name="line" class="cls-1" x2="2.631" transform="translate(361.752 374.081)"/>
+  </g>
+</svg>

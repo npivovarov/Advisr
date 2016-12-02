@@ -1,0 +1,29 @@
+﻿<div class="pager-wrapper">
+    <ul class="pagination" ng-controller="PagerController" ng-show="renderPages.length">
+        <li ng-show="notFirst()">
+            <a href="#{{path}}/page/1?{{buildParams()}}" ng-click="goPage($event, 1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li>
+            <a href="#{{path}}/page/{{getPrevPage()}}?{{buildParams()}}" ng-click="goPage($event, getPrevPage())" aria-label="Previous">
+                <span aria-hidden="true">‹</span>
+            </a>
+        </li>
+        <li ng-repeat="page in renderPages" ng-class="{active: (activePage == page)}">
+            <a href="#{{path}}/page/{{page}}?{{buildParams()}}" ng-click="goPage($event, page)">
+                {{page}}
+            </a>
+        </li>
+        <li>
+            <a ng-href="#{{path}}/page/{{getNextPage()}}?{{buildParams()}}" ng-click="goPage($event, getNextPage())" aria-label="Next">
+                <span aria-hidden="true">›</span>
+            </a>
+        </li>
+        <li ng-show="notLast()">
+            <a ng-href="#{{path}}/page/{{getLastPage()}}?{{buildParams()}}" ng-click="goPage($event, getLastPage())" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>

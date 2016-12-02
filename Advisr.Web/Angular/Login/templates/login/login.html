@@ -1,0 +1,43 @@
+<div class="wrapper">
+    <div ng-include="'/Angular/Login/templates/page/alert.html'"></div>
+    <h2>Advisr Login</h2>
+    <div class="w-form">
+        <div ng-show="paramExists('validationInfo', validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['validationInfo']">{{error}} <br /></div>
+        </div>
+        <form novalidate class="ui-form" data-name="form-login" id="form-login" name="form-login" ng-keyup="clearError('validationInfo', validationErrors)">
+            <input class="default-input w-input" data-name="Name" id="name" maxlength="256" name="name" placeholder="Email"
+                type="text" ng-model="data.email" ng-change="clearError('email', validationErrors)">
+            <div ng-show="paramExists('email', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['email']">{{error}} <br /></div>
+            </div>
+            <input class="default-input w-input" data-name="password" id="email" maxlength="256" name="password" placeholder="Password"
+                required="required" type="password" ng-model="data.password" ng-change="clearError('password', validationErrors)">
+            <div ng-show="paramExists('password', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['password']">{{error}} <br /></div>
+            </div>
+            <div class="remember-me">
+                <checkbox class="checkbox" ng-model="data.rememberMe"></checkbox>
+                <label class="field-label pull-left" for="remember">Remember me</label>
+                <a class="forgot-link pull-right text-right" ng-href="#/forgot-password">Forgot Password?</a>
+                <p class="clearfix pull-right">Don't have an account ?
+                    <a class="forgot-link text-right" ng-href="#/register"> Sign up</a>
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <button class="default-button w-button pull-left" data-wait="Please wait..." ng-click="login()" button-spinner="submitInProgress">Log In</button>
+                        </div>
+                        <div class="col-lg-8 social-btn">
+                            <span class="label-social">or Login with</span>
+                            <button class="btn btn-large btn-google-plus btn-block" type="button" data-ng-click="authExternalProvider('Google')"><i class="fa fa-google-plus"></i>Google+</button>
+                            <button class="btn btn-large btn-facebook btn-block" type="button" data-ng-click="authExternalProvider('Facebook')"><i class="fa fa-facebook"></i>Facebook</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tab-header w-clearfix">
+                <h3 class="tab-title">Customer Profile {{data.firstName}}</h3>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="w-form customer-edit-form">
+            <form novalidate class="ui-form" data-name="form-profile" id="wf-form-profile-form" name="wf-form-profile-form">
+                <div class="col-lg-6">
+                    <label class="field-label" for="title">Title</label>
+                    <input class="default-input w-input" data-name="title" id="title" maxlength="256" name="title" placeholder="Enter title"
+                        type="text" ng-model="data.title" ng-change="clearError('title', validationErrors)">
+                    <div ng-show="paramExists('title', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['title']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required" for="email">Email</label>
+                    <input class="default-input w-input" data-name="email" id="email" maxlength="256" name="email" placeholder="Enter email"
+                        type="email" ng-model="data.email" ng-change="clearError('email', validationErrors)">
+                    <div ng-show="paramExists('email', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['email']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required" for="firstName">First Name</label>
+                    <input class="default-input w-input" data-name="firstName" id="firstName" maxlength="256" name="firstName" placeholder="Enter First Name"
+                        required="required" type="text" ng-model="data.firstName" ng-change="clearError('firstName', validationErrors)">
+                    <div ng-show="paramExists('firstName', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['firstName']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required" for="lastName">Last Name</label>
+                    <input class="default-input w-input" data-name="lastName" id="lastName" maxlength="256" name="lastName"
+                        placeholder="Enter Last Name" required="required" type="text" ng-model="data.lastName" ng-change="clearError('lastName', validationErrors)">
+                    <div ng-show="paramExists('lastName', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['lastName']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required" for="date">Date of Birth</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control default-input w-input" placeholder="Select Date of Birth" uib-datepicker-popup="{{format}}" ng-model="data.dateOfBirth" is-open="openedPopup"
+                            close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" alt-input-formats="altInputFormats" ng-change="clearError('dateOfBirth', validationErrors)" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                    <div ng-show="paramExists('dateOfBirth', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['dateOfBirth']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required">Gender</label>
+                    <div class="btn-group radio-btn">
+                        <label class="btn btn-primary" ng-model="data.gender" uib-btn-radio="0">Male</label>
+                        <label class="btn btn-primary" ng-model="data.gender" uib-btn-radio="1">Female</label>
+                    </div>
+                    <label class="field-label required" for="modifiedReason">Modifed Reason</label>
+                    <input class="default-input w-input" data-name="modifiedReason" id="modifiedReason" maxlength="256" name="modifiedReason"
+                        placeholder="Enter Modified Reason" required="required" type="text" ng-model="data.modifiedReason" ng-change="clearError('modifiedReason', validationErrors)">
+                    <div ng-show="paramExists('modifiedReason', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['modifiedReason']">{{error}} <br /></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="field-label" for="phone">Phone</label>
+                    <input class="default-input w-input" data-name="phone" id="phone" maxlength="256" name="phone" placeholder="Enter Phone e.g. (9999 999 999)"
+                        required="required" type="text" mask="9999-999-999" clean="true" ng-model="data.contactPhone" ng-change="clearError('phone', validationErrors)">
+                    <div ng-show="paramExists('phone', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['phone']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="address1">Address Line 1</label>
+                    <input class="default-input w-input" data-name="address1" id="address1" maxlength="256" name="address1" placeholder="Enter Address Line 1"
+                        required="required" type="text" ng-model="data.address.addressLine1" ng-change="clearError('address1', validationErrors)">
+                    <div ng-show="paramExists('address1', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['address1']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="address2">Address Line 2</label>
+                    <input class="default-input w-input" data-name="address2" id="address2" maxlength="256" name="address2" placeholder="Enter Address Line 2"
+                        required="required" type="text" ng-model="data.address.addressLine2" ng-change="clearError('address2', validationErrors)">
+                    <div ng-show="paramExists('address2', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['address2']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="city">City/Town/Suburb</label>
+                    <input class="default-input w-input" data-name="city" id="city" maxlength="256" name="city" placeholder="Enter City/Town/Suburb"
+                        required="required" type="text" ng-model="data.address.city" ng-change="clearError('city', validationErrors)">
+                    <div ng-show="paramExists('city', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['city']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="city">State</label>
+                    <ui-select ng-model="data.address.state">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.value"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (stateList | filter: $select.search) track by item.key">
+                            <span ng-bind="item.value"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <label class="field-label" for="postcode">Postcode</label>
+                    <input class="default-input w-input" data-name="postcode" id="postcode" maxlength="256" name="postcode"
+                        placeholder="Enter Postcode e.g. (9999)" required="required" type="text" mask="9999" clean="true" ng-model="data.address.postCode" ng-change="clearError('postcode', validationErrors)">
+                    <div ng-show="paramExists('postcode', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['postcode']">{{error}} <br /></div>
+                    </div>
+                     <div class="checkbox-wrapper">
+                         <checkbox class="checkbox" ng-model="data.roles[0]" ng-true-value="ADMIN" ng-change="clearError('roles', validationErrors)"></checkbox>
+                     <label class="field-label pull-left" for="roleAdmin">Admin</label>
+                     </div>
+                    <div class="checkbox-wrapper">
+                        <checkbox class="checkbox" ng-model="data.roles[1]" ng-true-value="CUSTOMER" ng-change="clearError('roles', validationErrors)"></checkbox>
+                     <label class="field-label pull-left" for="roleCustomer">Customer</label>
+                    </div>
+                    <div ng-show="paramExists('roles', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['roles']">{{error}} <br /></div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <button class="default-button w-button pull-left save-btn" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
+                    <div class="lock-btn-wrapper">
+                        <button class="fade-element-in btn default-button w-button lock-btn" ng-click="lock(data.address.customerId)" ng-if="!data.locked" button-spinner="submitInProgressLock">Lock Profile</button>
+                        <button class="fade-element-in btn default-button w-button lock-btn unlock-btn" ng-click="unlock(data.address.customerId)" ng-if="data.locked" button-spinner="submitInProgressUnlock">Unlock Profile</button>
+                    </div>
+                </div>
+            </form>
+        </div><!--w-form-->
+    </div>
+</div><!--wrapper-->

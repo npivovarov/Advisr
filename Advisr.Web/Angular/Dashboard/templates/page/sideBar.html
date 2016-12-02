@@ -1,0 +1,47 @@
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        <li>
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/portfolio" class="tab-current w-inline-block w-tab-link" data-w-tab="Tab 1" active>
+                <div class="sidebar-label">PORTFOLIO</div>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/notifications" class="_5 tab w-inline-block w-tab-link" data-w-tab="Tab 5" ng-class="{'w--current': getClass('/notifications') }">
+                <div class="sidebar-label">NOTIFICATIONS</div>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/policies" class="tab w-inline-block w-tab-link" data-w-tab="Tab 2" ng-class="{'w--current': getClass('/policies') }">
+                <div class="sidebar-label">POLICIES</div>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/insights" class="tab-4 w-inline-block w-tab-link" data-w-tab="Tab 4" ng-class="{'w--current': getClass('/insights') }">
+                <div class="sidebar-label">INSIGHTS</div>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/user/profile" class="tab hover w--profile" data-w-tab="Tab 3" ng-class="{'w--current': getClass('/user/profile') }">
+                <div class="sidebar-label">PROFILE</div>
+            </a>
+        </li>
+        <li ng-if="checkRole(['ADMIN'])">
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/customer-list" class="tab w-inline-block w-tab-link" data-w-tab="Tab 3" ng-class="{'w--current': getClass('/customer-list') }">
+                <div class="sidebar-label">CUSTOMERS</div>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/about" class="about tab hover w--profile" data-w-tab="Tab 3"
+                ng-class="{'w--current': getClass('/about') }">
+                <div class="sidebar-label">ABOUT</div>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="javascript:document.getElementById('logoutForm').submit()" class="visible-xs hover tab w-inline-block w-tab-link" data-w-tab="Tab 3"
+                ng-class="{'w--current': getClass('/profiles-list') }">
+                <div class="sidebar-label">LOGOUT</div>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- /.navbar-collapse -->

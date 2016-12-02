@@ -1,0 +1,75 @@
+﻿@{
+    Layout = null;
+}
+@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html lang="en" ng-app="DashboardApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Advisr</title>
+    <link rel="shortcut icon" href="favicon.png">
+    <!-- libraries -->
+    @Scripts.Render("~/bundles/libraries")
+    <!-- Angular -->
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularDashboard")
+    @Scripts.Render("~/bundles/angularDashboardApp")
+    @Scripts.Render("~/bundles/angularDashboardControllers")
+    @Scripts.Render("~/bundles/angularDashboardServices")
+    @Scripts.Render("~/bundles/angularDashboardDirectives")
+    @Scripts.Render("~/bundles/angularDashboardFilters")
+    <!-- Custom CSS -->
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/cssDashboard")
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+    <script type="text/javascript">(function(o){var b="https://api.autopilothq.com/anywhere/",t="ffdc8a8aa4fc48f8bc92f139afa7c4638effc9bc84f74a358cb9c4aca4ce4073",a=window.AutopilotAnywhere={_runQueue:[],run:function(){this._runQueue.push(arguments);}},c=encodeURIComponent,s="SCRIPT",d=document,l=d.getElementsByTagName(s)[0],p="t="+c(d.title||"")+"&u="+c(d.location.href||"")+"&r="+c(d.referrer||""),j="text/javascript",z,y;if(!window.Autopilot) window.Autopilot=a;if(o.app) p="devmode=true&"+p;z=function(src,asy){var e=d.createElement(s);e.src=src;e.type=j;e.async=asy;l.parentNode.insertBefore(e,l);};if(!o.noaa){z(b+"aa/"+t+'?'+p,false)};y=function(){z(b+t+'?'+p,true);};if(window.attachEvent){window.attachEvent("onload",y);}else{window.addEventListener("load",y,false);}})({"app":true});</script>
+    <script type="text/javascript">
+        Autopilot.run("associate", "@ViewBag.UserEmail");
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div ng-include="'/Angular/Dashboard/templates/page/alert.html'"></div>
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top default-nav" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand advisr-logotype" href="/">ADVISR</a>
+            </div>
+            <!-- Top Menu Items -->
+            <div ng-include="'/Angular/Dashboard/templates/page/navBar.html'"></div>
+            @if (Request.IsAuthenticated)
+            { 
+              using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) { @Html.AntiForgeryToken()}
+            }
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div ng-include="'/Angular/Dashboard/templates/page/sideBar.html'"></div>
+        </nav>
+        <div id="page-wrapper" class="content-wrapper">
+            <div class="container-fluid">
+              <div class="anim-in-out anim-fade" data-anim-speed="500" ui-view></div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    @Scripts.Render("~/bundles/jquery")
+    <!-- Bootstrap Core JavaScript -->
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

@@ -1,0 +1,57 @@
+﻿@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="en" ng-app="AdvisrLoginApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Advisr</title>
+    <link rel="shortcut icon" href="favicon.png">
+    <!-- libraries -->
+    @Scripts.Render("~/bundles/libraries")
+    <!-- Angular -->
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularLoginApp")
+    @Scripts.Render("~/bundles/angularLoginControllers")
+    @Scripts.Render("~/bundles/angularLoginServices")
+    <!-- Custom CSS -->
+    @Styles.Render("~/Content/css")
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        (function (o) { var b = "https://api.autopilothq.com/anywhere/", t = "ffdc8a8aa4fc48f8bc92f139afa7c4638effc9bc84f74a358cb9c4aca4ce4073", a = window.AutopilotAnywhere = { _runQueue: [], run: function () { this._runQueue.push(arguments); } }, c = encodeURIComponent, s = "SCRIPT", d = document, l = d.getElementsByTagName(s)[0], p = "t=" + c(d.title || "") + "&u=" + c(d.location.href || "") + "&r=" + c(d.referrer || ""), j = "text/javascript", z, y; if (!window.Autopilot) window.Autopilot = a; if (o.app) p = "devmode=true&" + p; z = function (src, asy) { var e = d.createElement(s); e.src = src; e.type = j; e.async = asy; l.parentNode.insertBefore(e, l); }; if (!o.noaa) { z(b + "aa/" + t + '?' + p, false) }; y = function () { z(b + t + '?' + p, true); }; if (window.attachEvent) { window.attachEvent("onload", y); } else { window.addEventListener("load", y, false); } })({ "app": true });
+    </script>
+    <script type="text/javascript">
+        Autopilot.run("associate", "");
+    </script>
+</head>
+<body class="login-page">
+    <div id="page-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="anim-in-out anim-fade" data-anim-speed="500" ui-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container text-center">
+            <p>© 2016 - Advisr</p>
+            @*<p>version: @ViewContext.Controller.GetType().Assembly.GetName().Version</p>*@
+            <p>Build From: @File.GetCreationTime(ViewContext.Controller.GetType().Assembly.Location)</p>
+        </div>
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    @Scripts.Render("~/bundles/jquery")
+    <!-- Bootstrap Core JavaScript -->
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

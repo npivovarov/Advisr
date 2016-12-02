@@ -1,0 +1,86 @@
+﻿<div class="wrapper">
+    <h3>Edit insurer</h3>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="w-form">
+                <form novalidate class="ui-form" data-name="form-insurer" id="wf-form-editinsurer-form" name="wf-form-editinsurer-form">
+                    <label class="field-label required" for="name">Insurer name</label>
+                    <input class="default-input w-input" data-name="name" id="name" maxlength="256" name="name" placeholder="Enter insurer name"
+                        type="text" ng-model="data.name" ng-change="clearError('name', validationErrors)">
+                    <div ng-show="paramExists('name', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['name']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required" for="url">Insurer url</label>
+                    <input class="default-input w-input" data-name="url" id="url" maxlength="256" name="url" placeholder="Enter insurer url"
+                        type="text" ng-model="data.url" ng-change="clearError('uRL', validationErrors)">
+                    <div ng-show="paramExists('uRL', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['uRL']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="phone">Contact Phone</label>
+                    <input class="default-input w-input" data-name="phone" id="phone" maxlength="256" name="phone" placeholder="Enter Phone e.g. (9999 999 999)"
+                        type="text" mask="9999-999-999" clean="true" ng-model="data.phone" ng-change="clearError('phone', validationErrors)">
+                    <div ng-show="paramExists('phone', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['phone']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="phone">Phone overseas</label>
+                    <input class="default-input w-input" data-name="phoneOverseas" id="phoneOverseas" maxlength="256" name="phoneOverseas" placeholder="Enter insurers phone overseas"
+                        type="text" ng-model="data.phoneOverseas" ng-change="clearError('phoneOverseas', validationErrors)">
+                    <div ng-show="paramExists('phoneOverseas', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['phoneOverseas']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required" for="confirm-password">Logo</label>
+                    <button class="small-button w-button upload-button" ngf-select="uploadLogo($file, $invalidFiles)" name="fileInput" accept="image/*"
+                        ngf-max-size="10MB" button-spinner="submitInProgressFile">
+                            + Upload file here
+                        </button>
+                    <label class="form-help-text" for="email-2">Files extension: gif, jpeg/jpg, png, tiff</label>
+                    <div class="field-validation-error" ng-show="paramExists('logoId', validationErrors)">
+                        <div ng-repeat="error in validationErrors['logoId']">{{error}}</div>
+                    </div>
+                    <img class="notFound" alt="Not found" id="logo" ng-src="{{data.logo.url}}" ng-if="data.logo.url" />
+                    <label class="field-label" for="phone">Color</label>
+                    <input class="default-input w-input" data-name="color" id="color" maxlength="256" name="color" placeholder="Enter insurers color"
+                        type="text" ng-model="data.color" ng-change="clearError('color', validationErrors)">
+                    <div ng-show="paramExists('color', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['color']">{{error}} <br /></div>
+                    </div>
+                    <br />
+                    
+                    <h3>Policy Types</h3>
+                    <a class="small-button w-button pull-right" ng-href="#/admin/insurers/addInsurerPolicyType/{{data.id}}" style="margin-bottom:10px">+ Add New</a>
+                    <div class="form-group">
+                        <br />
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Group Name</th>
+                                    <th>Group Type</th>
+                                    <th>Policy Type Name</th>
+                                    <th>Created date</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="type in data.policyTypes track by type.groupid">
+                                    <td scope="row">{{$index + 1}}</td>
+                                    <td>{{type.groupName}}</td>
+                                    <td>{{type.groupType}}</td>
+                                    <td>{{type.subGroupName}}</td>
+                                    <td>{{type.createdDate}}</td>
+                                    <td>{{type.status}}</td>
+                                    <td><a class="small-button w-button" ng-href="#/admin/insurers/editInsurerPolicyType/{{type.groupid}}">Edit</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="default-button w-button" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
+                    <a class="default-button w-button" data-wait="Please wait..." ng-href="#/admin/insurers" button-spinner="submitInProgress">
+                            Back
+                        </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

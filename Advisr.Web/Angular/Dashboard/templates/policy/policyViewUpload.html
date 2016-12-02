@@ -1,0 +1,67 @@
+﻿<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tab-header w-clearfix">
+                <h3 class="tab-title">Policy View Upload</h3>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div><!--wrapper-->
+<div class="wrapper">
+    <div class="row">
+        <div class="w-form">
+            <form novalidate class="ui-form" data-name="form-policy" id="wf-form-policy-form" name="wf-form-policy-form">
+                <div class="col-lg-6">
+                    <button class="small-button w-button upload-button" ngf-select="uploadFiles($files, $invalidFiles)" ngf-multiple="true" name="fileInput"
+                        accept="image/*, application/pdf, application/msword, application/rtf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        ngf-max-size="10MB" button-spinner="submitInProgressFile">+ Upload file here
+                                </button>
+                    <label class="form-help-text" for="email-2">Files extension: txt, rtf, doc, docx, pdf, gif, jpeg/jpg, png</label>
+                    <div class="field-validation-error" ng-show="paramExists('fileIds', validationErrors)">
+                        <div ng-repeat="error in validationErrors['fileIds']">{{error}}</div>
+                    </div>
+                </div>        
+            </form>
+        </div><!--w-form-->
+    </div><!--row-->
+</div><!--wrapper-->
+<div class="detail-list-div" ng-show="fileNames.length">
+    <div class="detail-row document sortby">
+        <div class="details-collumns w-row">
+            <div class="w-col w-col-5 w-col-small-small-stack w-col-tiny-4">
+                <div>Name</div>
+            </div>
+            <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-4">
+                <div>Uploaded on</div>
+            </div>
+            <div class="w-col w-col-4 w-col-small-small-stack w-col-tiny-4">
+                <div>File size</div>
+            </div>
+        </div>
+    </div>
+    <div class="detail-row document" ng-repeat="fileName in fileNames track by fileName.id">
+        <div class="details-collumns w-row">
+            <div class="w-col w-col-5 w-col-small-small-stack w-col-tiny-tiny-stack">
+                <div>{{fileName.fileName}}</div>
+            </div>
+            <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack">
+                <div>{{fileName.uploadedDate | date:'dd.MM.yyyy'}} at {{fileName.uploadedDate | date:'hh:mm'}}</div>
+            </div>
+            <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
+                <div>{{fileName.fileSize | bytes}} </div>
+            </div>
+            <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
+                <a class="documents text-link" ng-href="{{fileName.url}}?type=inline" target="_blank">View DOCUMENT</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <button class="default-button w-button pull-left save-btn" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress"
+                ng-disabled="disabled">Save</button>
+        </div>
+    </div>
+</div>

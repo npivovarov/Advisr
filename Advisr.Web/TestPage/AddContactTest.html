@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">(function(o){var b="https://api.autopilothq.com/anywhere/",t="ffdc8a8aa4fc48f8bc92f139afa7c4638effc9bc84f74a358cb9c4aca4ce4073",a=window.AutopilotAnywhere={_runQueue:[],run:function(){this._runQueue.push(arguments);}},c=encodeURIComponent,s="SCRIPT",d=document,l=d.getElementsByTagName(s)[0],p="t="+c(d.title||"")+"&u="+c(d.location.href||"")+"&r="+c(d.referrer||""),j="text/javascript",z,y;if(!window.Autopilot) window.Autopilot=a;if(o.app) p="devmode=true&"+p;z=function(src,asy){var e=d.createElement(s);e.src=src;e.type=j;e.async=asy;l.parentNode.insertBefore(e,l);};if(!o.noaa){z(b+"aa/"+t+'?'+p,false)};y=function(){z(b+t+'?'+p,true);};if(window.attachEvent){window.attachEvent("onload",y);}else{window.addEventListener("load",y,false);}})({});</script>
+    <script type="text/javascript">Autopilot.run("associate", "support@advisr.com.au");</script>
+</head>
+<body>
+    <form>
+        <div class="container">
+            <input type="hidden" name="_autopilot_session_id" />
+            <div class="form-group">
+                <label class="control-label">First Name</label>
+                <input type="text" name="f_name" id="f_name" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Last Name</label>
+                <input type="text" name="f_name" id="l_name" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <input type="text" name="f_name" id="email" />
+            </div>
+            <input type="button" value="Add Contact" onclick="AddContact()" />
+            <input type="button" value="Use external" onclick="UseExternal()"/>
+        </div>
+    </form>
+    <script type="text/javascript">
+    function AddContact() {
+        var contact = { FirstName:$('#f_name').val(), LastName:$('#l_name').val(), Email:$('#email').val() };
+        $.ajax({
+            type: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            url: "http://localhost:9682/api/AutopilotTest/AddContact",
+            data: JSON.stringify({"FirstName":""+$('#f_name').val()+"","LastName":""+$('#l_name').val()+"","Email":""+$('#email').val()+""}),
+            success: function () {
+                alert("Contact was successfully created")
+            },
+        });
+    }
+
+    function UseExternal() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:9682/api/Oauth/ExternalLogin?provider=Facebook&response_type=token&client_id=ngAuthApp&redirect_uri=http://ngauthenticationweb.azurewebsites.net/authcomplete.html",
+            success: function () {
+                alert("Success")
+            },
+        });
+    }
+    </script>
+</body>
+</html>

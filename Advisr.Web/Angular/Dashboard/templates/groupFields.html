@@ -1,0 +1,44 @@
+<h3>Additional Properties</h3>
+<div ng-repeat="field in groupFields">
+    <div ng-switch on="field.fieldType">
+    <div ng-switch-when="0">
+        <label class="field-label" for="field_{{field.id}}">{{field.fieldName}}</label>
+        <input class="default-input w-input" data-name="field_{{field.id}}" id="field_{{field.id}}" maxlength="256" name="field_{{field.id}}" placeholder={{field.fieldName}}
+            required="required" type="text" ng-model="data.AdditionalProperties[$index].value">
+    </div>
+    <div ng-switch-when="1">
+        <label class="field-label" for="field_{{field.id}}">{{field.fieldName}}</label>
+        <input class="default-input w-input" data-name="field_{{field.id}}" id="field_{{field.id}}" maxlength="256" name="field_{{field.id}}" placeholder="{{field.fieldName}}"
+            required="required" type="number" min="0" ng-model="data.AdditionalProperties[$index].value">
+    </div>
+    <div ng-switch-when="2">
+        <label class="field-label" for="field_{{field.id}}">{{field.fieldName}}</label>
+        <ui-select ng-model="data.AdditionalProperties[$index].value">
+            <ui-select-match placeholder="Select {{field.fieldName}}">
+                <span ng-bind="$select.selected.name"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (bool | filter: $select.search) track by item.id">
+                <span ng-bind="item.name"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div ng-switch-when="3">
+        <label class="field-label" for="field_{{field.id}}">{{field.fieldName}}</label>
+        <input class="default-input w-input" data-name="field_{{field.id}}" id="field_{{field.id}}" maxlength="256" name="field_{{field.id}}"
+            placeholder="{{field.fieldName}}" required="required" type="number" min="0" step="0.01" ng-model="data.AdditionalProperties[$index].value">
+    </div>
+    <div ng-switch-when="4">
+        <label class="field-label" for="field_{{field.id}}">{{field.fieldName}}</label>
+        <ui-select ng-model="data.AdditionalProperties[$index].value">
+            <ui-select-match placeholder="Select {{field.fieldName}}">
+                <span ng-bind="$select.selected.value"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (field.listDescription | filter: $select.search)  track by item.id">
+                <span ng-bind="item.value"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div ng-switch-default>
+    </div>
+</div>
+</div>

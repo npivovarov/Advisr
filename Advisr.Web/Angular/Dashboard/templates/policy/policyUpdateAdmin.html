@@ -1,0 +1,167 @@
+﻿<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tab-header w-clearfix">
+                <h3 class="tab-title">Policy Update</h3>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group" ng-show="fileNames.length" style="margin-top: 5px;">
+                <label>Files</label>
+                <div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="fileName in fileNames track by fileName.id">
+                                <td scope="row">{{$index + 1}}</td>
+                                <td>{{fileName.fileName}}</td>
+                                <td>
+                                    <a ng-href="{{fileName.url}}?type=inline" target="_blank" style="cursor: pointer" class="glyphicon glyphicon-eye-open" aria-hidden="true"></a>
+                                    <a ng-href="{{fileName.url}}?type=attachment" target="_blank" style="cursor: pointer" class="glyphicon glyphicon-download-alt" aria-hidden="true"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--row-->
+                <form id="updatePolicy" novalidate class="ui-form" name="updatePolicy">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label class="field-label">Insurer List</label>
+                            <ui-select ng-model="list.insurerList" on-select="onSelection($select.selected)">
+                                <ui-select-match>
+                                    <span ng-bind="$select.selected.name"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in (insurerList | filter: $select.search) track by item.insurerId">
+                                    <span ng-bind="item.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <label class="field-label">Policy Group</label>
+                            <ui-select ng-model="list.groups" on-select="changeGroups($item)">
+                                <ui-select-match>
+                                    <span ng-bind="$select.selected.groupName"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in (groups | filter: $select.search) track by item.groupName">
+                                    <span ng-bind="item.groupName"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <label class="field-label">Policy Type</label>
+                            <ui-select ng-model="list.categories" on-select="changeCategories($item)">
+                                <ui-select-match>
+                                    <span ng-bind="$select.selected.name"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in (categories | filter: $select.search) track by item.id">
+                                    <span ng-bind="item.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <!--Base Info-->
+                            <label class="field-label required" for="startDate">Start Date</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control default-input w-input" placeholder="Select Start Date" uib-datepicker-popup="{{format}}"
+                                    ng-model="data.startDate" is-open="openedStartDate" close-text="Close" show-button-bar="false" alt-input-formats="altInputFormats"
+                                    ng-change="clearError('startDate', validationErrors)"
+                                />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openStartDate()">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <div ng-show="paramExists('startDate', validationErrors)" class="field-validation-error">
+                                <div ng-repeat="error in validationErrors['startDate']">{{error}} <br /></div>
+                            </div>
+                            <label class="field-label required" for="startDate">End Date</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control default-input w-input" placeholder="Select End Date" uib-datepicker-popup="{{format}}"
+                                    ng-model="data.endDate" is-open="openedEndDate" close-text="Close" show-button-bar="false" alt-input-formats="altInputFormats"
+                                    ng-change="clearError('endDate', validationErrors)"
+                                />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openEndtDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                            <div ng-show="paramExists('endDate', validationErrors)" class="field-validation-error">
+                                <div ng-repeat="error in validationErrors['endDate']">{{error}} <br /></div>
+                            </div>
+                            <label class="field-label required" for="PolicyNumber">Policy Number</label>
+                            <input class="default-input w-input" data-name="PolicyNumber" id="PolicyNumber" maxlength="256" name="PolicyNumber" placeholder="Enter Policy Number"
+                                required="required" type="text" ng-model="data.policyNumber" ng-change="clearError('policyNumber', validationErrors)">
+                            <div ng-show="paramExists('policyNumber', validationErrors)" class="field-validation-error">
+                                <div ng-repeat="error in validationErrors['policyNumber']">{{error}} <br /></div>
+                            </div>
+                        </div>
+                        <!--col-lg-6-->
+                        <div class="col-lg-6">
+                            <label class="field-label required" for="PolicyPremium">Policy Premium</label>
+                            <input class="default-input w-input" data-name="PolicyPremium" id="PolicyPremium" maxlength="256" name="PolicyPremium" placeholder="Enter Policy Premium"
+                                required="required" type="number" min="0" ng-model="data.policyPremium" ng-change="clearError('policyPremium', validationErrors)">
+                            <div ng-show="paramExists('policyPremium', validationErrors)" class="field-validation-error">
+                                <div ng-repeat="error in validationErrors['policyPremium']">{{error}} <br /></div>
+                            </div>
+
+                            <label class="field-label">Policy Payment Frequency</label>
+                            <ui-select ng-model="data.policyPaymentFrequency">
+                                <ui-select-match>
+                                    <span ng-bind="$select.selected.value"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in (list.policyPaymentFrequency | filter: $select.search) track by item.id">
+                                    <span ng-bind="item.value"></span>
+                                </ui-select-choices>
+                            </ui-select>
+
+                            <label class="field-label required" for="PolicyPaymentAmount">Policy Payment Amount</label>
+                            <input class="default-input w-input" data-name="PolicyPaymentAmount" id="PolicyPaymentAmount" maxlength="256" name="PolicyPaymentAmount"
+                                placeholder="Enter Policy Payment Amount" required="required" type="number" min="0" ng-model="data.policyPaymentAmount" ng-change="clearError('policyPaymentAmount', validationErrors)">
+                            <div ng-show="paramExists('policyPaymentAmount', validationErrors)" class="field-validation-error">
+                                <div ng-repeat="error in validationErrors['policyPaymentAmount']">{{error}} <br /></div>
+                            </div>
+
+                            <label class="field-label required" for="PolicyExcess">Policy Excess</label>
+                            <input class="default-input w-input" data-name="PolicyExcess" id="PolicyExcess" maxlength="256" name="PolicyExcess" placeholder="Enter Policy Excess"
+                                required="required" type="number" min="0" ng-model="data.policyExcess" ng-change="clearError('policyExcess', validationErrors)">
+                            <div ng-show="paramExists('policyExcess', validationErrors)" class="field-validation-error">
+                                <div ng-repeat="error in validationErrors['policyExcess']">{{error}} <br /></div>
+                            </div>
+
+                            <label class="field-label required">Description</label>
+                            <textarea class="form-control default-input" rows="5" placeholder="Enter Description" ng-model="data.description"  ng-change="clearError('description', validationErrors)"></textarea>
+                            <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
+                                <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
+                            </div>
+                        </div>
+                        <!--col-lg-6-->
+                    </div>
+                    <!--row-->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="bordered-box">
+                                <!--select-->
+                                <div ng-if="policyTemplate == 0">
+                                    <policy-template-vehicle></policy-template-vehicle>
+                                </div>
+                                <div ng-if="policyTemplate == 1">
+                                    <policy-template-home></policy-template-home>
+                                </div>
+                                <div ng-if="policyTemplate == 2">
+                                    <policy-template-life></policy-template-life>
+                                </div>
+                                <!--policyTemplate-->
+                                <group-fields fields="groupFields"></group-fields>
+                                <!--group-fields-->
+                            </div>
+                            <button class="default-button w-button" ng-click="save(false)" button-spinner="submitInProgressSave">Save</button>
+                            <button class="default-button w-button" ng-click="save(true)" button-spinner="submitInProgressConfirmed">Confirm</button>
+                        </div>
+                    </div>
+                </form>
+</div><!--wrapper-->

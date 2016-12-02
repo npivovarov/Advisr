@@ -1,0 +1,5 @@
+<div class="alert-holder col-lg-4">
+    <div class="alert-dashboard ng-fade col-lg-12" ng-repeat="alert in alerts">
+        <div dismiss-on-timeout="3000" ng-class="'alert-' + (alert.type || 'warning')" uib-alert class="alert-dismissible" close="closeAlert($index)">{{alert.msg}}</div>
+    </div>
+</div>

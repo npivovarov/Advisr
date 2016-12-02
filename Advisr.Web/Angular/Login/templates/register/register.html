@@ -1,0 +1,51 @@
+<div class="wrapper">
+    <div ng-include="'/Angular/Login/templates/page/alert.html'"></div>
+    <h2>Advisr Sign Up</h2>
+    <div class="w-form">
+        <form novalidate class="ui-form" data-name="form-register" id="wf-form-register-form" name="wf-form-register-form">
+            <input class="default-input w-input" data-name="firstName" id="firstName" ng-if="!external" maxlength="256" name="firstName" placeholder="First Name"
+                type="text" ng-model="data.firstName" ng-change="clearError('firstName', validationErrors)">
+            <div ng-show="paramExists('firstName', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['firstName']">{{error}} <br /></div>
+            </div>
+            <input class="default-input w-input" data-name="lastName" id="lastName" ng-if="!external" maxlength="256" name="lastName" placeholder="Last Name"
+                type="text" ng-model="data.lastName" ng-change="clearError('lastName', validationErrors)">
+            <div ng-show="paramExists('lastName', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['lastName']">{{error}} <br /></div>
+            </div>
+            <input class="default-input w-input" data-name="email" id="email" maxlength="256" name="email" placeholder="Email"
+                type="email" ng-model="data.email" ng-change="clearError('email', validationErrors)">
+            <div ng-show="paramExists('email', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['email']">{{error}} <br /></div>
+            </div>
+            <input class="default-input w-input" data-name="password" id="password" maxlength="256" name="password" placeholder="Password"
+                required="required" type="password" ng-model="data.password" ng-change="clearError('password', validationErrors)"
+                ng-if="!external">
+            <div ng-show="paramExists('password', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['password']">{{error}} <br /></div>
+            </div>
+            <input class="default-input w-input" data-name="confirm-password" id="confirm-password" maxlength="256" name="confirm-password"
+                placeholder="Confirm password" required="required" type="password" ng-model="data.confirmPassword" ng-change="clearError('confirmPassword', validationErrors)"
+                ng-if="!external">
+            <div ng-show="paramExists('confirmPassword', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['confirmPassword']">{{error}} <br /></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <button class="default-button w-button pull-left" data-wait="Please wait..." ng-if="!external" ng-click="register()" button-spinner="submitInProgress">Sign Up</button>
+                            <button class="default-button w-button pull-left" data-wait="Please wait..." ng-if="external" ng-click="registerExternal()"
+                                button-spinner="submitInProgress">Sign Up</button>
+                        </div>
+                        <div class="col-lg-8 social-btn">
+                            <span class="label-social">or Sign up</span>
+                            <button class="btn btn-large btn-google-plus btn-block" type="button" data-ng-click="authExternalProvider('Google')"><i class="fa fa-google-plus"></i>Google+</button>
+                            <button class="btn btn-large btn-facebook btn-block" type="button" data-ng-click="authExternalProvider('Facebook')"><i class="fa fa-facebook"></i>Facebook</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
