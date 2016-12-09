@@ -4,7 +4,6 @@ using Advisr.Web.Models;
 using Advisr.Web.Quartz;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Quartz;
 using Quartz.Impl;
 using System;
@@ -54,13 +53,12 @@ namespace Advisr.Web.Controllers
                         status = a.Status,
                         title = a.Title,
                         subTitle = a.SubTitle,
+                        prePolicyType = a.PrePolicyType,
                         policyGroupId = a.PolicyTypeId,
                         insurerId = a.InsurerId,
                         startDate = a.StartDate,
                         endDate = a.EndDate,
                         policyNumber = a.PolicyNumber,
-                        description = a.Description,
-                        //expiryDate = a.PolicyExpiryDate,
                         policyPremium = a.PolicyPremium,
                         policyExcess = a.PolicyExcess,
                         policyPaymentAmount = a.PolicyPaymentAmount,
@@ -70,7 +68,8 @@ namespace Advisr.Web.Controllers
                         {
                             id = a.PolicyTypeId,
                             groupName = a.PolicyType.GroupName,
-                            policyTypeName = a.PolicyType.PolicyTypeName
+                            policyTypeName = a.PolicyType.PolicyTypeName,
+                            policyTemplate = a.PolicyType.PolicyGroupType
                         },
                         insurer = a.Insurer == null ? null : new
                         {
@@ -81,6 +80,7 @@ namespace Advisr.Web.Controllers
                             phone = a.Insurer.Phone,
                             phoneOverseas = a.Insurer.PhoneOverseas,
                             email = a.Insurer.Email,
+                            description = a.Insurer.Description
                         },
                         //TODO: change field names to lower case
                         vehiclePolicyModel = a.VehicleItems.Select(v => new
@@ -91,15 +91,13 @@ namespace Advisr.Web.Controllers
                             Colour = v.Colour,
                             RegistredDriverName = v.RegistredDriverName,
                             RegistrationNumber = v.RegistrationNumber,
-                            RegistrationState = v.RegistrationState,
                             Make = v.Make.MakeName,
                             Model = v.Model.ModelName,
-                            Mileage = v.Mileage,
                             IsCommercial = new
                             {
                                 id = v.IsCommercial,
                                 name = v.IsCommercial == true ? "Yes" : "No"
-                            } 
+                            }
                         }),
                         //TODO: change field names to lower case
                         lifePolicyModel = a.LifeItems.Select(l => new
@@ -123,11 +121,14 @@ namespace Advisr.Web.Controllers
                             fileName = p.File.FileName,
                             fileSize = p.File.FileSize,
                             uploadedDate = p.File.CreatedDate,
-                            fileUrl = string.Concat(startLinkToPhoto, "?id=", p.FileId, "&type=inline"),
+                            url = string.Concat(startLinkToPhoto, "/", p.FileId),
                         }),
                         additionalProperties = a.AdditionalPolicyFields.Select(af => new
                         {
-                            groupFileId = af.PolicyTypeFieldId,
+                            id = af.Id,
+                            policyTypeFieldId = af.PolicyTypeFieldId,
+                            fieldName = af.PolicyTypeField.FieldName,
+                            fieldType = af.PolicyTypeField.FieldType,
                             value = af.Value
                         }),
                         createdDate = a.CreatedDate,
@@ -151,13 +152,12 @@ namespace Advisr.Web.Controllers
                     status = policyDb.status,
                     title = policyDb.title,
                     subTitle = policyDb.subTitle,
+                    prePolicyType = policyDb.prePolicyType,
                     policyGroupId = policyDb.policyGroupId,
                     insurerId = policyDb.insurerId,
                     startDate = policyDb.startDate,
                     endDate = policyDb.endDate,
                     policyNumber = policyDb.policyNumber,
-                    description = policyDb.description,
-                    //expiryDate = policyDb.expiryDate,
                     policyPremium = policyDb.policyPremium,
                     policyExcess = policyDb.policyExcess,
                     policyPaymentAmount = policyDb.policyPaymentAmount,
@@ -165,9 +165,9 @@ namespace Advisr.Web.Controllers
                     policyGroup = policyDb.policyGroup,
                     insurer = policyDb.insurer,
 
-                    vehiclePolicyModel = policyDb.vehiclePolicyModel.FirstOrDefault(),
-                    lifePolicyModel = policyDb.lifePolicyModel.FirstOrDefault(),
-                    homePolicyModel = policyDb.homePolicyModel.FirstOrDefault(),
+                    vehiclePolicyModel = policyDb.policyGroup != null && policyDb.policyGroup.policyTemplate== PolicyGroupType.Vehicle ? policyDb.vehiclePolicyModel.FirstOrDefault() : null,
+                    lifePolicyModel = policyDb.policyGroup != null && policyDb.policyGroup.policyTemplate == PolicyGroupType.Life ? policyDb.lifePolicyModel.FirstOrDefault() : null,
+                    homePolicyModel = policyDb.policyGroup != null && policyDb.policyGroup.policyTemplate == PolicyGroupType.Home ? policyDb.homePolicyModel.FirstOrDefault() : null,
 
                     files = policyDb.files.ToList(),
                     additionalProperties = policyDb.additionalProperties.ToList(),
@@ -175,6 +175,38 @@ namespace Advisr.Web.Controllers
                     createdBy = policyDb.createdBy,
                 };
 
+
+                return Json(result);
+            }
+        }
+
+
+        /// <summary>
+        /// Get coverages list for the policy;
+        /// </summary>
+        /// <param name="id">Policy Id</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("GetCoverages")]
+        public IHttpActionResult GetCoverages(int id)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var userId = User.Identity.GetUserId();
+
+                var result = unitOfWork.PolicyCoverageRepository.GetAll()
+                    .Where(a => a.PolicyId == id)
+                    .Select(a => new
+                    {
+                        id = a.Id,
+                        title = a.Coverage.Title,
+                        type = a.Coverage.Type,
+                        description = a.Coverage.Description,
+                        insurerId = a.Coverage.InsurerId,
+                        isActive = a.IsActive,
+                        excess = a.Excess,
+                        limit = a.Limit,
+                    }).ToList();
 
                 return Json(result);
             }
@@ -208,7 +240,6 @@ namespace Advisr.Web.Controllers
                     .Select(a => new
                     {
                         id = a.Id,
-                        descrition = a.Description,
                         insurer = a.Insurer == null ? null : new
                         {
                             id = a.InsurerId,
@@ -217,6 +248,7 @@ namespace Advisr.Web.Controllers
                             phone = a.Insurer.Phone,
                             phoneOverseas = a.Insurer.PhoneOverseas,
                             email = a.Insurer.Email,
+                            description = a.Insurer.Description
                         },
                     })
                     .FirstOrDefault();
@@ -225,11 +257,11 @@ namespace Advisr.Web.Controllers
                 {
                     return this.JsonError(HttpStatusCode.NotFound, 0, "not found the policy");
                 }
-                
+
                 return Json(policyDb);
             }
         }
-        
+
         /// <summary>
         /// Get list of all user policy, allow only for Admin role;
         /// </summary>
@@ -240,7 +272,7 @@ namespace Advisr.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         [ActionName("List")]
-        public IHttpActionResult List(PolicyStatus status = PolicyStatus.None, PolicySortType sortType = PolicySortType.All, int offset = 0, int count = 10, string groupName = null,  string q = null)
+        public IHttpActionResult List(PolicyStatus status = PolicyStatus.None, PolicySortType sortType = PolicySortType.All, int offset = 0, int count = 10, string groupName = null, string q = null)
         {
             using (IUnitOfWork unitOfWork = UnitOfWork.Create())
             {
@@ -252,24 +284,24 @@ namespace Advisr.Web.Controllers
                 IQueryable<Policy> query = unitOfWork.PolicyRepository.GetAll()
                    .Where(a => a.CreatedById == userId);
 
-                if(!string.IsNullOrEmpty(groupName))
+                if (!string.IsNullOrEmpty(groupName))
                 {
                     query = query.Where(e =>
                             e.PolicyType != null && e.PolicyType.GroupName == groupName);
                 }
-                
+
                 if (status != PolicyStatus.None)
                 {
                     query = query.Where(a => a.Status == status);
                 }
-                
+
                 if (!string.IsNullOrEmpty(q))
                 {
                     query = query.Where(e =>
                                e.PolicyNumber == q);
                 }
-                
-                if(sortType == PolicySortType.Active)
+
+                if (sortType == PolicySortType.Active)
                 {
                     query = query.Where(a => a.Status == PolicyStatus.Unconfirmed || a.EndDate > DateTime.Now);
                 }
@@ -277,10 +309,10 @@ namespace Advisr.Web.Controllers
                 {
                     query = query.Where(a => a.EndDate < DateTime.Now);
                 }
-                
+
                 var countOfUsers = query.Count();
                 var countOfProcessing = query.Where(a => a.Status == PolicyStatus.Unconfirmed).Count();
-                
+
                 var policyList = query
                             .OrderByDescending(a => a.CreatedDate)
                             .Skip(offset)
@@ -292,6 +324,7 @@ namespace Advisr.Web.Controllers
                                 status = a.Status,
                                 title = a.Title,
                                 subTitle = a.SubTitle,
+                                prePolicyType = a.PrePolicyType,
                                 policyPaymentAmount = a.PolicyPaymentAmount,
                                 policyPaymentFrequency = a.PolicyPaymentFrequency,
                                 policyNumber = a.PolicyNumber,
@@ -307,6 +340,7 @@ namespace Advisr.Web.Controllers
                                     name = a.Insurer.Name,
                                     color = a.Insurer.Color,
                                     logoUrl = string.Concat(startLinkToLogo, "?id=", a.Insurer.LogoFileId),
+                                    description = a.Insurer.Description
                                 },
                                 createdDate = a.CreatedDate,
                                 createdBy = new
@@ -448,6 +482,7 @@ namespace Advisr.Web.Controllers
                     }
 
                     Policy policy = new Policy();
+                    policy.PrePolicyType = model.PrePolicyType;
                     policy.CreatedDate = DateTime.Now;
                     policy.CreatedById = userId;
                     policy.Status = PolicyStatus.Unconfirmed;
@@ -549,6 +584,12 @@ namespace Advisr.Web.Controllers
 
                 unitOfWork.BeginTransaction();
 
+                if (policy.PrePolicyType != model.PrePolicyType)
+                {
+                    policy.PrePolicyType = model.PrePolicyType;
+                    unitOfWork.PolicyRepository.Edit(policy);
+                }
+
                 foreach (var file in files)
                 {
                     file.IsTemp = false;
@@ -629,7 +670,7 @@ namespace Advisr.Web.Controllers
         {
             using (IUnitOfWork unitOfWork = UnitOfWork.Create())
             {
-                var groups = unitOfWork.PolicyTypeRepository.GetAll().Where(g=>g.InsurerId == insurerId && g.Status != Status.Hide).GroupBy(a => a.GroupName)
+                var groups = unitOfWork.PolicyTypeRepository.GetAll().Where(g => g.InsurerId == insurerId && g.Status != PolicyTypeStatus.Hide).GroupBy(a => a.GroupName)
                     .Select(a => new
                     {
                         groupName = a.Key,
@@ -648,12 +689,12 @@ namespace Advisr.Web.Controllers
 
 
         /// <summary>
-        /// Get additional properties for policy group;
+        /// Get additional properties for policy type;
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         [Route("api/Policy/GroupFields/Description")]
-        public IHttpActionResult PolicyGroupFieldsDescription(int policyGroupId, int policyId = 0)
+        public IHttpActionResult PolicyTypeFieldsDescription(int policyGroupId, int policyId = 0)
         {
             using (IUnitOfWork unitOfWork = UnitOfWork.Create())
             {
@@ -673,7 +714,6 @@ namespace Advisr.Web.Controllers
                     var policyField = policyGroupFields.FirstOrDefault(a => a.PolicyTypeFieldId == item.Id);
 
                     var currentValue = policyField != null ? policyField.Value : item.DefaultValue;
-
 
                     List<dynamic> listDescription = null;
                     if (item.ListDesription != null)
@@ -696,7 +736,7 @@ namespace Advisr.Web.Controllers
                     }
 
                     dynamic value = currentValue;
-                    
+
                     if (policyField != null && policyField.Value != null)
                     {
                         switch (item.FieldType)
@@ -712,9 +752,7 @@ namespace Advisr.Web.Controllers
                                 break;
                             case PolicyTypeFieldType.Bool:
                                 {
-                                    bool result = false;
-                                    bool.TryParse(currentValue, out result);
-
+                                    bool result = currentValue == "Yes";
                                     value = new
                                     {
                                         id = result,
@@ -730,6 +768,15 @@ namespace Advisr.Web.Controllers
                                     value = result;
                                 }
                                 break;
+                            case PolicyTypeFieldType.Date:
+                                {
+                                    DateTime result = default(DateTime);
+                                    if (DateTime.TryParse(currentValue, out result))
+                                    {
+                                        value = result;
+                                    }
+                                }
+                                break;
                             case PolicyTypeFieldType.List:
 
                                 value = listDescription.FirstOrDefault(o => o.value == currentValue);
@@ -738,7 +785,7 @@ namespace Advisr.Web.Controllers
                                 throw new NotImplementedException("This type is absent");
                         }
                     }
-                    
+
                     var r = new
                     {
                         id = item.Id,
@@ -756,6 +803,169 @@ namespace Advisr.Web.Controllers
 
 
         /// <summary>
+        /// Get coverages for the policy type;
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/Policy/Coverages/Description")]
+        public IHttpActionResult PolicyCoveragesDescription(int policyTypeId, int policyId)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var policyCoverages = unitOfWork.PolicyCoverageRepository.GetAll().Where(a => a.PolicyId == policyId).ToList();
+                
+                var policyTypeCoverages = unitOfWork.PolicyTypeCoverageRepository.GetAll().Where(a => a.PolicyTypeId == policyTypeId && a.Status == PolicyTypeCoverageStatus.None).ToList();
+
+                List<dynamic> data = new List<dynamic>();
+
+                foreach (var item in policyTypeCoverages)
+                {
+                    var policyCoverage = policyCoverages.FirstOrDefault(a => a.CoverageId == item.CoverageId);
+                    
+                    var r = new
+                    {
+                        isSelected = policyCoverage != null,
+                        coverageId = item.CoverageId,
+                        title = item.Coverage.Title,
+                        type = item.Coverage.Type,
+                        description = item.Coverage.Description,
+                        isActive = policyCoverage == null ? false : policyCoverage.IsActive,
+                        limit = policyCoverage == null ? null : policyCoverage.Limit,
+                        excess = policyCoverage == null ? null : policyCoverage.Excess,
+                    };
+                    data.Add(r);
+                }
+
+                return Json(data);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Gets filled policy fields.
+        /// </summary>
+        /// <param name="policyTypeId"></param>
+        /// <param name="policyId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/Policy/GroupFields/PolicyFields")]
+        public IHttpActionResult GetPolicyTypeFields(int policyTypeId, int policyId)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                List<AdditionalPolicyProperty> policyGroupFields = new List<AdditionalPolicyProperty>();
+
+                if (policyId != 0)
+                {
+                    policyGroupFields = unitOfWork.AdditionalPolicyPropertyRepository.GetAll().Where(a => a.PolicyId == policyId).ToList();
+                }
+
+                var groupFields = unitOfWork.PolicyTypeFieldRepository.GetAll().Where(a => a.PolicyTypeId == policyTypeId && a.Status != FieldStatus.Deleted).ToList();
+
+                List<dynamic> data = new List<dynamic>();
+
+                if (policyGroupFields.Count > 0)
+                {
+                    foreach (var item in groupFields)
+                    {
+                        var policyField = policyGroupFields.FirstOrDefault(a => a.PolicyTypeFieldId == item.Id);
+
+                        var currentValue = policyField != null ? policyField.Value : item.DefaultValue;
+
+                        if(item.FieldType == PolicyTypeFieldType.Bool && (currentValue != "Yes" || currentValue != "No"))
+                        {
+                            currentValue = null;
+                        }
+                        
+                        List<dynamic> listDescription = null;
+                        if (item.ListDesription != null)
+                        {
+                            listDescription = new List<dynamic>();
+
+                            var list = JsonConvert.DeserializeObject<List<string>>(item.ListDesription);
+
+                            int s = 0;
+                            foreach (var listItem in list)
+                            {
+                                var rl = new
+                                {
+                                    id = s,
+                                    value = listItem
+                                };
+                                s++;
+                                listDescription.Add(rl);
+                            }
+                        }
+
+                        dynamic value = currentValue;
+
+                        if (policyField != null && policyField.Value != null)
+                        {
+                            switch (item.FieldType)
+                            {
+                                case PolicyTypeFieldType.String:
+                                    break;
+                                case PolicyTypeFieldType.Int:
+                                    {
+                                        int result = 0;
+                                        int.TryParse(currentValue, out result);
+                                        value = result;
+                                    }
+                                    break;
+                                case PolicyTypeFieldType.Bool:
+                                    {
+                                        bool result = currentValue == "Yes";
+                                        value = new
+                                        {
+                                            id = result,
+                                            name = result == true ? "Yes" : "No"
+                                        };
+
+                                    }
+                                    break;
+                                case PolicyTypeFieldType.Float:
+                                    {
+                                        double result = 0;
+                                        double.TryParse(currentValue, out result);
+                                        value = result;
+                                    }
+                                    break;
+                                case PolicyTypeFieldType.Date:
+                                    {
+                                        DateTime result = default(DateTime);
+                                        if (DateTime.TryParse(currentValue, out result))
+                                        {
+                                            value = result;
+                                        }
+                                    }
+                                    break;
+                                case PolicyTypeFieldType.List:
+
+                                    value = listDescription.FirstOrDefault(o => o.value == currentValue);
+                                    break;
+                                default:
+                                    throw new NotImplementedException("This type is absent");
+                            }
+                        }
+
+                        var r = new
+                        {
+                            id = item.Id,
+                            fieldType = item.FieldType,
+                            fieldName = item.FieldName,
+                            listDescription = listDescription,
+                            value = value
+                        };
+                        data.Add(r);
+                    }
+                }
+
+                return Json(data);
+            }
+        }
+
+        /// <summary>
         /// Update policy. For Admin Role Only
         /// </summary>
         /// <param name="model"></param>
@@ -764,6 +974,11 @@ namespace Advisr.Web.Controllers
         [ActionName("Update")]
         public async Task<IHttpActionResult> Update([FromBody] UpdatePolicyModel model)
         {
+            if(model.StartDate.HasValue && model.EndDate.HasValue && model.StartDate.Value.Date >= model.EndDate.Value.Date)
+            {
+                ModelState.AddModelError("startDate", "Start date cannot be after or equal End date");
+            }
+            
             if (ModelState.IsValid)
             {
                 using (IUnitOfWork unitOfWork = UnitOfWork.Create())
@@ -783,7 +998,7 @@ namespace Advisr.Web.Controllers
                     policy.PolicyExcess = model.PolicyExcess;
                     policy.StartDate = model.StartDate;
                     policy.EndDate = model.EndDate;
-                    policy.Description = model.Description;
+                    //policy.Description = model.Description;
                     policy.ModifiedById = userId;
                     policy.ModifiedDate = DateTime.Now;
 
@@ -791,41 +1006,44 @@ namespace Advisr.Web.Controllers
                     {
                         var user = unitOfWork.UserRepository.GetAll().FirstOrDefault(u => u.Id == policy.CreatedById);
 
-                        ISchedulerFactory factory = new StdSchedulerFactory();
-                        IScheduler scheduler = factory.GetScheduler();
-                        JobDataMap dataMap = new JobDataMap();
-
-                        dataMap["autopilotContactId"] = user.AutopilotContactId;
-                        dataMap["OperationType"] = "TriggerJourney";
-                        dataMap["journeyName"] = ConfigurationManager.AppSettings["PolicyConfirmedJourney"];
-                        dataMap["userId"] = user.Id;
-
-                        var job = JobBuilder.Create<UpdateContactJob>()
-                            .WithIdentity("UpdateContactJob").UsingJobData(dataMap)
-                            .Build();
-
-                        var jobKey = new JobKey("UpdateContactJob");
-
-                        ITrigger trigger = TriggerBuilder.Create()
-                            .WithIdentity("trigger1")
-                            .StartAt(DateTime.Now)
-                            .ForJob(jobKey)
-                            .Build();
-
-                        if (!scheduler.CheckExists(jobKey))
+                        if (user.AutopilotTrack)
                         {
-                            scheduler.ScheduleJob(job, trigger);
+                            ISchedulerFactory factory = new StdSchedulerFactory();
+                            IScheduler scheduler = factory.GetScheduler();
+                            JobDataMap dataMap = new JobDataMap();
+
+                            dataMap["autopilotContactId"] = user.AutopilotContactId;
+                            dataMap["OperationType"] = "TriggerJourney";
+                            dataMap["journeyName"] = ConfigurationManager.AppSettings["PolicyConfirmedJourney"];
+                            dataMap["userId"] = user.Id;
+
+                            var job = JobBuilder.Create<UpdateContactJob>()
+                                .WithIdentity("UpdateContactJob").UsingJobData(dataMap)
+                                .Build();
+
+                            var jobKey = new JobKey("UpdateContactJob");
+
+                            ITrigger trigger = TriggerBuilder.Create()
+                                .WithIdentity("trigger1")
+                                .StartAt(DateTime.Now)
+                                .ForJob(jobKey)
+                                .Build();
+
+                            if (!scheduler.CheckExists(jobKey))
+                            {
+                                scheduler.ScheduleJob(job, trigger);
+                            }
+
+                            scheduler.Start();
                         }
-
-                        scheduler.Start();
-
+                        
                         policy.Status = PolicyStatus.Confirmed;
                     }
 
                     var vehicle = unitOfWork.Vehicle_PRepository.GetAll().Where(a => a.PolicyId == policy.Id).SingleOrDefault();
                     var home = unitOfWork.Home_PRepository.GetAll().Where(a => a.PolicyId == policy.Id).SingleOrDefault();
                     var life = unitOfWork.Life_PRepository.GetAll().Where(a => a.PolicyId == policy.Id).SingleOrDefault();
-                    
+
                     //Update policy type tables
                     if (model.VehiclePolicyModel != null)
                     {
@@ -835,7 +1053,7 @@ namespace Advisr.Web.Controllers
 
 
                         bool needToCreate = false;
-                        
+
                         if (vehicle == null)
                         {
                             needToCreate = true;
@@ -893,10 +1111,8 @@ namespace Advisr.Web.Controllers
 
 
                         vehicle.Year = model.VehiclePolicyModel.Year.Value;
-                        vehicle.Mileage = model.VehiclePolicyModel.Mileage.Value;
                         vehicle.RegistredDriverName = model.VehiclePolicyModel.RegistredDriverName;
                         vehicle.RegistrationNumber = model.VehiclePolicyModel.RegistrationNumber;
-                        vehicle.RegistrationState = model.VehiclePolicyModel.RegistrationState;
                         vehicle.IsCommercial = model.VehiclePolicyModel.IsCommercial.Value;
 
 
@@ -919,7 +1135,7 @@ namespace Advisr.Web.Controllers
 
                         bool needToCreate = false;
                         bool needToCreateAddress = false;
-                       
+
                         if (home == null)
                         {
                             needToCreate = true;
@@ -940,7 +1156,7 @@ namespace Advisr.Web.Controllers
                         //Update Policy Title
                         policy.Title = "Home";
                         policy.SubTitle = model.HomePolicyModel.Address;
-                      
+
 
                         home.BuildDate = model.HomePolicyModel.BuildDate.Value;
                         home.Address.Address_1 = model.HomePolicyModel.Address;
@@ -955,7 +1171,7 @@ namespace Advisr.Web.Controllers
                             home.Address.ModifiedDate = DateTime.Now;
                             unitOfWork.AddressRepository.Edit(home.Address);
                         }
-                        
+
                         if (needToCreate)
                         {
                             home.AddressId = home.Address.Id;
@@ -975,7 +1191,7 @@ namespace Advisr.Web.Controllers
                         if (vehicle != null) unitOfWork.Vehicle_PRepository.Delete(vehicle);
 
                         bool needToCreate = false;
-                       
+
                         if (life == null)
                         {
                             needToCreate = true;
@@ -984,14 +1200,14 @@ namespace Advisr.Web.Controllers
                             life.CreatedById = userId;
                             life.CreatedDate = DateTime.Now;
                         }
-                        
+
                         //Update Policy Title
                         policy.Title = life.Medication;
                         policy.SubTitle = life.MedicationCondition;
 
                         life.Medication = model.LifePolicyModel.Medication;
                         life.MedicationCondition = model.LifePolicyModel.MedicationCondition;
-                      
+
                         if (needToCreate)
                         {
                             unitOfWork.Life_PRepository.Insert(life);
@@ -1006,34 +1222,88 @@ namespace Advisr.Web.Controllers
 
                     //Update Policy
                     unitOfWork.PolicyRepository.Edit(policy);
-                    
-                    //Delete Additional Fields
-                    foreach (var item in policy.AdditionalPolicyFields.ToList())
+
+
+
+                    ///----------------------------------
+                    ///Additional Properties 
+                    ///----------------------------------
                     {
-                        unitOfWork.AdditionalPolicyPropertyRepository.Delete(item);
+                        //Delete Additional Fields
+                        foreach (var item in policy.AdditionalPolicyFields.ToList())
+                        {
+                            unitOfWork.AdditionalPolicyPropertyRepository.Delete(item);
+                        }
+
+                        await unitOfWork.SaveAsync();
+
+                        if (model.AdditionalProperties != null)
+                        {
+                            //Add Additional Fields
+                            foreach (var modelProperty in model.AdditionalProperties.ToList())
+                            {
+                                var field = unitOfWork.PolicyTypeFieldRepository.GetAll().FirstOrDefault(f => f.Id == modelProperty.GroupFieldId);
+
+                                AdditionalPolicyProperty property = new AdditionalPolicyProperty();
+                                property.PolicyId = policy.Id;
+                                property.PolicyTypeFieldId = modelProperty.GroupFieldId;
+
+                                if (field != null && field.FieldType == PolicyTypeFieldType.List)
+                                {
+                                    property.Value = string.Format("{0}", modelProperty.Value.value);
+                                }
+                                else if (field != null && field.FieldType == PolicyTypeFieldType.Bool)
+                                {
+                                    property.Value = "No";
+
+                                    try
+                                    {
+                                        property.Value = modelProperty.Value.id == true ? "Yes" : "No";
+                                    }
+                                    catch (Exception)
+                                    {
+                                    }
+                                }
+                                else
+                                {
+                                    property.Value = string.Format("{0}", modelProperty.Value);
+                                }
+
+                                unitOfWork.AdditionalPolicyPropertyRepository.Insert(property);
+                            }
+                        }
                     }
 
-                    await unitOfWork.SaveAsync();
 
-                    //Add Additional Fields
-                    foreach (var modelProperty in model.AdditionalProperties.ToList())
+                    ///----------------------------------
+                    ///Coverages for the policy
+                    ///----------------------------------
                     {
-                        var field = unitOfWork.PolicyTypeFieldRepository.GetAll().FirstOrDefault(f => f.Id == modelProperty.GroupFieldId);
-
-                        AdditionalPolicyProperty property = new AdditionalPolicyProperty();
-                        property.PolicyId = policy.Id;
-                        property.PolicyTypeFieldId = modelProperty.GroupFieldId;
-                        
-                        if (field != null && field.FieldType == PolicyTypeFieldType.List)
+                        ///Delete Existing Coverages
+                        foreach (var item in policy.PolicyCoverages.ToList())
                         {
-                            property.Value = string.Format("{0}", modelProperty.Value.value);
-                        }
-                        else
-                        {
-                            property.Value = string.Format("{0}", modelProperty.Value);
+                            unitOfWork.PolicyCoverageRepository.Delete(item);
                         }
 
-                        unitOfWork.AdditionalPolicyPropertyRepository.Insert(property);
+                        await unitOfWork.SaveAsync();
+
+                        if (model.Coverages != null)
+                        {
+                            //Add new coverages
+                            foreach (var modelCoverage in model.Coverages.ToList())
+                            {
+                                PolicyCoverage policyCoverage = new PolicyCoverage();
+                                policyCoverage.PolicyId = policy.Id;
+                                policyCoverage.CoverageId = modelCoverage.CoverageId;
+                                policyCoverage.IsActive = modelCoverage.IsActive.Value;
+                                policyCoverage.Excess = modelCoverage.Excess;
+                                policyCoverage.Limit = modelCoverage.Limit;
+                                policyCoverage.CreatedById = userId;
+                                policyCoverage.CreatedDate = DateTime.Now;
+
+                                unitOfWork.PolicyCoverageRepository.Insert(policyCoverage);
+                            }
+                        }
                     }
 
                     try
@@ -1043,8 +1313,8 @@ namespace Advisr.Web.Controllers
                     catch (Exception e)
                     {
                         return JsonError(HttpStatusCode.BadRequest, 10, "Error " + e.Message, null);
-                    }    
-                
+                    }
+
                     unitOfWork.CommitTransaction();
 
                     return Ok();

@@ -1,0 +1,44 @@
+﻿<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tab-header w-clearfix">
+                <h3 class="tab-title">Notifications</h3>
+            </div>
+            <!--tab-header-->
+        </div><!--col-->
+    </div><!--row-->
+</div><!--wrapper-->
+<div class="grey-block notification-bar">
+    <div><strong>{{count.countOfUnread}} Unread</strong> • {{count.countOfRead}} Read</div>
+</div>
+
+<div class="notification-div">
+    <div class="notification" ng-repeat="notification in notifications">
+        <div class="grey-block notification" data-ix="notification-openclose" style="transition: opacity 0.2s ease 0s;"
+        ng-click="showDetails($index, notification.id)"
+        ng-class="{'unread' : notification.isUnread}"
+        >
+            <div class="notification-title" data-ix="notification-openclose">
+                <strong>{{notification.subjectTitleFirst}} •</strong> {{notification.subjectTitleSecond}}</div>
+            <div class="notification-time-stamp">{{getTimeAgo(notification.createdDate)}}</div>
+        </div>
+        <div class="notification-row w-clearfix fadeAnimate" ng-show="notificationDetails[$index]">
+            <h5 class="heading-5">
+                {{notification.details.title}}
+            </h5>
+            <div class="notification-row-text" ng-bind-html="notification.details.body"></div>
+                <a class="default-button notification-btn w-button" href="#">Renew policy</a>
+                <a class="default-button get-quote notification-btn w-button"
+                href="#">Get Quote</a>
+                <a class="notification-cta text-link uikit w-button" data-ix="show-policy-details" ng-href="#/policy/{{notification.targetObjectId}}" style="transition: color 0.2s ease 0s;">Policy Details</a>
+            <div class="ask-advisr-div">
+                <img class="ask-advisr-icon" src="/Content/images/Notifications_Chat.svg" width="29">
+                <a class="ask-advisr text-link w-button"
+                    href="#">Ask Advisr</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--notification-->
+
+<nav ng-show="notifications.length" ng-include="'/Angular/Dashboard/templates/page/pager.html'" ng-init="path = '/notifications'"></nav>

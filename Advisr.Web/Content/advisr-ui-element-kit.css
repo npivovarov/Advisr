@@ -47,6 +47,15 @@ h3 {
   clear: left;
 }
 
+.pre-formatted-text {
+    background-color:white !important;
+    border:none !important;
+    word-break:initial !important;
+    max-width: 100%;
+    white-space: pre-wrap;
+    font-size: inherit !important;
+}
+
 .descriptive-text {
   display: block;
   margin-bottom: 10px;
@@ -158,10 +167,39 @@ h3 {
   font-weight: 400;
 }
 
+.table-content-align {
+    vertical-align:middle !important;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width:300px;
+    text-overflow:clip;
+}
+
 .heading-6 {
   margin-top: 20px;
   font-family: Montserrat, sans-serif;
   color: #1f3a55;
+}
+
+.col-title {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 700;
+}
+
+.about-para-div {
+  padding: 20px 0;
+  text-align: left;
+}
+
+.link-text.contact {
+  display: block;
+  text-transform: none;
+}
+
+.paragraph.contact {
+    padding-top: 10px;
 }
 
 .colour-block {
@@ -692,7 +730,7 @@ ul li .tab-current.w--current {
     background-size: 20px;
 }
 
-.tab.about.w--current {
+.nav a.tab.about.w--current {
     background-image: url(../Content/images/Sidebar_About_active.svg);
     background-size: 20px;
 }
@@ -1175,6 +1213,10 @@ ul li .tab-current.w--current {
 .text-link.documents {
   float: right;
   text-align: right;
+}
+
+.documents.view-doc {
+  font-size: 1.0vw;
 }
 
 .text-link.documents.greybar {
@@ -1763,6 +1805,10 @@ ul li .tab-current.w--current {
   margin-top: 30px;
 }
 
+.header-back-arrow.details:hover {
+  cursor: pointer;
+}
+
 .tab-title {
   position: static;
   margin-top: 24px;
@@ -1891,7 +1937,7 @@ ul li .tab-current.w--current {
   text-decoration: none;
 }
 
-.detail-tab-link.w--current {
+.detail-tab-link.activeTab {
   height: 100%;
   border-bottom: 3px solid #1f3a55;
   background-color: transparent;
@@ -1940,10 +1986,9 @@ ul li .tab-current.w--current {
 }
 
 .cover-accordian {
-  margin-top: 10px;
+  margin-top: 0;
   margin-bottom: 0px;
   padding: 5px 0px;
-  border-top: 2px solid #e9e9eb;
   border-bottom: 2px solid #e9e9eb;
 }
 
@@ -1966,7 +2011,7 @@ ul li .tab-current.w--current {
 
 .cover-detail {
   display: block;
-  padding-left: 50px;
+  padding-left: 10px;
 }
 
 .cover-arrow {
@@ -2248,6 +2293,149 @@ ul li .tab-current.w--current {
   background-color: #fff;
 }
 
+/*V2*/
+.property-text.v2 {
+  left: 86%;
+  bottom: -11%;
+  width: 50%;
+  text-align: left;
+}
+.com-text.v2 {
+    left: 100%;
+    top: 15%;
+    right: 100%;
+    text-align: left;
+}
+.veh-text.v2 {
+    left: -19%;
+    right: 89%;
+    bottom: -20%;
+    text-align: right;
+}
+.me-text.v2 {
+    left: -25%;
+    top: 15%;
+    right: auto;
+    text-align: right;
+}
+.chunk.me.v2 {
+    left: 0%;
+    height: 50%;
+    background-color: #c0e3ff;
+    background-image: none;
+}
+.chunk.vehicle.v2 {
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    width: 50%;
+    height: 50%;
+    background-color: #0075d1;
+    background-image: none;
+}
+.chunk.property.v2 {
+    left: 50%;
+    bottom: 0%;
+    width: 50%;
+    background-color: #3390da;
+    background-image: none;
+}
+.chunk.commercial.v2 {
+    left: 50%;
+    top: 0%;
+    width: 50%;
+    height: 50%;
+    background-color: #a4d5fc;
+    background-image: none;
+}
+.chunk-image.com.v2 {
+    left: 40%;
+    top: 33%;
+    z-index: 0;
+    opacity: 1;
+}
+.chunk-image.prop.v2 {
+    left: 18%;
+    top: 39%;
+}
+.chunk-image.me.v2 {
+    left: 33%;
+    top: 33%;
+}
+.chunk-image.v2 {
+    left: 36%;
+    top: 39%;
+}
+
+/*V1*/
+.veh-text.v1 {
+    left: 45%;
+    top: 103%;
+    right: -32%;
+    bottom: -5%;
+    width: 100%;
+}
+.me-text.v1 {
+    top: 22%;
+    right: 104%;
+    width: 35%;
+    text-align: right;
+}
+.property-text.v1 {
+    left: 103%;
+    top: 26%;
+    bottom: -22%;
+    width: 26%;
+    text-align: left;
+}
+.graph-circle.v1 {
+    background-color: #0075d1;
+}
+.chunk.me.v1 {
+    left: 50%;
+    height: 91%;
+    background-color: #3390da;
+    background-image: none;
+}
+.chunk.vehicle.v1.right {
+    left: 50%;
+    height: 60%;
+    background-image: -webkit-linear-gradient(68deg, transparent, #0075d1, #0075d1 84%, #0075d1 85%, transparent 0);
+    background-image: linear-gradient(22deg, transparent, #0075d1, #0075d1 84%, #0075d1 85%, transparent 0);
+}
+.chunk.vehicle.v1 {
+    left: 0%;
+    bottom: -19%;
+    width: 50%;
+    height: 60%;
+    background-image: -webkit-linear-gradient(107deg, transparent, #0075d1, #0075d1 88%, transparent 0);
+    background-image: linear-gradient(343deg, transparent, #0075d1, #0075d1 88%, transparent 0);
+}
+.chunk.property.v1 {
+    left: 0%;
+    bottom: 32%;
+    width: 50%;
+    height: 68%;
+    background-color: #c0e3ff;
+    background-image: none;
+}
+
+.chunk-image.me.v1 {
+    left: 25%;
+    top: 38%;
+}
+.chunk-image.prop.v1 {
+    left: 45%;
+    top: 28%;
+    bottom: 24%;
+}
+.chunk-image.v1 {
+    left: -10%;
+    top: 38%;
+}
+
+
+
 .grey-block-text:hover {
   color: #1f3a55;
 }
@@ -2257,7 +2445,6 @@ ul li .tab-current.w--current {
 }
 
 .accordian-paragraph {
-  display: none;
   margin-top: 9px;
   font-family: 'Open Sans', sans-serif;
 }
@@ -2284,6 +2471,79 @@ ul li .tab-current.w--current {
 
 .page-header-ui {
   display: block;
+}
+
+.notification-div {
+  text-align: left;
+}
+
+.grey-block.notification.unread {
+  border-bottom-color: #e8e8eb;
+  background-color: #f7f7f9;
+}
+
+.grey-block.notification-bar {
+  border-bottom: 2px solid #e8e8eb;
+}
+
+.grey-block.notification {
+  display: block;
+  border-bottom: 1px solid #f7f7f9;
+  background-color: #e8e8eb;
+  -webkit-transition: opacity 200ms ease;
+  transition: opacity 200ms ease;
+}
+
+.grey-block.notification:hover {
+  cursor: pointer;
+}
+
+.notification-title {
+  display: inline-block;
+}
+
+.notification-time-stamp {
+  float: right;
+  color: #4b4b4b;
+  font-weight: 400;
+}
+
+.notification-row {
+  width: 100%;
+  height: 100%;
+  padding: 20px 30px;
+  float: none;
+  border-bottom: 2px solid #e9e9eb;
+  font-family: Montserrat, sans-serif;
+}
+
+.notification.unread strong {
+    font-weight: bold;
+}
+
+.notification strong {
+    font-weight: normal;
+}
+
+.notification-row-text {
+  margin-bottom: 30px;
+}
+
+.grey-block.notification.unread:hover {
+  background-color: #fff;
+}
+
+.grey-block.notification:hover {
+  background-color: hsla(240, 7%, 92%, .8);
+}
+
+.default-button.notification-btn {
+  margin-right: 20px;
+}
+
+.ask-advisr-div {
+  padding-bottom: 0px;
+  float: right;
 }
 
 @media (max-width: 991px) {
@@ -2700,6 +2960,32 @@ ul li .tab-current.w--current {
   .no-results-icon {
     margin-top: -2px;
   }
+  .default-button.notification-btn {
+    float: left;
+  }
+  .default-button.notification-btn.get-quote {
+    margin-right: 0px;
+    float: right;
+  }
+  .text-link.uikit.notification-cta {
+    margin-top: 8px;
+    padding-top: 15px;
+  }
+  .ask-advisr-div {
+    margin-top: 8px;
+    padding-top: 5px;
+  }
+  .ask-advisr-icon {
+    margin-top: 3px;
+    margin-bottom: 0px;
+  }
+  .ask-advisr-icon {
+    margin-top: 3px;
+    margin-bottom: 0px;
+  }
+  .text-link.ask-advisr {
+    float: right;
+  }
 }
 
 @media (max-width: 767px) {
@@ -2979,11 +3265,12 @@ ul li .tab-current.w--current {
   }
   .detail-tab-link {
     width: 100%;
+    color: #4b4b4b;
   }
-  .detail-tab-link.w--current {
+  .detail-tab-link.activeTab {
     width: 100%;
     border-bottom: 1px none #000;
-    background-color: rgba(31, 58, 85, .3);
+    background-color: rgba(2, 35, 60, .69);
     color: #fff;
   }
   .detail-row {
@@ -3021,7 +3308,6 @@ ul li .tab-current.w--current {
     width: 100%;
   }
   .accordian-paragraph {
-    display: none;
     margin-top: 7px;
   }
   .portfolio-mobile-header-text-div {
@@ -3112,6 +3398,58 @@ ul li .tab-current.w--current {
     line-height: 18px;
     font-weight: 400;
     text-align: center;
+  }
+
+  .link-text.contact {
+    text-align: left;
+  }
+
+  .grey-block.portfolio {
+    height: 100%;
+    margin-top: 0px;
+    padding-bottom: 15px;
+  }
+
+  .grey-block.notification {
+    height: 100%;
+    padding-bottom: 15px;
+    margin: 0;
+  }
+
+  .grey-block.notification-bar {
+    margin: 0;
+  }
+
+  .notification-time-stamp {
+    width: 100%;
+    float: none;
+    color: rgba(75, 75, 75, .6);
+    font-weight: 100;
+  }
+
+  .text-link.uikit.notification-cta {
+    width: 100%;
+  }
+
+  .ask-advisr-div {
+    display: block;
+    margin-right: 0px;
+    margin-left: 0px;
+    float: none;
+    clear: none;
+    text-align: center;
+  }
+
+  .text-link.uikit.notification-cta {
+    width: 100%;
+  }
+
+  .notification-title {
+    padding-bottom: 8px;
+  }
+
+  .text-link.ask-advisr {
+    float: none;
   }
 }
 

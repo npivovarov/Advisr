@@ -351,7 +351,7 @@ namespace Advisr.Web.Providers
                 return new AutopilotResponse<TriggerJourneyResponse>()
                 {
                     Result = null,
-                    Error = new AutopilotError() { Error = "404", Message = "Journey has no API triggers." },
+                    Error = new AutopilotError() { Error = "404", Message = "Journey has no API triggers or was not published." },
                     HasError = true,
                 };
             }

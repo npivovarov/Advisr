@@ -8,9 +8,7 @@ namespace Advisr.Domain.DbModels
         public int Id { get; set; }
 
         public int PolicyId { get; set; }
-
-        //public string PolicyHolderId { get; set; }
-
+        
         public int Year { get; set; }
 
         public int MakeId { get; set; }
@@ -18,14 +16,10 @@ namespace Advisr.Domain.DbModels
         public int ModelId { get; set; }
 
         public string Colour { get; set; }
-
-        public int Mileage { get; set; }
-
+        
         public string RegistredDriverName { get; set; }
 
         public string RegistrationNumber { get; set; }
-        
-        public string RegistrationState { get; set; }
         
         public bool IsCommercial { get; set; }
         

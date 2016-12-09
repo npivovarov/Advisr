@@ -3,6 +3,7 @@
 angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'ConfigService', 'PolicyService', function ($scope, $rootScope, $state, $stateParams, $timeout, ConfigService, PolicyService) {
 
     var id = parseInt($stateParams.id);
+    $scope.checkboxModel = [];
     $scope.policy = {};
 
     $scope.list = {};
@@ -12,6 +13,7 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
     $scope.data = {
         id: id,
         AdditionalProperties: {},
+        coverages: []
     };
 
     $scope.bool = [
@@ -23,7 +25,6 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
         var data = res.data;
         $scope.fileNames = res.data.files;
         $scope.policy = data;
-        console.log(res.data);
 
         _.extend($scope.data, {
             InsurerId: data.insurerId,
@@ -74,7 +75,18 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
                     var catId = $scope.list.categories.id;
                     PolicyService.getFilledGroupFields(catId, $scope.policy.id).then(function (res) {
                         $scope.groupFields = res.data;
-                        $scope.data.AdditionalProperties = $scope.groupFields;
+                        if ($scope.groupFields.length > 0) {
+                            for (var i = 0; i < $scope.groupFields.length; i++) {
+                                if ($scope.groupFields[i].fieldType == 5) {
+                                    $scope.groupFields[i].value = (_.isNull($scope.groupFields[i].value)) ? '' : new Date($scope.groupFields[i].value)
+                                }
+                            }
+                            $scope.data.AdditionalProperties = $scope.groupFields;
+                        } else {
+                            PolicyService.getGroupFields(catId).then(function (res) {
+                                $scope.groupFields = res.data;
+                            });
+                        }
                     });
                 }
                 
@@ -136,18 +148,19 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
         _.each($scope.data.AdditionalProperties, function (item, key) {
             var id = $scope.groupFields[key].id;
             var value = item.value;
-
-            AdditionalProperties.push({
-                GroupFieldId:id,
-                value: value
-            })
+            if (value != null) {
+                AdditionalProperties.push({
+                    GroupFieldId: id,
+                    value: value
+                })
+            }
         });
 
         if ('VehiclePolicyModel' in data && 'IsCommercial' in data.VehiclePolicyModel) {
             data.VehiclePolicyModel.IsCommercial = data.VehiclePolicyModel.IsCommercial.id;
         }
        
-        if ($scope.list.groups.groupName === 'Me' && !data.LifePolicyModel) {
+        if ($scope.list.groups.groupName === 'Personal' && !data.LifePolicyModel) {
             _.extend(data, {
                 LifePolicyModel: {}
             });
@@ -159,13 +172,25 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
             });
         }
 
-        if ($scope.list.groups.groupName === 'Home' && !data.HomePolicyModel) {
+        if ($scope.list.groups.groupName === 'Personal' && !data.HomePolicyModel) {
             _.extend(data, {
                 HomePolicyModel: {}
             });
         }
 
         data.AdditionalProperties = AdditionalProperties;
+
+        _.each($scope.coveragesDetails, function (item) {
+            if (item.isSelected) {
+                var coverageIsSelected = {
+                    coverageId: item.coverageId,
+                    isActive: item.isActive,
+                    excess: item.excess,
+                    limit: item.limit
+                }
+                data.coverages.push(coverageIsSelected);
+            }
+        });
 
         PolicyService.updatePolicy(data).then(function (res) {
             $scope.submitInProgressSave = false;
@@ -195,10 +220,32 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
         $scope.openedEndDate = true;
     };
 
+    function _openBuildDate() {
+        $scope.openedBuildDate = true;
+    };
+
+    function _getCoverageType(id) {
+        return _.find(ConfigService.coverageTypes, { 'id': id }).name;
+    }
+
+    function _onChangeCoverage(isSelected, index) {
+        if (!isSelected && index > -1) {
+            $scope.data.coverages.splice(index, 1);
+        }
+    }
 
     $scope.$watch('list.categories', function(item) {
         if (!_.isUndefined(item)) {
             $scope.policyTemplate = item.policyTemplate;
+
+            var dataCoverages = {
+                policyId: parseInt($stateParams.id),
+                policyTypeId: item.id
+            }
+            PolicyService.getCoveragesDetails(dataCoverages).then(function(res) {
+                console.log(res);
+                $scope.coveragesDetails = res.data;
+            });
         }
     });
 
@@ -213,6 +260,9 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
         onSelection: _onSelection,
         openStartDate: _openStartDate,
         openEndtDate: _openEndDate,
+        openBuildDate: _openBuildDate,
+        getCoverageType: _getCoverageType,
+        onChangeCoverage: _onChangeCoverage,
         groupFields: [],
         validationErrors: {},
         save: _save,

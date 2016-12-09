@@ -4,10 +4,10 @@ angular.module('DashboardApp').factory('ConfigService', function () {
     var ConfigService = {
         urls: {
             user: {
-               get: '/api/user/get',
-               save: '/api/customer/edit',
-               getCustomer: '/api/customer/get',
-               changePassword: '/api/user/ChangePassword'
+                get: '/api/user/get',
+                save: '/api/customer/edit',
+                getCustomer: '/api/customer/get',
+                changePassword: '/api/user/ChangePassword'
             },
             profile: {
                 list: '/api/Customer/List',
@@ -23,7 +23,12 @@ angular.module('DashboardApp').factory('ConfigService', function () {
                 groups: '/api/policy/groups/',
                 groupFields: '/api/Policy/GroupFields/Description',
                 update: '/api/Policy/Update',
-                shortDetails: '/api/policy/ShortDetails'
+                shortDetails: '/api/policy/ShortDetails',
+                getFilledFields: '/api/Policy/GroupFields/PolicyFields',
+                // Coverage
+                coveragesDescription: '/api/policy/Coverages/Description',
+                getCoverages: '/api/policy/GetCoverages'
+
             },
             file: {
                 upload: '/api/file/upload',
@@ -35,15 +40,29 @@ angular.module('DashboardApp').factory('ConfigService', function () {
                 list: '/api/Insurer/List',
                 edit: '/api/Insurer/Edit/',
                 delete: '/api/Insurer/Delete/',
-                getGroups: '/api/Insurer/Groups/',
-                getGroup: '/api/Insurer/GetGroup/',
-                addGroup: '/api/Insurer/AddGroup/',
+                getPolicyTypes: '/api/Insurer/PolicyTypes/',
+                getPolicyType: '/api/Insurer/PolicyType/',
+                addPolicyType: '/api/Insurer/AddPolicyType/',
+                getCoverages: '/api/Coverage/List/',
+                getCoverage: '/api/Coverage/Get/',
+                saveCoverage: '/api/Coverage/Edit/',
+                addCoverage: '/api/Coverage/Add',
+                assignCoverage: '/api/Coverage/Assign',
                 deleteField: '/api/Insurer/DeleteField/',
-                editGroup: '/api/Insurer/EditGroup/',
-                addField: '/api/Insurer/AddField' 
+                editPolicyType: '/api/Insurer/EditPolicyType/',
+                addField: '/api/Insurer/AddField',
+                saveField: '/api/Insurer/SaveField',
+                getField: '/api/Insurer/GetField/'
             },
-           portfolio: {
-               chartDetails: '/api/Portfolio/PieChartDetails'
+            portfolio: {
+                chartDetails: '/api/Portfolio/PieChartDetails'
+            },
+            notification: {
+                list: '/api/Notification/List',
+                get: '/api/Notification/Get/',
+                getCounter: '/api/Notification/GetCounter',
+                mark: '/api/Notification/MarkAsRead/',
+                delete: '/api/Notification/Delete/'
             }
         },
         userProfileState: [
@@ -71,6 +90,51 @@ angular.module('DashboardApp').factory('ConfigService', function () {
             { key: 0, value: 'All' },
             { key: 1, value: 'Active' },
             { key: 2, value: 'Expired' },
+        ],
+        policyTypeStatus: [
+            { id: 0, name: 'Active' },
+            { id: 1, name: 'Hide' }
+        ],
+        policyTypeName:[
+            { id: 0, name: 'Vehicle' },
+            { id: 1, name: 'Home' },
+            { id: 2, name: 'Life' }
+        ],
+        policyGroupName: [
+            { id: 0, name: 'Vehicle' },
+            { id: 1, name: 'Personal' },
+            { id: 2, name: 'Commercial' },
+            { id: 3, name: 'Property' }
+        ],
+        policyTypeFieldTypes: [
+            { id: 0, name: 'String' },
+            { id: 1, name: 'Int' },
+            { id: 2, name: 'Bool' },
+            { id: 3, name: 'Float' },
+            { id: 4, name: 'List' },
+            { id: 5, name: 'Date' }
+        ],
+        policyType: [
+            { key: 0, value: 'Health' },
+            { key: 1, value: 'Home' },
+            { key: 2, value: 'Motor' },
+            { key: 3, value: 'Travel' },
+            { key: 4, value: 'Commercial' },
+            { key: 5, value: 'Other' }
+        ],
+        coverageTypes: [
+            { id: 0, name: 'Standard Cover' },
+            { id: 1, name: 'Optional Cover' },
+            { id: 2, name: 'Exclusions Cover' }
+        ],
+        colors: [
+            { id: '#ff0000', name: 'Red' },
+            { id: '#ff8000', name: 'Orange' },
+            { id: '#ffff00', name: 'Yellow' },
+            { id: '#40ff00', name: 'Green' },
+            { id: '#0000ff', name: 'Blue' },
+            { id: '#00ccff', name: 'Light blue' },
+            { id: '#bf00ff', name: 'Purple' }
         ],
         countPerPage: 10
     }

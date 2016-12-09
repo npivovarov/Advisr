@@ -11,27 +11,30 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
         policyGroupId: 0
     };
 
-    $scope.list = {};
+    $scope.groupNames = ConfigService.policyGroupName;
+    $scope.groupTypes = ConfigService.policyTypeName;
+    $scope.statuses = ConfigService.policyTypeStatus;
+    $scope.fieldTypes = ConfigService.policyTypeFieldTypes;
 
     var insurerId = $stateParams.id;
 
 
     InsurersService.getInsurer(insurerId).then(function (res) {
         $scope.data.insurer = res.data;
-        $scope.data.fieldTypes = res.data.fieldTypes;
     })
 
     function _add() {
-        var type = angular.copy($scope.data);
-        type.groupType = $scope.data.groupType.name;
-        type.status = $scope.data.status.name;
-        type.insurerId = $scope.data.insurer.id;
+        var policyType = angular.copy($scope.data);
+        policyType.policyGroupName = $scope.data.policyGroupName.name;
+        policyType.policyGroupType = $scope.data.policyGroupType.id;
+        policyType.status = $scope.data.status.id;
+        policyType.insurerId = $scope.data.insurer.id;
 
-        InsurersService.addGroup(type).then(function (res) {
+        InsurersService.addPolicyType(policyType).then(function (res) {
             $scope.submitInProgress = false;
-            $cookies.put('groupId', res.data.id);
+            $cookies.put('policyTypeId', res.data.id);
             $rootScope.alerts.push({ type: 'success', msg: 'Group has been saved.' });
-            $state.go('editInsurer', { 'id': insurerId });
+            $state.go('editInsurerPolicyType', { 'id': res.data.id });
         }, function (res) {
             var data = res.data;
 
@@ -50,15 +53,15 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
     function _addField() {
 
         var field = angular.copy($scope.field);
-        field.fieldType = $scope.field.fieldType.name;
-        var groupId = $cookies.get('groupId');
-        field.policyGroupId = groupId;
+        field.fieldType = $scope.field.fieldType.id;
+        var policyTypeId = $cookies.get('policyTypeId');
+        field.policyTypeId = policyTypeId;
         ngDialog.close();
 
         InsurersService.addField(field).then(function (res) {
             $scope.submitInProgress = false;
             $rootScope.alerts.push({ type: 'success', msg: 'Field has been saved.' });
-            var groupId = $cookies.get('groupId');
+            var policyTypeId = $cookies.get('policyTypeId');
         }, function (res) {
             var data = res.data;
 
@@ -75,8 +78,8 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
     }
 
     function _openAddPopup() {
-        var groupId = $cookies.get('groupId');
-        if (!groupId || groupId == null) {
+        var policyTypeId = $cookies.get('policyTypeId');
+        if (!policyTypeId || policyTypeId == null) {
             $rootScope.alerts.push({ type: 'danger', msg: 'You need to save your group first' });
             return;
         }
@@ -94,9 +97,9 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
         InsurersService.deleteField(fieldId).then(function (res) {
             $scope.submitInProgress = false;
 
-            InsurersService.getGroup(groupId).then(function (res) {
+            InsurersService.getPolicyType(policyTypeId).then(function (res) {
                 $scope.data = res.data;
-                $scope.list.groupTypes = res.data.groupTypes;
+                $scope.list.policyTypes = res.data.policyTypes;
 
                 InsurersService.getInsurer($scope.data.insurerId).then(function (res) {
                     $scope.data.insurer = res.data;

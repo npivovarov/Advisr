@@ -3,20 +3,18 @@ using System.Collections.Generic;
 
 namespace Advisr.Web.Models
 {
-    public class PolicyGroupModel
+    public class PolicyTypeModel
     {
-        public int GroupId { get; set; }
+        public int PolicyTypeId { get; set; }
 
-        public string GroupName { get; set; }
+        public string PolicyGroupName { get; set; }
 
-        public string SubgroupName { get; set; }
+        public PolicyGroupType PolicyGroupType { get; set; }
 
-        public PolicyGroupType GroupType { get; set; }
+        public string PolicyTypeName { get; set; }
 
-        public Status Status { get; set; }
+        public PolicyTypeStatus Status { get; set; }
 
         public int InsurerId { get; set; }
-
-        public List<PolicyGroupFieldModel> PolicyGroupFields { get; set; }
     }
 }

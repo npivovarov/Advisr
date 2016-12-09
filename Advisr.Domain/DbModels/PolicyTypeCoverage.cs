@@ -14,7 +14,7 @@ namespace Advisr.Domain.DbModels
         [Column(Order = 2)]
         public int CoverageId { get; set; }
         
-        public int Status { get; set; }
+        public PolicyTypeCoverageStatus Status { get; set; }
         
         public DateTime CreatedDate { get; set; }
 
@@ -37,5 +37,10 @@ namespace Advisr.Domain.DbModels
 
         [ForeignKey("CoverageId")]
         public virtual Coverage Coverage { get; set; }
+    }
+
+    public enum PolicyTypeCoverageStatus
+    {
+        None = 0,
     }
 }

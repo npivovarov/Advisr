@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="688 432 20.336 20.121">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #1f3a55;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        stroke-linecap: square;
+      }
+    </style>
+  </defs>
+  <g id="ui-48px-outline-3_chat-33" transform="translate(687 431)">
+    <path class="cls-1" d="M15.625,25.463l-.028.014a7.1,7.1,0,0,0,6,2.833,8.8,8.8,0,0,0,1.43-.118L26.6,29.978V26.61a4.357,4.357,0,0,0,1.667-3.3,4.366,4.366,0,0,0-1.729-3.351" transform="translate(-7.931 -10.475)"/>
+    <path class="cls-2" d="M10.335,2C5.731,2,2,4.985,2,8.668a5.82,5.82,0,0,0,1.667,3.989V17l4.028-2.014a10.21,10.21,0,0,0,2.64.347c4.6,0,8.335-2.985,8.335-6.668S14.938,2,10.335,2Z"/>
+  </g>
+</svg>

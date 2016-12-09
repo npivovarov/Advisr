@@ -13,10 +13,19 @@
         <div class="w-form">
             <form novalidate class="ui-form" data-name="form-policy" id="wf-form-policy-form" name="wf-form-policy-form">
                 <div class="col-lg-6">
-                    <button class="small-button w-button upload-button" ngf-select="uploadFiles($files, $invalidFiles)" ngf-multiple="true" name="fileInput"
+                    <label class="field-label">Policy type</label>
+                    <ui-select ng-model="listPolicyType.selected">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.value"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (policyType | filter: $select.search) track by item.key">
+                            <span ng-bind="item.value"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <button style="margin-top:10px;" class="small-button w-button upload-button" ngf-select="uploadFiles($files, $invalidFiles)" ngf-multiple="true" name="fileInput"
                         accept="image/*, application/pdf, application/msword, application/rtf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         ngf-max-size="10MB" button-spinner="submitInProgressFile">+ Upload file here
-                                </button>
+                    </button>
                     <label class="form-help-text" for="email-2">Files extension: txt, rtf, doc, docx, pdf, gif, jpeg/jpg, png</label>
                     <div class="field-validation-error" ng-show="paramExists('fileIds', validationErrors)">
                         <div ng-repeat="error in validationErrors['fileIds']">{{error}}</div>
@@ -52,7 +61,7 @@
                 <div>{{fileName.fileSize | bytes}} </div>
             </div>
             <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
-                <a class="documents text-link" ng-href="{{fileName.url}}?type=inline" target="_blank">View DOCUMENT</a>
+                <a class="view-doc documents text-link" ng-href="{{fileName.url}}?type=inline" target="_blank">View DOCUMENT</a>
             </div>
         </div>
     </div>

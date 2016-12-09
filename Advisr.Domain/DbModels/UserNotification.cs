@@ -9,12 +9,12 @@ namespace Advisr.Domain.DbModels
 
         public string RecipientId { get; set; }
 
+        public string Title { get; set; }
+
         public string SubjectTitleFirst  { get; set; }
 
         public string SubjectTitleSecond { get; set; }
         
-        public string Title { get; set; }
-
         public string Body { get; set; }
         
         public UserNotificationStatus Status { get; set; }
@@ -43,7 +43,7 @@ namespace Advisr.Domain.DbModels
 
     public enum UserNotificationStatus
     {
-        None = 0,
+        Unread = 0,
         Read = 1,
         Deleted = 2
     }
@@ -57,8 +57,13 @@ namespace Advisr.Domain.DbModels
     public enum NotificationTargetType
     {
         None = 0,
-        Policy = 1,
-        Profile = 2,
+
+        ExpirePolicyToday = 1,
+        ExpirePolicy10days = 2,
+        ExpirePolicy30days = 3,
+        ExpirePolicyExpired = 4,
+
+        Profile = 10,
     }
 
 

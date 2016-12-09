@@ -1,0 +1,30 @@
+﻿<div class="w-form">
+    <h3>Edit coverage</h3>
+    <form novalidate class="ui-form" data-name="form-insurer" id="wf-form-editinsurer-form" name="wf-form-editinsurer-form">
+        <label class="field-label required" for="title">Title</label>
+        <input class="default-input w-input" data-name="title" id="title" maxlength="256" name="title" placeholder="Enter title"
+               type="text" ng-model="coverage.title" ng-change="clearError('title', validationErrors)">
+        <div ng-show="paramExists('title', validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['title']">{{error}} <br /></div>
+        </div>
+        <label class="field-label required" for="type">Coverage type</label>
+        <ui-select ng-model="coverage.type">
+            <ui-select-match>
+                <span ng-bind="$select.selected.name"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (coverageTypes | filter: $select.search) track by item.id">
+                <span ng-bind="item.name"></span>
+            </ui-select-choices>
+        </ui-select>
+        <div ng-show="paramExists('type', validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['type']">{{error}} <br /></div>
+        </div>
+        <label class="field-label" for="description">Description</label>
+        <textarea class="default-input w-input" data-name="description" id="description" name="description" placeholder="Enter description"
+               ng-model="coverage.description" ng-change="clearError('description', validationErrors)" rows="10"></textarea>
+        <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
+        </div>
+        <button class="default-button w-button" data-wait="Please wait..." ng-click="saveCoverage()" button-spinner="submitInProgress">Save</button>
+    </form>
+</div>

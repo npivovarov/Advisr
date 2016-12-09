@@ -36,6 +36,18 @@ angular.module('DashboardApp').controller('EditProfileController', ['$scope', '$
         profile.address.state = $scope.data.address.state.value;
         profile.roles = $scope.data.roles.filter(Boolean);
         $scope.submitInProgress = true;
+
+        if (profile.contactPhone != null) {
+            var phone = profile.contactPhone.search(/[a-zA-Z,./]/i);
+            if (phone != -1) {
+                $scope.validationErrors['phone'] = {
+                    error: 'Phone contains some invalid character.'
+                };
+                $scope.submitInProgress = false;
+                return;
+            }
+        }
+
         console.log( profile.roles);
         UserService.saveProfile(profile).then(function(res){
             $scope.submitInProgress = false;

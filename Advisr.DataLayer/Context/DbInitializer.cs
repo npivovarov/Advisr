@@ -187,7 +187,7 @@ namespace Advisr.DataLayer.Context
             vehicleCar.CreatedById = userSystem.Id;
             vehicleCar.CreatedDate = DateTime.Now;
             vehicleCar.InsurerId = insurer1.Id;
-            vehicleCar.Status = Status.Active;
+            vehicleCar.Status = PolicyTypeStatus.Active;
 
             PolicyType vehicleMotorbike = new PolicyType();
             vehicleMotorbike.GroupName = "Vehicle";
@@ -196,7 +196,7 @@ namespace Advisr.DataLayer.Context
             vehicleMotorbike.CreatedById = userSystem.Id;
             vehicleMotorbike.CreatedDate = DateTime.Now;
             vehicleMotorbike.InsurerId = insurer1.Id;
-            vehicleMotorbike.Status = Status.Active;
+            vehicleMotorbike.Status = PolicyTypeStatus.Active;
 
             PolicyType vehicleCar1 = new PolicyType();
             vehicleCar1.GroupName = "Vehicle";
@@ -205,7 +205,7 @@ namespace Advisr.DataLayer.Context
             vehicleCar1.CreatedById = userSystem.Id;
             vehicleCar1.CreatedDate = DateTime.Now;
             vehicleCar1.InsurerId = insurer2.Id;
-            vehicleCar1.Status = Status.Active;
+            vehicleCar1.Status = PolicyTypeStatus.Active;
 
             PolicyType vehicleMotorbike1 = new PolicyType();
             vehicleMotorbike1.GroupName = "Vehicle";
@@ -214,7 +214,7 @@ namespace Advisr.DataLayer.Context
             vehicleMotorbike1.CreatedById = userSystem.Id;
             vehicleMotorbike1.CreatedDate = DateTime.Now;
             vehicleMotorbike1.InsurerId = insurer2.Id;
-            vehicleMotorbike1.Status = Status.Active;
+            vehicleMotorbike1.Status = PolicyTypeStatus.Active;
 
             context.PolicyTypes.Add(vehicleCar);
             context.PolicyTypes.Add(vehicleMotorbike);
@@ -222,40 +222,40 @@ namespace Advisr.DataLayer.Context
             context.PolicyTypes.Add(vehicleMotorbike1);
 
             PolicyType meMedical = new PolicyType();
-            meMedical.GroupName = "Me";
+            meMedical.GroupName = "Personal";
             meMedical.PolicyTypeName = "Medical";
             meMedical.PolicyGroupType = PolicyGroupType.Life;
             meMedical.CreatedById = userSystem.Id;
             meMedical.CreatedDate = DateTime.Now;
             meMedical.InsurerId = insurer1.Id;
-            meMedical.Status = Status.Active;
+            meMedical.Status = PolicyTypeStatus.Active;
 
             PolicyType meTravel = new PolicyType();
-            meTravel.GroupName = "Me";
+            meTravel.GroupName = "Personal";
             meTravel.PolicyTypeName = "Travel";
             meTravel.PolicyGroupType = PolicyGroupType.Life;
             meTravel.CreatedById = userSystem.Id;
             meTravel.CreatedDate = DateTime.Now;
             meTravel.InsurerId = insurer1.Id;
-            meTravel.Status = Status.Active;
+            meTravel.Status = PolicyTypeStatus.Active;
 
             PolicyType meMedical1 = new PolicyType();
-            meMedical1.GroupName = "Me";
+            meMedical1.GroupName = "Personal";
             meMedical1.PolicyTypeName = "Medical";
             meMedical1.PolicyGroupType = PolicyGroupType.Life;
             meMedical1.CreatedById = userSystem.Id;
             meMedical1.CreatedDate = DateTime.Now;
             meMedical1.InsurerId = insurer2.Id;
-            meMedical1.Status = Status.Active;
+            meMedical1.Status = PolicyTypeStatus.Active;
 
             PolicyType meTravel1 = new PolicyType();
-            meTravel1.GroupName = "Me";
+            meTravel1.GroupName = "Personal";
             meTravel1.PolicyTypeName = "Travel";
             meTravel1.PolicyGroupType = PolicyGroupType.Life;
             meTravel1.CreatedById = userSystem.Id;
             meTravel1.CreatedDate = DateTime.Now;
             meTravel1.InsurerId = insurer2.Id;
-            meTravel1.Status = Status.Active;
+            meTravel1.Status = PolicyTypeStatus.Active;
 
             context.PolicyTypes.Add(vehicleCar);
             context.PolicyTypes.Add(vehicleMotorbike);
@@ -274,7 +274,6 @@ namespace Advisr.DataLayer.Context
             vehicleCarColor.ListDesription = "[\"red\",\"black\",\"white\",\"blue\",\"green\"]";
             vehicleCarColor.CreatedById = userSystem.Id;
             vehicleCarColor.CreatedDate = DateTime.Now;
-            vehicleCarColor.Status = FieldStatus.Active;
 
             PolicyTypeField vehicleBodyType = new PolicyTypeField();
             vehicleBodyType.PolicyTypeId = vehicleCar.Id;
@@ -283,7 +282,6 @@ namespace Advisr.DataLayer.Context
             vehicleBodyType.ListDesription = "[\"off-road\",\"sedan\",\"station wagon\"]";
             vehicleBodyType.CreatedById = userSystem.Id;
             vehicleBodyType.CreatedDate = DateTime.Now;
-            vehicleBodyType.Status = FieldStatus.Active;
 
             PolicyTypeField vehicleCarImmobilaser = new PolicyTypeField();
             vehicleCarImmobilaser.PolicyTypeId = vehicleCar.Id;
@@ -292,7 +290,6 @@ namespace Advisr.DataLayer.Context
             vehicleCarImmobilaser.DefaultValue = "0";
             vehicleCarImmobilaser.CreatedById = userSystem.Id;
             vehicleCarImmobilaser.CreatedDate = DateTime.Now;
-            vehicleCarImmobilaser.Status = FieldStatus.Active;
 
             PolicyTypeField vehicleCarNumberOfKeys = new PolicyTypeField();
             vehicleCarNumberOfKeys.PolicyTypeId = vehicleCar.Id;
@@ -300,7 +297,6 @@ namespace Advisr.DataLayer.Context
             vehicleCarNumberOfKeys.FieldType = PolicyTypeFieldType.Int;
             vehicleCarNumberOfKeys.CreatedById = userSystem.Id;
             vehicleCarNumberOfKeys.CreatedDate = DateTime.Now;
-            vehicleCarNumberOfKeys.Status = FieldStatus.Active;
 
             PolicyTypeField vehicleCarSecondDriver = new PolicyTypeField();
             vehicleCarSecondDriver.PolicyTypeId = vehicleCar.Id;
@@ -308,7 +304,6 @@ namespace Advisr.DataLayer.Context
             vehicleCarSecondDriver.FieldType = PolicyTypeFieldType.String;
             vehicleCarSecondDriver.CreatedById = userSystem.Id;
             vehicleCarSecondDriver.CreatedDate = DateTime.Now;
-            vehicleCarSecondDriver.Status = FieldStatus.Active;
 
             PolicyTypeField vehicleCarThirdDriver = new PolicyTypeField();
             vehicleCarThirdDriver.PolicyTypeId = vehicleCar.Id;
@@ -316,7 +311,15 @@ namespace Advisr.DataLayer.Context
             vehicleCarThirdDriver.FieldType = PolicyTypeFieldType.String;
             vehicleCarThirdDriver.CreatedById = userSystem.Id;
             vehicleCarThirdDriver.CreatedDate = DateTime.Now;
-            vehicleCarThirdDriver.Status = FieldStatus.Active;
+
+
+            PolicyTypeField vehicleCarRegDate = new PolicyTypeField();
+            vehicleCarRegDate.PolicyTypeId = vehicleCar.Id;
+            vehicleCarRegDate.FieldName = "Registration Date";
+            vehicleCarRegDate.FieldType = PolicyTypeFieldType.Date;
+            vehicleCarRegDate.CreatedById = userSystem.Id;
+            vehicleCarRegDate.CreatedDate = DateTime.Now;
+
 
             PolicyTypeField vehicleCarColor1 = new PolicyTypeField();
             vehicleCarColor1.PolicyTypeId = vehicleCar1.Id;
@@ -375,6 +378,7 @@ namespace Advisr.DataLayer.Context
             context.PolicyTypeFields.Add(vehicleBodyType);
             context.PolicyTypeFields.Add(vehicleCarSecondDriver);
             context.PolicyTypeFields.Add(vehicleCarThirdDriver);
+            context.PolicyTypeFields.Add(vehicleCarRegDate);
             context.PolicyTypeFields.Add(vehicleCarColor1);
             context.PolicyTypeFields.Add(vehicleCarImmobilaser1);
             context.PolicyTypeFields.Add(vehicleCarNumberOfKeys1);
@@ -461,6 +465,93 @@ namespace Advisr.DataLayer.Context
             context.PolicyTypeFields.Add(meTravelPersone);
             context.PolicyTypeFields.Add(meMedicalPersone1);
             context.PolicyTypeFields.Add(meTravelPersone1);
+            #endregion
+
+            #region Coverages
+
+            Coverage c1 = new Coverage();
+            c1.Title = "Collision";
+            c1.Type = CoverageType.StandardCover;
+            c1.Status = CoverageStatus.None;
+            c1.InsurerId = insurer1.Id;
+            c1.CreatedDate = DateTime.Now;
+            c1.CreatedById = userSystem.Id;
+
+            Coverage c2 = new Coverage();
+            c2.Title = "Collision";
+            c2.Type = CoverageType.StandardCover;
+            c2.Status = CoverageStatus.None;
+            c2.InsurerId = insurer1.Id;
+            c2.CreatedDate = DateTime.Now;
+            c2.CreatedById = userSystem.Id;
+
+            Coverage c3 = new Coverage();
+            c3.Title = "Collision";
+            c3.Type = CoverageType.StandardCover;
+            c3.Status = CoverageStatus.None;
+            c3.InsurerId = insurer2.Id;
+            c3.CreatedDate = DateTime.Now;
+            c3.CreatedById = userSystem.Id;
+
+            Coverage c4 = new Coverage();
+            c4.Title = "Collision";
+            c4.Type = CoverageType.StandardCover;
+            c4.Status = CoverageStatus.None;
+            c4.InsurerId = insurer2.Id;
+            c4.CreatedDate = DateTime.Now;
+            c4.CreatedById = userSystem.Id;
+
+            context.Coverages.Add(c1);
+            context.Coverages.Add(c2);
+            context.Coverages.Add(c3);
+            context.Coverages.Add(c4);
+
+            context.SaveChanges();
+
+            PolicyTypeCoverage pc1 = new PolicyTypeCoverage();
+            pc1.CoverageId = c1.Id;
+            pc1.CreatedById = userSystem.Id;
+            pc1.CreatedDate = DateTime.Now;
+            pc1.PolicyTypeId = vehicleCar1.Id;
+
+            PolicyTypeCoverage pc2 = new PolicyTypeCoverage();
+            pc2.CoverageId = c1.Id;
+            pc2.CreatedById = userSystem.Id;
+            pc2.CreatedDate = DateTime.Now;
+            pc2.PolicyTypeId = vehicleCar.Id;
+
+            PolicyTypeCoverage pc3 = new PolicyTypeCoverage();
+            pc3.CoverageId = c2.Id;
+            pc3.CreatedById = userSystem.Id;
+            pc3.CreatedDate = DateTime.Now;
+            pc3.PolicyTypeId = vehicleMotorbike.Id;
+
+            PolicyTypeCoverage pc4 = new PolicyTypeCoverage();
+            pc4.CoverageId = c2.Id;
+            pc4.CreatedById = userSystem.Id;
+            pc4.CreatedDate = DateTime.Now;
+            pc4.PolicyTypeId = vehicleMotorbike1.Id;
+
+            PolicyTypeCoverage pc5 = new PolicyTypeCoverage();
+            pc5.CoverageId = c3.Id;
+            pc5.CreatedById = userSystem.Id;
+            pc5.CreatedDate = DateTime.Now;
+            pc5.PolicyTypeId = meMedical.Id;
+
+            PolicyTypeCoverage pc6 = new PolicyTypeCoverage();
+            pc6.CoverageId = c3.Id;
+            pc6.CreatedById = userSystem.Id;
+            pc6.CreatedDate = DateTime.Now;
+            pc6.PolicyTypeId = meMedical1.Id;
+
+            context.PolicyTypeCoverage.Add(pc1);
+            context.PolicyTypeCoverage.Add(pc2);
+            context.PolicyTypeCoverage.Add(pc3);
+            context.PolicyTypeCoverage.Add(pc4);
+            context.PolicyTypeCoverage.Add(pc5);
+            context.PolicyTypeCoverage.Add(pc6);
+
+            context.SaveChanges();
             #endregion
 
             context.SaveChanges();

@@ -46,7 +46,8 @@ namespace Advisr.Domain.DbModels
         Int = 1,
         Bool = 2,
         Float = 3,
-        List = 4
+        List = 4,
+        Date = 5
     }
 
     public enum FieldStatus

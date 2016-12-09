@@ -6,13 +6,47 @@ angular.module('DashboardApp').controller('InsurerCreateController', ['$scope', 
         name:""
     };
 
+    $scope.colors = ConfigService.colors;
+
     function _create() {
         var insurer = angular.copy($scope.data);
+
         $scope.submitInProgress = true;
+        var phone = -1;
+        var overseas = -1;
+        
+        if (insurer.phone != null) {
+            phone = insurer.phone.search(/[a-zA-Z,./]/i);
+            if (phone != -1) {
+                $scope.validationErrors['phone'] = {
+                    error: 'Phone contains some invalid character.'
+                };
+            }
+
+            if (phone != -1 || overseas != -1) {
+            $scope.submitInProgress = false;
+            return;
+            }
+        }
+        
+        if (insurer.phoneOverseas != null) {
+            overseas = insurer.phoneOverseas.search(/[a-zA-Z,./]/i);
+
+            if (overseas != -1) {
+                $scope.validationErrors['phoneOverseas'] = {
+                    error: 'Phone contains some invalid character.'
+                };
+            }
+
+            if (phone != -1 || overseas != -1) {
+                $scope.submitInProgress = false;
+                return;
+            }
+        }
 
         InsurersService.create(insurer).then(function (res) {
             $scope.submitInProgress = false;
-            $state.go('insurers');
+            $state.go('editInsurer', { 'id': res.data.id });
             $rootScope.alerts.push({ type: 'success', msg: 'Insurer has been created.' });
 
         }, function (res) {

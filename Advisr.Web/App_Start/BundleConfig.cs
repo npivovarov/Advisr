@@ -34,7 +34,8 @@ namespace Advisr.Web
 
            ));
             bundles.Add(new ScriptBundle("~/bundles/angularDashboard").Include(
-                       "~/Scripts/select.js"
+                       "~/Scripts/select.js",
+                       "~/Scripts/moment-with-locales.js"
                        
            ));
             //Account

@@ -27,8 +27,20 @@ angular.module('DashboardApp').controller('UserProfileController', ['$scope', '$
         
         profile.address.state = $scope.data.address.state.value;
         profile.modifiedReason = 'user modification';
-
         $scope.submitInProgress = true;
+
+        if (profile.contactPhone != null) {
+            var phone = profile.contactPhone.search(/[a-zA-Z,./]/i);
+            if (phone != -1) {
+                $scope.validationErrors['phone'] = {
+                    error: 'Phone contains some invalid character.'
+                };
+                $scope.submitInProgress = false;
+                return;
+            }
+        }
+
+        
         $rootScope.currentUser.isProfileCompleted = true;
 
         UserService.saveProfile(profile).then(function(res){

@@ -1,153 +1,185 @@
 ﻿using Advisr.DataLayer;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Advisr.Web.Controllers
 {
     /// <summary>
-    /// 
+    /// Notification api controller
     /// </summary>
     [Authorize]
     public class NotificationController : BaseApiController
     {
-        ///// <summary>
-        ///// Get notification by id;
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        //[HttpGet]
-        //[ActionName("Get")]
-        //public IHttpActionResult Get(int id)
-        //{
-        //    using (IUnitOfWork unitOfWork = UnitOfWork.Create())
-        //    {
-        //        var userId = User.Identity.GetUserId();
+        /// <summary>
+        /// Get information about number of unread notifications 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("GetCounter")]
+        public IHttpActionResult GetCounter()
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var userId = User.Identity.GetUserId();
+
+                var count = unitOfWork.UserNotificationRepository.GetAll().Where(e => 
+                        e.RecipientId == userId && e.Status == Domain.DbModels.UserNotificationStatus.Unread).Count();
                 
-        //        var startLinkToPhoto = Url.Link("Default", new { controller = "files", action = "photo" });
+                return Json(count);
+            }
+        }
 
-        //        var userDb = unitOfWork.UserRepository.GetAll()
-        //            .Where(a => a.Id == userId)
-        //            .Select(a => new
-        //            {
-        //                id = a.Id,
-        //                username = a.UserName,
-        //                firstName = a.FirstName,
-        //                lastName = a.LastName,
-        //                email = a.Email,
-        //                status = a.Status,
-        //                avatarFileId = a.AvatarFileId,
-        //                photo = new
-        //                {
-        //                    smallPhoto = string.Concat(startLinkToPhoto, "?id=", a.AvatarFileId, "&type=s"),
-        //                    bigPhoto = string.Concat(startLinkToPhoto, "?id=", a.AvatarFileId, "&type=b"),
-        //                },
-        //                roles = a.Roles.Select(p => new
-        //                {
-        //                    id = p.Role.Name
-        //                }),
-        //                createdDate = a.CreatedDate,
-        //                createdBy = new
-        //                {
-        //                    id = a.CreatedBy.Id,
-        //                    firstName = a.CreatedBy.FirstName,
-        //                    lastName = a.CreatedBy.LastName,
-        //                },
-        //            })
-        //            .First();
+        /// <summary>
+        /// Get details of notification by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("Get")]
+        public IHttpActionResult Get(int id)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var userId = User.Identity.GetUserId();
 
-        //        if (userDb == null)
-        //        {
-        //            return this.JsonError(HttpStatusCode.NotFound, 0, "not found the user");
-        //        }
+                var notification = unitOfWork.UserNotificationRepository.GetAll().Where(e => e.Id == id && e.RecipientId == userId && e.Status != Domain.DbModels.UserNotificationStatus.Deleted)
+                    .Select(a => new
+                    {
+                        id = a.Id,
+                        title = a.Title,
+                        subjectTitleFirst = a.SubjectTitleFirst,
+                        subjectTitleSecond = a.SubjectTitleSecond,
+                        body = a.Body,
+                        notificationType = a.NotificationType,
+                        targetObjectType = a.TargetObjectType,
+                        targetObjectId = a.TargetObjectId,
+                        targetUrl = a.TargetUrl,
+                        isUnread = a.Status == Domain.DbModels.UserNotificationStatus.Unread,
+                        createdDate = a.CreatedDate
+                    }).FirstOrDefault();
 
-        //        var result = new
-        //        {
-        //            id = userDb.id,
-        //            username = userDb.username,
-        //            firstName = userDb.firstName,
-        //            lastName = userDb.lastName,
-        //            email = userDb.email,
-        //            status = userDb.status,
-        //            avatarFileId = userDb.avatarFileId,
-        //            photo = userDb.photo,
-        //            roles = userDb.roles.ToList(),
-        //            createdDate = userDb.createdDate,
-        //            createdBy = userDb.createdBy
-        //        };
+                if (notification == null)
+                {
+                    return this.JsonError(HttpStatusCode.NotFound, 0, "not found the notification");
+                }
 
-        //        return Json(result);
-        //    }
-        //}
+                return Json(notification);
+            }
+        }
 
-        ///// <summary>
-        ///// Get list of all users, allow only for Admin role;
-        ///// </summary>
-        ///// <param name="offset"></param>
-        ///// <param name="count"></param>
-        ///// <param name="q"></param>
-        ///// <returns></returns>
-        //[HttpGet]
-        //[ActionName("List")]
-        //[Authorize(Roles = "ADMIN")]
-        //public IHttpActionResult List(int offset = 0, int count = 10, string q = null)
-        //{
-        //    using (IUnitOfWork unitOfWork = UnitOfWork.Create())
-        //    {
-        //        var userId = User.Identity.GetUserId();
+        /// <summary>
+        /// Get list of all user notification 
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("List")]
+        public IHttpActionResult List(int offset = 0, int count = 10)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var userId = User.Identity.GetUserId();
+                
+                var notificationsQuery = unitOfWork.UserNotificationRepository.GetAll().Where(e => e.RecipientId == userId && e.Status != Domain.DbModels.UserNotificationStatus.Deleted);
+                
+                var countOfData = notificationsQuery.Count();
+                var countOfRead = notificationsQuery.Count(a=>a.Status == Domain.DbModels.UserNotificationStatus.Read);
+                var countOfUnread = countOfData - countOfRead;
 
-        //        IQueryable<ApplicationUser> query = unitOfWork.UserRepository.GetAll()
-        //           .Where(a => /*a.Status == status && a.Roles.Any(r => r.Role.Id == DataLayer.DbConstants.PrivateUserRoleId) &&*/ a.Hidden == false);
-
-        //        if (!string.IsNullOrEmpty(q))
-        //        {
-        //            query = query.Where(e => e.FirstName.StartsWith(q)
-        //                    || e.Id == q
-        //                    || e.LastName.StartsWith(q)
-        //                    || e.Email == q);
-        //        }
-
-        //        var countOfUsers = query.Count();
-
-        //        var startLinkToPhoto = Url.Link("Default", new { controller = "files", action = "photo" });
-
-        //        var users = query
-        //                    .OrderByDescending(a => a.CreatedDate)
-        //                    .Skip(offset)
-        //                    .Take(count)
-        //                    .ToList()
-        //                    .Select(a => new
-        //                    {
-        //                        id = a.Id,
-        //                        firstName = a.FirstName,
-        //                        lastName = a.LastName,
-        //                        photo = new
-        //                        {
-        //                            smallPhoto = string.Concat(startLinkToPhoto, "?id=", a.AvatarFileId, "&type=s"),
-        //                            bigPhoto = string.Concat(startLinkToPhoto, "?id=", a.AvatarFileId, "&type=b"),
-        //                        },
-        //                        joinedDate = a.CreatedDate,
-        //                        status = a.Status
-        //                    }).ToList();
+                var notifications = notificationsQuery.OrderByDescending(a => a.CreatedDate)
+                                    .Skip(offset)
+                                    .Take(count)
+                                    .Select(a => new
+                                    {
+                                        id = a.Id,
+                                        //title = a.Title,
+                                        subjectTitleFirst = a.SubjectTitleFirst,
+                                        subjectTitleSecond = a.SubjectTitleSecond,
+                                        notificationType = a.NotificationType,
+                                        targetObjectType = a.TargetObjectType,
+                                        targetObjectId = a.TargetObjectId,
+                                        isUnread = a.Status == Domain.DbModels.UserNotificationStatus.Unread,
+                                        createdDate = a.CreatedDate
+                                    }).ToList();
 
 
-        //        var result = new
-        //        {
-        //            myUserId = userId,
-        //            count = countOfUsers,
-        //            data = users
-        //        };
-
-        //        return Json(result);
-        //    }
-        //}
+                var value = new
+                {
+                    count = countOfData,
+                    countOfRead = countOfRead,
+                    countOfUnread = countOfUnread,
+                    data = notifications
+                };
 
 
+                return Json(value);
+            }
+        }
+        
+        /// <summary>
+        /// Mark notification as read
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("MarkAsRead")]
+        public async Task<IHttpActionResult> MarkAsRead(int id)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var userId = User.Identity.GetUserId();
 
+                var notification = unitOfWork.UserNotificationRepository.GetAll().Where(e => e.Id == id && e.RecipientId == userId).FirstOrDefault();
 
+                if (notification == null)
+                {
+                    return this.JsonError(HttpStatusCode.NotFound, 0, "not found the notification");
+                }
+                else
+                {
+                    notification.Status = Domain.DbModels.UserNotificationStatus.Read;
+                    notification.ReadDate = DateTime.Now;
+                    unitOfWork.UserNotificationRepository.Edit(notification);
+                    await unitOfWork.SaveAsync();
+                }
+
+                return this.Ok();
+            }
+        }
+
+        /// <summary>
+        /// Delete notification
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IHttpActionResult> Delete(int id)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var userId = User.Identity.GetUserId();
+
+                var notification = unitOfWork.UserNotificationRepository.GetAll().Where(e => e.Id == id && e.RecipientId == userId).FirstOrDefault();
+
+                if (notification == null)
+                {
+                    return this.JsonError(HttpStatusCode.NotFound, 0, "not found the notification");
+                }
+                else
+                {
+                    notification.Status = Domain.DbModels.UserNotificationStatus.Deleted;
+                    unitOfWork.UserNotificationRepository.Edit(notification);
+                    await unitOfWork.SaveAsync();
+                }
+
+                return this.Ok();
+            }
+        }
     }
 }

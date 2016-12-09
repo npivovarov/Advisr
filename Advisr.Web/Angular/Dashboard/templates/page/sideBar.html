@@ -6,7 +6,10 @@
             </a>
         </li>
         <li>
-            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/notifications" class="_5 tab w-inline-block w-tab-link" data-w-tab="Tab 5" ng-class="{'w--current': getClass('/notifications') }">
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/notifications" class="_5 tab w-inline-block w-tab-link notifications" data-w-tab="Tab 5" ng-class="{'w--current': getClass('/notifications') }">
+                <span>
+                    <small>{{countNotification}}</small>
+                </span>
                 <div class="sidebar-label">NOTIFICATIONS</div>
             </a>
         </li>
@@ -31,7 +34,7 @@
             </a>
         </li>
         <li>
-            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/about" class="about tab hover w--profile" data-w-tab="Tab 3"
+            <a data-toggle="collapse" data-target=".navbar-collapse" href="#/about" class="about tab hover" data-w-tab="Tab 3"
                 ng-class="{'w--current': getClass('/about') }">
                 <div class="sidebar-label">ABOUT</div>
             </a>

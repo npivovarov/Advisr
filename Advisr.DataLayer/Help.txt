@@ -1,0 +1,18 @@
+﻿Help for migration:
+
+///Create migration (Do not repeat it if you did it before):
+///PM> Enable-Migrations -ProjectName Advisr.DataLayer -StartUpProjectName Advisr.Web     //  [-Verbose | - Force]
+
+/// --- PM> Add-Migration Initial -ProjectName Advisr.DataLayer -StartUpProjectName Advisr.Web   -IgnoreChanges
+
+///Remove migration (delete all states from folder migration)
+///PM> Enable-Migrations -ProjectName Advisr.DataLayer -StartUpProjectName Advisr.Web -EnableAutomaticMigrations -Force
+
+
+
+
+1) Add migration step:
+PM> Add-Migration {name} -ProjectName Advisr.DataLayer -StartUpProjectName Advisr.Web      //   [-IgnoreChanges]
+
+2) Migration To Script:
+PM> Update-Database -ProjectName Advisr.DataLayer -StartUpProjectName Advisr.Web -Script

@@ -1,34 +1,54 @@
 ﻿<div class="w-form">
+    <h3>Add field</h3>
     <form novalidate class="ui-form" data-name="form-insurer" id="wf-form-editinsurer-form" name="wf-form-editinsurer-form">
         <label class="field-label required" for="fieldName">Field name</label>
-        <input class="default-input w-input" data-name="fieldName" id="fieldName" maxlength="256" name="fieldName" placeholder="Enter insurer name"
+        <input class="default-input w-input" data-name="fieldName" id="fieldName" maxlength="256" name="fieldName" placeholder="Enter field name"
                type="text" ng-model="field.fieldName" ng-change="clearError('fieldName', validationErrors)">
         <div ng-show="paramExists('fieldName', validationErrors)" class="field-validation-error">
             <div ng-repeat="error in validationErrors['fieldName']">{{error}} <br /></div>
         </div>
         <label class="field-label required" for="fieldType">Field type</label>
-        <ui-select ng-model="field.fieldType">
+        <ui-select ng-model="field.fieldType" ng-change="clearError('fieldType', validationErrors)" on-select="onTypeSelected($select.selected)">
             <ui-select-match>
                 <span ng-bind="$select.selected.name"></span>
             </ui-select-match>
-            <ui-select-choices repeat="item in (data.fieldTypes | filter: $select.search) track by item.id">
+            <ui-select-choices repeat="item in (fieldTypes | filter: $select.search) track by item.id">
                 <span ng-bind="item.name"></span>
             </ui-select-choices>
         </ui-select>
         <div ng-show="paramExists('fieldType', validationErrors)" class="field-validation-error">
             <div ng-repeat="error in validationErrors['fieldType']">{{error}} <br /></div>
         </div>
-        <label class="field-label" for="defaultValue">Default Value</label>
-        <input class="default-input w-input" data-name="defaultValue" id="defaultValue" maxlength="256" name="defaultValue" placeholder="Enter default value"
-               type="text" ng-model="field.defaultValue" ng-change="clearError('defaultValue', validationErrors)">
-        <div ng-show="paramExists('defaultValue', validationErrors)" class="field-validation-error">
-            <div ng-repeat="error in validationErrors['defaultValue']">{{error}} <br /></div>
+        <div ng-show="boolSelected">
+            <label class="field-label" for="defaultValue">Default Value</label>
+            <ui-select ng-model="field.defaultValue">
+                <ui-select-match>
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (bool | filter: $select.search) track by item.id">
+                    <span ng-bind="item.name"></span>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="paramExists('defaultValue', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['defaultValue']">{{error}} <br /></div>
+            </div>
         </div>
-        <label class="field-label" for="listDescription">List Description</label>
-        <input class="default-input w-input" data-name="listDescription" id="listDescription" maxlength="256" name="listDescription" placeholder="Enter list description"
-               type="text" ng-model="field.listDescription" ng-change="clearError('listDescription', validationErrors)">
-        <div ng-show="paramExists('listDescription', validationErrors)" class="field-validation-error">
-            <div ng-repeat="error in validationErrors['listDescription']">{{error}} <br /></div>
+        <div ng-hide="boolSelected">
+            <label class="field-label" for="defaultValue">Default Value</label>
+            <input class="default-input w-input" data-name="defaultValue" id="defaultValue" maxlength="256" name="defaultValue" placeholder="Enter default value"
+                   type="text" ng-model="field.defaultValue" ng-change="clearError('defaultValue', validationErrors)">
+            <div ng-show="paramExists('defaultValue', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['defaultValue']">{{error}} <br /></div>
+            </div>
+        </div>
+        <div ng-show="listSelected">
+            <label class="field-label" for="listDescription">List Description</label>
+            <input class="default-input w-input" data-name="listDescription" id="listDescription" maxlength="256"
+                   name="listDescription" placeholder="Enter list description"
+                   type="text" ng-model="field.listDescription" ng-change="clearError('listDescription', validationErrors)">
+            <div ng-show="paramExists('listDescription', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['listDescription']">{{error}} <br /></div>
+            </div>
         </div>
         <button class="default-button w-button" data-wait="Please wait..." ng-click="addField()" button-spinner="submitInProgress">Add</button>
     </form>

@@ -1,0 +1,65 @@
+﻿<div class="details grey-block" ng-if="groupsCover.standart.length">
+    <div>Standard Cover</div>
+</div>
+<div class="w-tab-pane w--tab-active" ng-if="groupsCover.standart.length">
+      <uib-accordion>
+        <div uib-accordion-group class="panel-default" heading="{{group.title}}" ng-repeat="group in groupsCover.standart">
+            <uib-accordion-heading>
+                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" width="22">
+                <h5 class="cover-title ticked">{{group.title}}</h5>
+            </uib-accordion-heading>
+            <div class="cover-detail">
+                <div class="col-md-12"><label class="pull-left cover-label">Limit:</label>${{group.limit}}</div>
+                <div class="col-md-12"><label class="pull-left cover-label">Excess:</label>${{group.excess}}</div>
+                <br />
+                <p class="accordian-paragraph">
+                    <pre class="accordian-paragraph pre-formatted-text"> {{group.description}}</pre>
+                </p>
+            </div>
+        </div>
+  </uib-accordion>
+</div><!--w-tab-->
+<div class="details grey-block" ng-if="groupsCover.optional.length">
+    <div>Optional Cover</div>
+</div>
+<div class="w-tab-pane w--tab-active" ng-if="groupsCover.optional.length">
+      <uib-accordion>
+        <div uib-accordion-group class="panel-default" heading="{{group.title}}" ng-repeat="group in groupsCover.optional">
+            <uib-accordion-heading>
+                <img class="cover-image ticked" src="/Content/images/Cover_Crossed.svg" width="22" ng-if="!group.isActive">
+                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" width="22" ng-if="group.isActive">
+                <h5 class="cover-title">{{group.title}}</h5>
+            </uib-accordion-heading>
+            <div class="cover-detail">
+                <div class="col-md-12"><label class="pull-left cover-label">Limit:</label>${{group.limit}}</div>
+                <div class="col-md-12"><label class="pull-left cover-label">Excess:</label>${{group.excess}}</div>
+                <br />
+                <p class="accordian-paragraph">
+                    <pre class="accordian-paragraph pre-formatted-text"> {{group.description}}</pre>
+                </p>
+            </div>
+        </div>
+  </uib-accordion>
+</div><!--w-tab-->
+<div class="details grey-block" ng-if="groupsCover.exclusions.length">
+    <div>Exclusions Cover</div>
+</div>
+<div class="w-tab-pane w--tab-active" ng-if="groupsCover.exclusions.length">
+      <uib-accordion>
+        <div uib-accordion-group class="panel-default" ng-repeat="group in groupsCover.exclusions">
+            <uib-accordion-heading>
+                <img class="cover-image ticked" src="/Content/images/Cover_Crossed.svg" width="22" ng-if="!group.isActive">
+                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" width="22" ng-if="group.isActive">
+                <h5 class="cover-title">{{group.title}}</h5>
+            </uib-accordion-heading>
+                <div class="cover-detail">
+                    <div class="col-md-12"><label class="pull-left cover-label">Limit:</label>${{group.limit}}</div>
+                    <div class="col-md-12"><label class="pull-left cover-label">Excess:</label>${{group.excess}}</div>
+                    <br />
+                    <p class="accordian-paragraph">
+                        <pre class="accordian-paragraph pre-formatted-text"> {{group.description}}</pre>
+                    </p>
+                </div>
+</div>
+  </uib-accordion>
+</div><!--w-tab-->

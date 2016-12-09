@@ -30,6 +30,9 @@ namespace Advisr.Web.Models
         [Required]
         public Guid? LogoId { get; set; }
 
+        [Required]
+        public string Description { get; set; }
+
         public string Color { get; set; }
     }
 }

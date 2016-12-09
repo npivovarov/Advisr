@@ -1,0 +1,37 @@
+﻿<div class="details docs grey-block">
+    <div class="grey-bar-text">{{policy.files.length}} Insurance Documents</div><a class="documents greybar text-link" ng-href="#/policy/view-upload/{{policy.id}}">Add Document</a>
+</div>
+<div class="w-tab-pane w--tab-active">
+    <div class="detail-list-div" ng-show="policy.files.length">
+        <div class="detail-row document sortby">
+            <div class="details-collumns w-row">
+                <div class="w-col w-col-5 w-col-small-small-stack w-col-tiny-4">
+                    <div>Name</div>
+                </div>
+                <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-4">
+                    <div>Uploaded on</div>
+                </div>
+                <div class="w-col w-col-4 w-col-small-small-stack w-col-tiny-4">
+                    <div>File size</div>
+                </div>
+            </div>
+        </div>
+        <div class="detail-row document" ng-repeat="fileName in policy.files">
+            <div class="details-collumns w-row">
+                <div class="w-col w-col-5 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <div>{{fileName.fileName}}</div>
+                </div>
+                <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <div>{{fileName.uploadedDate | date:'dd.MM.yyyy'}} at {{fileName.uploadedDate | date:'hh:mm'}}</div>
+                </div>
+                <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <div>{{fileName.fileSize | bytes}} </div>
+                </div>
+                <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <a class="view-doc documents text-link" ng-href="{{fileName.url}}?type=inline" target="_blank">View DOCUMENT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

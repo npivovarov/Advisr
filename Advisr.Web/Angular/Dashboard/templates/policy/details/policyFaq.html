@@ -1,0 +1,14 @@
+﻿<div class="details grey-block">
+    <div>Frequently Asked Questions</div>
+</div>
+<div class="w-tab-pane w--tab-active">
+      <uib-accordion>
+        <div uib-accordion-group class="panel-default" heading="{{group.title}}" ng-repeat="group in groups">
+            <div class="cover-detail">
+                <p class="accordian-paragraph">
+                    {{group.content}}
+                </p>
+            </div>
+        </div>
+  </uib-accordion>
+</div><!--w-tab-->

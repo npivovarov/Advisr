@@ -28,18 +28,24 @@ namespace Advisr.Web.Controllers
             {
                 var userId = User.Identity.GetUserId();
 
+                var currentDate = DateTime.Now.Date;
+
                 var policies = unitOfWork.PolicyRepository.GetAll()
-                            .Where(a => a.Status == PolicyStatus.Confirmed && a.CreatedById == userId)
+                            .Where(a => a.Status == PolicyStatus.Confirmed && a.CreatedById == userId && a.EndDate > currentDate)
                             .Select(a => new
                             {
                                 groupName = a.PolicyType.GroupName,
                                 amount = a.PolicyPremium
                             }).ToList();
+
+                var countOfPendingPolicies = unitOfWork.PolicyRepository.GetAll()
+                            .Where(a => a.Status == PolicyStatus.Unconfirmed && a.CreatedById == userId).Count();
                 
                 var result = new
                 {
+                    countOfPendingPolicies = countOfPendingPolicies,
                     vehicle = policies.Where(a=> a.groupName == "Vehicle").Select(a=>a.amount).DefaultIfEmpty(0.0m).Sum(),
-                    me = policies.Where(a => a.groupName == "Me").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
+                    personal = policies.Where(a => a.groupName == "Personal").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
                     property = policies.Where(a => a.groupName == "Property").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
                     commertial = policies.Where(a => a.groupName == "Commertial").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
                 };

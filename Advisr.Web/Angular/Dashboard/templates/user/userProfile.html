@@ -59,7 +59,7 @@
                 <div class="col-lg-6">
                     <label class="field-label" for="phone">Phone</label>
                     <input class="default-input w-input" data-name="phone" id="phone" maxlength="256" name="phone" placeholder="Enter Phone e.g. (9999 999 999)"
-                        required="required" type="text" mask="9999-999-999" clean="true" ng-model="data.contactPhone" ng-change="clearError('phone', validationErrors)">
+                        required="required" type="text" mask="9999 999 999" clean="true" ng-model="data.contactPhone" ng-change="clearError('phone', validationErrors)">
                     <div ng-show="paramExists('phone', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['phone']">{{error}} <br /></div>
                     </div>

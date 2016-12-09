@@ -8,14 +8,21 @@ angular.module('DashboardApp').controller('PolicyViewUploadController', ['$scope
         fileIds: []
     };
 
+    $scope.listPolicyType = {};
+    $scope.policyType = ConfigService.policyType;
+
     PolicyService.getPolicy(id).then(function(res) {
-         $scope.fileNames =  res.data.files;
+        var prePolicyType = res.data.prePolicyType;
+        $scope.listPolicyType.selected = _.find(ConfigService.policyType, { value: prePolicyType });
+
+        $scope.fileNames =  res.data.files;
     });
 
 
     function _save() {
         $scope.submitInProgress = true;
-        
+        $scope.data.prePolicyType = $scope.listPolicyType.selected.value;
+
         PolicyService.addNewFile($scope.data).then(function (res) {
             $scope.submitInProgress = false;
             $rootScope.alerts.push({ type: 'success', msg: 'Policy has been updated.' });

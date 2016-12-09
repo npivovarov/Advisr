@@ -29,24 +29,24 @@
         return $http.post(ConfigService.urls.insurer.delete + data);
     }
 
-    function _getGroups(id) {
-        return $http.get(ConfigService.urls.insurer.getGroups, {
+    function _getPolicyTypes(id) {
+        return $http.get(ConfigService.urls.insurer.getPolicyTypes, {
             params: {
                 insurerId: id
             }
         });
     }
 
-    function _getGroup(groupId) {
-        return $http.get(ConfigService.urls.insurer.getGroup, {
+    function _getPolicyType(policyTypeId) {
+        return $http.get(ConfigService.urls.insurer.getPolicyType, {
             params: {
-                groupId: groupId
+                policyTypeId: policyTypeId
             }
         });
     }
 
-    function _addGroup(data) {
-        return $http.post(ConfigService.urls.insurer.addGroup, data);
+    function _addPolicyType(data) {
+        return $http.post(ConfigService.urls.insurer.addPolicyType, data);
     }
 
     function _addField(data) {
@@ -57,8 +57,52 @@
         return $http.post(ConfigService.urls.insurer.deleteField + data);
     }
 
-    function _editGroup(data) {
-        return $http.post(ConfigService.urls.insurer.editGroup, data);
+    function _editPolicyType(data) {
+        return $http.post(ConfigService.urls.insurer.editPolicyType, data);
+    }
+
+    function _saveField(data) {
+        return $http.post(ConfigService.urls.insurer.saveField, data);
+    }
+
+    function _getField(fieldId) {
+        return $http.get(ConfigService.urls.insurer.getField, {
+            params: {
+                fieldId: fieldId
+            }
+        });
+    }
+
+    function _getInsurersCoverages(insurerId) {
+        return $http.get(ConfigService.urls.insurer.getCoverages, {
+            params: {
+                insurerId: insurerId
+            }
+        });
+    }
+
+    function _getPolicyTypeCoverages(policyTypeId) {
+        return $http.get(ConfigService.urls.insurer.getCoverages, {
+            params: {
+                policyTypeId: policyTypeId
+            }
+        });
+    }
+
+    function _getCoverage(id) {
+        return $http.get(ConfigService.urls.insurer.getCoverage + id);
+    }
+
+    function _saveCoverage(data) {
+        return $http.post(ConfigService.urls.insurer.saveCoverage, data);
+    }
+
+    function _addCoverage(data) {
+        return $http.post(ConfigService.urls.insurer.addCoverage, data);
+    }
+
+    function _assignCoverage(data) {
+        return $http.post(ConfigService.urls.insurer.assignCoverage, data);
     }
 
     _.extend(InsurersService, {
@@ -67,12 +111,20 @@
         save: _saveInsurer,
         getList: _getList,
         delete: _delete,
-        getGroups: _getGroups,
-        getGroup: _getGroup,
-        addGroup: _addGroup,
-        editGroup: _editGroup,
+        getPolicyTypes: _getPolicyTypes,
+        getPolicyType: _getPolicyType,
+        addPolicyType: _addPolicyType,
+        editPolicyType: _editPolicyType,
         addField: _addField,
-        deleteField: _deleteField
+        deleteField: _deleteField,
+        saveField: _saveField,
+        getField: _getField,
+        getInsurersCoverages: _getInsurersCoverages,
+        getPolicyTypeCoverages: _getPolicyTypeCoverages,
+        getCoverage: _getCoverage,
+        saveCoverage: _saveCoverage,
+        addCoverage: _addCoverage,
+        assignCoverage: _assignCoverage
     })
 
     return InsurersService;

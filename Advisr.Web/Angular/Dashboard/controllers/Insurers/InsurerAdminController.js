@@ -1,10 +1,17 @@
 ﻿'use strict';
 
-angular.module('DashboardApp').controller('InsurerAdminController', ['$scope', '$rootScope', '$interval', '$cookies', '$document', '$stateParams', '$state', '$timeout', 'ConfigService', 'InsurersService', 'Upload', function ($scope, $rootScope, $interval, $cookies, $document, $stateParams, $state, $timeout, ConfigService, InsurersService, Upload) {
+angular.module('DashboardApp').controller('InsurerAdminController', ['$scope', '$rootScope', '$interval', '$cookies', '$document', '$stateParams', '$state', '$timeout', 'ngDialog', 'ConfigService', 'InsurersService', 'Upload', function ($scope, $rootScope, $interval, $cookies, $document, $stateParams, $state, $timeout, ngDialog, ConfigService, InsurersService, Upload) {
 
     $scope.data = {
         policyTypes: []
     };
+
+    $scope.groupNames = ConfigService.policyGroupName;
+    $scope.groupTypes = ConfigService.policyTypeName;
+    $scope.statuses = ConfigService.policyTypeStatus;
+    $scope.fieldTypes = ConfigService.policyTypeFieldTypes;
+    $scope.coverageTypes = ConfigService.coverageTypes;
+    $scope.colors = ConfigService.colors;
 
     var id = $stateParams.id;
 
@@ -21,14 +28,64 @@ angular.module('DashboardApp').controller('InsurerAdminController', ['$scope', '
 
         $document.find('#logo').src = $scope.data.logo.url;
 
-        InsurersService.getGroups(res.data.id).then(function (res) {
+        InsurersService.getPolicyTypes(res.data.id).then(function (res) {
             $scope.data.policyTypes = res.data;
+
+            for (var i = 0; i < $scope.data.policyTypes.length; i++) {
+                $scope.data.policyTypes[i].policyGroupName = _.find($scope.groupNames,
+                    { 'name': $scope.data.policyTypes[i].policyGroupName }).name;
+                $scope.data.policyTypes[i].policyGroupType = _.find($scope.groupTypes,
+                    { 'id': $scope.data.policyTypes[i].policyGroupType }).name;
+                $scope.data.policyTypes[i].status = _.find($scope.statuses,
+                    { 'id': $scope.data.policyTypes[i].status }).name;
+            }
+        });
+
+        InsurersService.getInsurersCoverages(id).then(function (res) {
+            $scope.data.coverages = res.data;
+
+            for (var i = 0; i < $scope.data.coverages.length; i++) {
+                $scope.data.coverages[i].type = _.find($scope.coverageTypes, { 'id': $scope.data.coverages[i].type }).name;
+            }
         });
     });
 
     function _save() {
         var insurer = angular.copy($scope.data);
+        
         $scope.submitInProgress = true;
+
+        var phone = -1;
+        var overseas = -1;
+
+        if (insurer.phone != null) {
+            phone = insurer.phone.search(/[a-zA-Z,./]/i);
+            if (phone != -1) {
+                $scope.validationErrors['phone'] = {
+                    error: 'Phone contains some invalid character.'
+                };
+            }
+
+            if (phone != -1 || overseas != -1) {
+                $scope.submitInProgress = false;
+                return;
+            }
+        }
+
+        if (insurer.phoneOverseas != null) {
+            overseas = insurer.phoneOverseas.search(/[a-zA-Z,./]/i);
+
+            if (overseas != -1) {
+                $scope.validationErrors['phoneOverseas'] = {
+                    error: 'Phone contains some invalid character.'
+                };
+            }
+
+            if (phone != -1 || overseas != -1) {
+                $scope.submitInProgress = false;
+                return;
+            }
+        }
 
         InsurersService.save(insurer).then(function (res) {
             $scope.submitInProgress = false;
@@ -80,11 +137,27 @@ angular.module('DashboardApp').controller('InsurerAdminController', ['$scope', '
         }
     }
 
+    function _openEditCoverage(id) {
+        InsurersService.getCoverage(id).then(function (res) {
+            $scope.coverage = res.data;
+            $scope.coverage.type = _.find($scope.coverageTypes, { 'id': $scope.coverage.type });
+        });
+
+        ngDialog.open({
+            template: '../Angular/Dashboard/templates/insurers/editCoverage.html',
+            controller: 'InsurerPolicyTypeController',
+            scope: $scope
+        });
+    }
+
+    
+
     _.extend($scope, {
         openedPopup: false,
         submitInProgress: false,
         save: _save,
         uploadLogo: _uploadFiles,
+        openEditCoverage: _openEditCoverage,
         logoFile: [],
         validationErrors: {},
         paramExists: $rootScope.paramExists

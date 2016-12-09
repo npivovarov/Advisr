@@ -1,0 +1,57 @@
+﻿<div class="w-form">
+    <h3>Add coverage</h3>
+    <form novalidate class="ui-form" data-name="form-insurer" id="wf-form-addNewCoverage-form" name="wf-form-addNewCoverage-form">
+        <div class="btn-group radio-btn">
+            <label class="btn btn-primary" ng-model="way" uib-btn-radio="0">Add existing</label>
+            <label class="btn btn-primary" ng-model="way" uib-btn-radio="1">Add new</label>
+        </div>
+        <!--<input type="radio" id="" value="existing" ng-model="way" class="btn btn-primary"/>Add existing
+        <input type="radio" id="" value="new" ng-model="way"/> Add new-->
+        <div id="_existingCoverageForm" ng-show="way == '0'">
+            <label class="field-label required" for="title">Title</label>
+            <ui-select ng-model="name" on-select="onSelection($select.selected)">
+                <ui-select-match>
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (existingCoverages | filter: $select.search) track by item.id">
+                    <span ng-bind="item.name"></span>
+                </ui-select-choices>
+            </ui-select>
+            <label class="field-label required" for="title">Description</label>
+            <textarea class="default-input w-input" data-name="description" id="description" name="description" placeholder="Enter description"
+                   type="range" ng-model="existingCoverage.description" ng-change="clearError('description', validationErrors)" 
+                      disabled="disabled" rows="10"></textarea>
+            <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
+            </div>
+            <button class="default-button w-button" data-wait="Please wait..." ng-click="assignCoverage()" button-spinner="submitInProgress">Add</button>
+        </div>
+        <div id="_newCoverageForm" ng-show="way == '1'">
+            <label class="field-label required" for="title">Title</label>
+            <input class="default-input w-input" data-name="title" id="title" maxlength="256" name="title" placeholder="Enter title"
+                   type="text" ng-model="newCoverage.title" ng-change="clearError('title', validationErrors)">
+            <div ng-show="paramExists('title', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['title']">{{error}} <br /></div>
+            </div>
+            <label class="field-label required" for="type">Coverage type</label>
+            <ui-select ng-model="newCoverage.type" ng-change="clearError('type', validationErrors)">
+                <ui-select-match>
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (coverageTypes | filter: $select.search) track by item.id">
+                    <span ng-bind="item.name"></span>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="paramExists('type', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['type']">{{error}} <br /></div>
+            </div>
+            <label class="field-label" for="description">Description</label>
+            <textarea class="default-input w-input" data-name="description" id="description" name="description" placeholder="Enter description"
+                   type="range" ng-model="newCoverage.description" ng-change="clearError('description', validationErrors)" rows="10"></textarea>
+            <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
+                <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
+            </div>
+            <button class="default-button w-button" data-wait="Please wait..." ng-click="addCoverage()" button-spinner="submitInProgress">Add</button>
+        </div>
+    </form>
+</div>

@@ -1,20 +1,26 @@
-﻿<h3>Home</h3>
-<div class="bordered-box">
+﻿<div class="ui-form">
     <label class="field-label required" for="HomePolicyAddress">Address</label>
     <input class="default-input w-input" data-name="HomePolicyAddress" id="HomePolicyAddress" maxlength="256" name="HomePolicyAddress"
         placeholder="Enter Address" required="required" type="text" ng-model="data.HomePolicyModel.Address"
-        ng-change="clearError('HomePolicyModel.Address', validationErrors)"
+        ng-change="clearError('homePolicyModel.Address', validationErrors)"
         >
-    <div ng-show="paramExists('HomePolicyModel.Address', validationErrors)" class="field-validation-error">
-        <div ng-repeat="error in validationErrors['HomePolicyModel.Address']">{{error}} <br /></div>
+    <div ng-show="paramExists('homePolicyModel.Address', validationErrors)" class="field-validation-error">
+        <div ng-repeat="error in validationErrors['homePolicyModel.Address']">{{error}} <br /></div>
     </div>
 
     <label class="field-label required" for="HomePolicyBuildDate">Build Date</label>
-    <input class="default-input w-input" data-name="HomePolicyBuildDate" id="HomePolicyBuildDate" maxlength="256" name="HomePolicyBuildDate"
-        placeholder="Enter Build Date" required="required" type="text" ng-model="data.HomePolicyModel.BuildDate"
-        ng-change="clearError('HomePolicyModel.BuildDate', validationErrors)"
-        >
-    <div ng-show="paramExists('HomePolicyModel.BuildDate', validationErrors)" class="field-validation-error">
-        <div ng-repeat="error in validationErrors['HomePolicyModel.BuildDate']">{{error}} <br /></div>
+    <div class="input-group">
+        <input type="text" class="form-control default-input w-input" placeholder="yyyy/mm/dd" uib-datepicker-popup="{{format}}"
+            ng-model="data.HomePolicyModel.BuildDate" is-open="openedBuildDate" close-text="Close" show-button-bar="false" alt-input-formats="altInputFormats"
+            ng-change="clearError('homePolicyModel.BuildDate', validationErrors)" 
+        />
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openBuildDate()">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
+    </div>
+    <div ng-show="paramExists('homePolicyModel.BuildDate', validationErrors)" class="field-validation-error">
+        <div ng-repeat="error in validationErrors['homePolicyModel.BuildDate']">{{error}} <br /></div>
     </div>
 </div>

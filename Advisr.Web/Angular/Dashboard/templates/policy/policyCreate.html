@@ -13,7 +13,16 @@
         <div class="w-form">
             <form novalidate class="ui-form" data-name="form-policy" id="wf-form-policy-form" name="wf-form-policy-form">
                 <div class="col-lg-6">
-                    <button class="small-button w-button upload-button" ngf-select="uploadFiles($files, $invalidFiles)" ngf-multiple="true" name="fileInput"
+                    <label class="field-label">Policy type</label>
+                    <ui-select ng-model="listPolicyType.selected">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.value"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (policyType | filter: $select.search) track by item.key">
+                            <span ng-bind="item.value"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <button style="margin-top:10px;" class="small-button w-button upload-button" ngf-select="uploadFiles($files, $invalidFiles)" ngf-multiple="true" name="fileInput"
                         accept="image/*, application/pdf, application/msword, application/rtf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         ngf-max-size="10MB" button-spinner="submitInProgressFile">+ Upload file here
                                 </button>
@@ -23,18 +32,6 @@
                     </div>
                 </div>        
             </form>
-            <script type="text/ng-template" id="confirmMessage">
-                <div>
-                    <div class="text-center">
-                        <span class="heading-4">Do you want to add another policy?</span>
-                        <br />
-                        <br />
-                        <br />
-                        <button class="small-button w-button upload-button" ng-click="confirmed()">Yes</button>
-                        <button class="small-button w-button upload-button" ng-click="rejected()">No</button>
-                    </div>
-                </div>
-            </script>
         </div><!--w-form-->
     </div><!--row-->
 </div><!--wrapper-->
@@ -64,7 +61,8 @@
                 <div>{{fileName.fileSize | bytes}} </div>
             </div>
             <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
-                <a class="documents text-link" ng-href="{{fileName.url}}?type=inline" target="_blank">View DOCUMENT</a>
+                <a class="view-doc documents text-link" ng-href="{{fileName.url}}?type=inline" target="_blank">View DOCUMENT</a>
+                 <span style="cursor: pointer" class="glyphicon glyphicon-trash remove-notification" aria-hidden="true" ng-click="removeFile($index)"></span>
             </div>
         </div>
     </div>
@@ -73,7 +71,7 @@
     <div class="row">
         <div class="col-lg-12">
             <button class="default-button w-button pull-left save-btn" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress"
-                ng-disabled="disabled">Save</button>
+                ng-disabled="disabled || !fileNames.length > 0">Save</button>
         </div>
     </div>
 </div>

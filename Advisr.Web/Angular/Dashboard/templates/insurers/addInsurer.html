@@ -12,21 +12,21 @@
                     </div>
                     <label class="field-label required" for="url">Insurer url</label>
                     <input class="default-input w-input" data-name="url" id="url" maxlength="256" name="url" placeholder="Enter insurer url"
-                        type="text" ng-model="data.url" ng-change="clearError('url', validationErrors)">
-                    <div ng-show="paramExists('url', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['url']">{{error}} <br /></div>
+                        type="text" ng-model="data.url" ng-change="clearError('uRL', validationErrors)">
+                    <div ng-show="paramExists('uRL', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['uRL']">{{error}} <br /></div>
                     </div>
                     <label class="field-label required" for="phone">Contact Phone</label>
-                    <input class="default-input w-input" data-name="phone" id="phone" maxlength="256" name="phone" placeholder="Enter Phone e.g. (9999 999 999)"
-                        type="text" mask="9999-999-999" clean="true" ng-model="data.phone" ng-change="clearError('phone', validationErrors)">
+                    <input class="default-input w-input" data-name="phone" id="phone" maxlength="256" name="phone" placeholder="Enter Phone e.g."
+                        type="text" ng-model="data.phone" ng-change="clearError('phone', validationErrors)">
                     <div ng-show="paramExists('phone', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['phone']">{{error}} <br /></div>
                     </div>
                     <label class="field-label" for="phone">Phone overseas</label>
                     <input class="default-input w-input" data-name="phoneOverseas" id="phoneOverseas" maxlength="256" name="phoneOverseas" placeholder="Enter insurers phone overseas"
                         type="text" ng-model="data.phoneOverseas" ng-change="clearError('phoneOverseas', validationErrors)">
-                    <div ng-show="paramExists('password', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['password']">{{error}} <br /></div>
+                    <div ng-show="paramExists('phoneOverseas', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['phoneOverseas']">{{error}} <br /></div>
                     </div>
                     <label class="field-label required" for="confirm-password">Logo</label>
                     <button class="small-button w-button upload-button" ngf-select="uploadLogo($file, $invalidFiles)" name="fileInput" accept="image/*"
@@ -39,10 +39,15 @@
                     </div>
                     <img class="notFound" alt="Not found" id="logo" ng-src="{{data.logo.url}}" ng-if="data.logo.url" />
                     <label class="field-label" for="phone">Color</label>
-                    <input class="default-input w-input" data-name="color" id="color" maxlength="256" name="color" placeholder="Enter insurers сolor"
-                        type="text" ng-model="data.color" ng-change="clearError('color', validationErrors)">
+                    <input class="default-input w-input" data-name="color" id="color" maxlength="256" name="color" placeholder="Enter insurers color"
+                           type="text" ng-model="data.color" ng-change="clearError('color', validationErrors)">
                     <div ng-show="paramExists('color', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['color']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label required">Description</label>
+                    <textarea class="form-control default-input" rows="10" placeholder="Enter Description" ng-model="data.description" ng-change="clearError('description', validationErrors)"></textarea>
+                    <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
                     </div>
                     <br />
                     <br />

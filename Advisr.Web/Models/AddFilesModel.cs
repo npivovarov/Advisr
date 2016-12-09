@@ -10,6 +10,9 @@ namespace Advisr.Web.Models
         public int Id { get; set; }
 
         [Required]
+        public string PrePolicyType { get; set; }
+
+        [Required]
         public List<Guid> FileIds { get; set; }
     }
 }

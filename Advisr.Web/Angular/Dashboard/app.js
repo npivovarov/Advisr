@@ -116,10 +116,25 @@ DashboardApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 'u
             url: '/admin/insurers/editInsurerPolicyType/:id',
             templateUrl: '/Angular/Dashboard/templates/insurers/editPolicyGroup.html',
             controller: 'InsurerPolicyTypeController'
-        }).state('addInsurerPolicyType', {
+        })
+        .state('addInsurerPolicyType', {
             url: '/admin/insurers/addInsurerPolicyType/:id',
             templateUrl: '/Angular/Dashboard/templates/insurers/addPolicyGroup.html',
             controller: 'InsurerPolicyTypeCreateController'
+        })
+        .state('notifications', {
+            url: '/notifications',
+            templateUrl: '/Angular/Dashboard/templates/notifications/notifications.html',
+            controller: 'NotificationsController'
+        })
+        .state('notificationsPager', {
+            url: '/notifications/page/:page',
+            templateUrl: '/Angular/Dashboard/templates/notifications/notifications.html',
+            controller: 'NotificationsController'
+        })
+        .state('about', {
+            url: '/about',
+            templateUrl: '/Angular/Dashboard/templates/about/about.html',
         })
     ;
 
@@ -130,13 +145,16 @@ DashboardApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 'u
 
 }]);
 
-DashboardApp.run(['$rootScope', '$cookies', '$location', '$state', '$anchorScroll', '$q', 'UserService', 'ConfigService', function ($rootScope, $cookies, $location, $state, $anchorScroll, $q, UserService, ConfigService) {
+DashboardApp.run(['$rootScope', '$cookies', '$location', '$state', '$anchorScroll', '$q', 'UserService', 'NotificationsService', 'ConfigService', function ($rootScope, $cookies, $location, $state, $anchorScroll, $q, UserService, NotificationsService, ConfigService) {
     
     UserService.getProfile().then(function (res) {
         $rootScope.currentUser = res.data;
         $cookies.put('userId', res.data.id);
     });
 
+    NotificationsService.getCounter().then(function (res) {
+        $rootScope.countNotification = res.data;
+    });
 
     $rootScope.clearError = function (param, object) {
         if (!_.isObject(object)) return;
@@ -208,7 +226,14 @@ DashboardApp.run(['$rootScope', '$cookies', '$location', '$state', '$anchorScrol
         });
         var contains = _.findByValues($rootScope.currentUser.roles, "id", roles);
         return contains.length > 0;
-    }    
+    }
+
+    function _getTimeAgo(date) {
+        if (Math.abs(moment().diff(date)) < 15000) {
+            return 'Just now';
+        }
+        return moment(date).fromNow();
+    }
 
     _.extend($rootScope, {
         closeAlert: _closeAlert,
@@ -216,6 +241,7 @@ DashboardApp.run(['$rootScope', '$cookies', '$location', '$state', '$anchorScrol
         getClass: _getClass,
         checkRole: _checkRole,
         getPrevNumber: _getPrevNumber,
+        getTimeAgo: _getTimeAgo,
         alerts: []
     });
 

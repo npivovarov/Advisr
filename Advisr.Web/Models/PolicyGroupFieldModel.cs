@@ -9,10 +9,10 @@ namespace Advisr.Web.Models
 {
     public class PolicyGroupFieldModel
     {
-        public int Id { get; set; }
+        public int FieldId { get; set; }
 
         [Required]
-        public int PolicyGroupId { get; set; }
+        public int PolicyTypeId { get; set; }
 
         [Required]
         public string FieldName { get; set; }

@@ -19,7 +19,7 @@ namespace Advisr.Domain.DbModels
 
         public PolicyGroupType PolicyGroupType { get; set; }
 
-        public Status? Status { get; set; }
+        public PolicyTypeStatus? Status { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
@@ -34,7 +34,8 @@ namespace Advisr.Domain.DbModels
         public virtual ICollection<Policy> Policies { get; set; }
 
         public virtual ICollection<AdditionalPolicyProperty> AdditionalPolicyFields { get; set; }
-        
+
+        public virtual ICollection<PolicyTypeField> PolicyTypeFields { get; set; }
 
         [ForeignKey("InsurerId")]
         public virtual Insurer Insurer { get; set; }
@@ -53,9 +54,9 @@ namespace Advisr.Domain.DbModels
         Life = 2
     }
 
-    public enum Status
+    public enum PolicyTypeStatus
     {
         Active = 0,
-        Hide
+        Hide = 1
     }
 }

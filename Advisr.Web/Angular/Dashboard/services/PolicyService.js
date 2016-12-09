@@ -55,7 +55,6 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
         });
     }
 
-
     function _createPolicy(data) {
         return $http.post(ConfigService.urls.policy.create, data);
     }
@@ -85,9 +84,9 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
     }
 
     function _getFilledGroupFields(groupId, policyId) {
-        return $http.get(ConfigService.urls.policy.groupFields, {
+        return $http.get(ConfigService.urls.policy.getFilledFields, {
             params: {
-                policyGroupId: groupId,
+                policyTypeId: groupId,
                 policyId: policyId
             }
         });
@@ -99,6 +98,23 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
 
     function _getShortDetails(id) {
         return $http.get(ConfigService.urls.policy.shortDetails, {
+            params: {
+                id: id
+            }
+        });
+    }
+
+    function _getCoveragesDetails(data) {
+        return $http.get(ConfigService.urls.policy.coveragesDescription, {
+            params: {
+                policyId: data.policyId,
+                policyTypeId: data.policyTypeId
+            }
+        });
+    }
+
+    function _getCoverages(id) {
+        return $http.get(ConfigService.urls.policy.getCoverages, {
             params: {
                 id: id
             }
@@ -117,7 +133,9 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
         getInsurerList: _getInsurerList,
         updatePolicy: _updatePolicy,
         getShortDetails: _getShortDetails,
-        getPoliciesPortfolio: _getPoliciesPortfolio
+        getPoliciesPortfolio: _getPoliciesPortfolio,
+        getCoveragesDetails: _getCoveragesDetails,
+        getCoverages: _getCoverages
     })
 
     return PolicyService;

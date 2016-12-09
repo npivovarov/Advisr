@@ -22,16 +22,16 @@
 <!-- Heading 4 -->
 <div class="graph-div-mobile w-hidden-main w-hidden-medium" data-ix="graphic-lod-and-select-mobile" style="opacity: 1; transform: scaleX(1) scaleY(1) scaleZ(1); transition: opacity 500ms, transform 500ms;">
     <div class="graph-block w-clearfix">
-    <div class="graph-com"><img class="block-image" height="50" src="Content/images/Commercial.svg" width="76">
+    <div class="graph-com"><img class="block-image" height="50" src="/Content/images/Commercial.svg" width="76">
         <h5 class="block-text-heading">{{currency.commertial | currency:"$":0}}<br>Commercial</h5>
     </div>
-    <div class="graph-me"><img class="block-image com" height="50" src="Content/images/me.svg" width="36">
-        <h5 class="block-text-heading">{{currency.me | currency:"$":0}}<br>Me</h5>
+    <div class="graph-me"><img class="block-image com" height="50" src="/Content/images/me.svg" width="36">
+        <h5 class="block-text-heading">{{currency.personal | currency:"$":0}}<br>Personal</h5>
     </div>
-    <div class="graph-veh"><img class="block-image-veh-selected w-hidden-main w-hidden-medium" height="50" src="Content/images/Vehicle_selected.svg" width="76" style="transition: opacity 200ms; opacity: 0;"><img class="block-image veh" height="50" src="Content/images/Vehicle.svg" width="76">
+    <div class="graph-veh"><img class="block-image-veh-selected w-hidden-main w-hidden-medium" height="50" src="/Content/images/Vehicle_selected.svg" width="76" style="transition: opacity 200ms; opacity: 0;"><img class="block-image veh" height="50" src="/Content/images/Vehicle.svg" width="76">
         <h5 class="block-text-heading">{{currency.vehicle | currency:"$":0}}<br>Vehicle</h5>
     </div>
-    <div class="graph-prop"><img class="block-image" height="50" src="Content/images/Property.svg" width="76">
+    <div class="graph-prop"><img class="block-image" height="50" src="/Content/images/Property.svg" width="76">
         <h5 class="block-text-heading">{{currency.property | currency:"$":0}}<br>Property</h5>
     </div>
     </div>
@@ -40,13 +40,13 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="graph-div w-hidden-small w-hidden-tiny" data-ix="graphic-lod-and-select">
-              <div class="com-text" data-ix="opacity-none">
+              <div class="com-text v2" data-ix="opacity-none">
                 <h5 class="me-title">{{currency.commertial | currency:"$":0}}<br><strong>Commercial</strong></h5>
                 <div class="text-desc-com" ng-class="{animText: optionsCom}">
                     Professional Indemnity
                   <br>Public Liability</div>
               </div>
-              <div class="veh-text" data-ix="opacity-none">
+              <div class="veh-text v2" data-ix="opacity-none">
                 <h5 class="me-title">{{currency.vehicle | currency:"$":0}}<br><strong>Vehicle</strong></h5>
                 <div class="text-desc-veh" ng-class="{animText: optionsVeh}">
                      Car Insurance
@@ -54,31 +54,31 @@
                     <br>Motorcycle Insurance
                 </div>
               </div>
-              <div class="me-text" data-ix="opacity-none">
-                <h5 class="me-title">{{currency.me | currency:"$":0}}<br><strong>Me</strong></h5>
+              <div class="me-text v2" data-ix="opacity-none">
+                <h5 class="me-title">{{currency.personal | currency:"$":0}}<br><strong>Personal</strong></h5>
                 <div class="text-desc-me" ng-class="{animText: optionsMe}">
                    Life Insurance
                   <br>Health Insurance
                   <br>Pet Insurance</div>
               </div>
-              <div class="property-text" data-ix="opacity-none">
+              <div class="property-text v2" data-ix="opacity-none">
                 <h5 class="me-title">{{currency.property | currency:"$":0}}<br><strong>Property</strong></h5>
                 <div class="text-desc-prop" ng-class="{animText: optionsProp}">
                     Mortgage Protection
                   <br>Home &amp; Contents</div>
               </div>
               <div class="graph-circle">
-                <div class="chunk me" data-ix="graph-selecthover-me">
-                  <div class="chunk-image me" data-ix="me-chunk" ng-click="showPolicy('me')" ng-mouseenter="optionsMe=true" ng-mouseleave="optionsMe=false"></div>
+                <div class="chunk me v2" data-ix="graph-selecthover-me">
+                  <div class="chunk-image me v2" data-ix="me-chunk" ng-click="showPolicy('personal')" ng-mouseenter="optionsMe=true" ng-mouseleave="optionsMe=false"></div>
                 </div>
-                <div class="chunk vehicle" data-ix="graph-selecthover-veh">
-                  <div class="chunk-image" data-ix="veh-chunk" ng-click="showPolicy('vehicle')" ng-mouseenter="optionsVeh=true" ng-mouseleave="optionsVeh=false"></div>
+                <div class="chunk vehicle v2" data-ix="graph-selecthover-veh">
+                  <div class="chunk-image v2" data-ix="veh-chunk" ng-click="showPolicy('vehicle')" ng-mouseenter="optionsVeh=true" ng-mouseleave="optionsVeh=false"></div>
                 </div>
-                <div class="chunk property" data-ix="graph-selecthover-prop">
-                  <div class="chunk-image prop" data-ix="prop-chunk" ng-click="showPolicy('property')" ng-mouseenter="optionsProp=true" ng-mouseleave="optionsProp=false"></div>
+                <div class="chunk property v2" data-ix="graph-selecthover-prop">
+                  <div class="chunk-image prop v2" data-ix="prop-chunk" ng-click="showPolicy('property')" ng-mouseenter="optionsProp=true" ng-mouseleave="optionsProp=false"></div>
                 </div>
-                <div class="chunk commercial" data-ix="graph-selecthover">
-                  <div class="chunk-image com" data-ix="comme-chunk" ng-click="showPolicy('commercial')" ng-mouseenter="optionsCom=true" ng-mouseleave="optionsCom=false"></div>
+                <div class="chunk commercial v2" data-ix="graph-selecthover">
+                  <div class="chunk-image com v2" data-ix="comme-chunk" ng-click="showPolicy('commercial')" ng-mouseenter="optionsCom=true" ng-mouseleave="optionsCom=false"></div>
                 </div>
               </div>
               <div class="symbol-user"></div>
@@ -88,9 +88,11 @@
     </div>
 </div>
 <!-- Text content -->
-<div class="policy-panel" style="transform-style: preserve-3d; display: block; transition: transform 400ms; transform: translateX(0px) translateY(0%) translateZ(0px);">
+<div id="policy" class="policy-panel fadeAnimate" style="transform-style: preserve-3d; display: block; transition: transform 400ms; transform: translateX(0px) translateY(0%) translateZ(0px);" ng-show="showPanel">
     <div class="bottom grey-block portfolio w-clearfix">
-        <img class="card-container-cross" data-ix="policy-panel-close" height="19" src="Content/images/Card_Container_X.svg" width="19">
+        <img class="card-container-cross" data-ix="policy-panel-close" height="19" src="/Content/images/Card_Container_X.svg" width="19"
+        ng-click="closePortfolio()"
+        >
         <div class="text-capitalize">{{portfolioList.length}} {{groupName}} Policies</div>
     </div>
     <div class="card-container">
@@ -104,6 +106,7 @@
                         </div>
                         <div>{{policy.subTitle}}</div>
                         <div>{{policy.policyGroup.groupName}}</div>
+                        <div>{{policy.policyGroup.policyType}}</div>
                     </div>
                     <div class="mobile-card-right-col w-col w-col-3 w-col-small-3 w-col-tiny-3">
                         <div class="mobile-card-right-div">
@@ -114,7 +117,10 @@
                         </div>
                     </div>
                     <div class="moble-card-arrow-col w-clearfix w-col w-col-2 w-col-small-2 w-col-tiny-2">
-                        <div class="mobile-card-arrow w-clearfix"><img class="mobile-card-arrow-image" data-ix="show-policy-details" src="Content/images/mobile_card_arrow2x.png">
+                        <div class="mobile-card-arrow w-clearfix">
+                            <a href="#policy/{{policy.id}}">
+                                <img class="mobile-card-arrow-image" data-ix="show-policy-details" src="/Content/images/mobile_card_arrow2x.png">
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -130,6 +136,7 @@
                                 {{policy.policyPaymentAmount | currency:"$":0}}/{{getPayment(policy.policyPaymentFrequency) | limitTo: 1 | lowercase}}
                             </h5>
                             <div>{{policy.policyGroup.groupName}}</div>
+                            <div>{{policy.policyGroup.policyType}}</div>
                         </div>
                         <div class="w-col w-col-3">
                             <h5>Insurance</h5>
@@ -158,9 +165,9 @@
                         </div>
                         <div class="contact-col w-col w-col-2">
                             <h5 class="heading-5">Contact</h5><a target="_blank" class="card-links contact link-text" ng-href="http://{{policyInfo[$index].insurer.url}}">{{policyInfo[$index].insurer.url}}</a>
-                            <a class="card-links link-text" href="#">{{policyInfo[$index].insurer.phone}}</a>
+                            <span class="card-links link-text phone-link" href="#">{{policyInfo[$index].insurer.phone}}</span>
                             <h5 class="contact-sub-title heading-5">Overseas no.</h5>
-                            <a class="card-links contact link-text" href="#">{{policyInfo[$index].insurer.phoneOverseas}}</a>
+                            <span class="card-links contact link-text phone-link" href="#">{{policyInfo[$index].insurer.phoneOverseas}}</span>
                         </div>
                         <div class="right-col w-col w-col-4">
                             <a class="default-button w-button" href="#">Make a claim</a>

@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-angular.module('DashboardApp').controller('PagerController', ['$scope', '$q', '$state', '$stateParams', 'ConfigService', 'ProfileService', 'PolicyService', 'InsurersService',
-function ($scope, $q, $state, $stateParams, ConfigService, ProfileService, PolicyService, InsurersService) {
+angular.module('DashboardApp').controller('PagerController', ['$scope', '$q', '$state', '$stateParams', 'ConfigService', 'ProfileService', 'PolicyService', 'InsurersService', 'NotificationsService',
+function ($scope, $q, $state, $stateParams, ConfigService, ProfileService, PolicyService, InsurersService, NotificationsService) {
 
     $scope.activePage = $scope.$root.activePage = parseInt($stateParams.page) || 1;
 
@@ -20,6 +20,9 @@ function ($scope, $q, $state, $stateParams, ConfigService, ProfileService, Polic
         },
         InsurersService: {
             getList: InsurersService.getList
+        },
+        NotificationsService: {
+            getList: NotificationsService.getNotificationList
         }
     },
 

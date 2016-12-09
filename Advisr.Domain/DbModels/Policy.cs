@@ -17,6 +17,8 @@ namespace Advisr.Domain.DbModels
         public string SubTitle { get; set; }
 
         public string PolicyNumber { get; set; }
+
+        public string PrePolicyType { get; set; }
         
         public DateTime? PolicyEffectiveDate { get; set; }
         
@@ -32,10 +34,7 @@ namespace Advisr.Domain.DbModels
 
         public DateTime? StartDate { get; set; }
         
-        public DateTime? EndDate { get; set; }
-        
-        public string Description { get; set; }
-        
+        public DateTime? EndDate { get; set; }        
 
         public PolicyStatus Status { get; set; }
         

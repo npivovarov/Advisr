@@ -33,28 +33,22 @@ namespace Advisr.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return JsonError(HttpStatusCode.BadRequest, 10, "Need to fill all required fields.", ModelState);
+                return JsonError(HttpStatusCode.BadRequest, 10, "Warning", ModelState);
             }
 
             using (var unitOfWork = UnitOfWork.Create())
             {
                 var userId = User.Identity.GetUserId();
-                var user = unitOfWork.UserRepository.GetAll().FirstOrDefault(u => u.Id == userId);
                 var file = unitOfWork.FileRepository.GetAll().FirstOrDefault(f => f.Id == model.LogoId);
-
-                if (user == null)
-                {
-                    return JsonError(HttpStatusCode.BadRequest, 10, "User doesn't exist.", ModelState);
-                }
 
                 if (file == null)
                 {
                     return JsonError(HttpStatusCode.BadRequest, 10, "File doesn't exist.", ModelState);
                 }
 
-                SaveFileAsLogo(unitOfWork, file);
-
                 unitOfWork.BeginTransaction();
+
+                SaveFileAsLogo(unitOfWork, file);
 
                 var insurer = new Insurer();
                 insurer.Name = model.Name;
@@ -64,152 +58,12 @@ namespace Advisr.Web.Controllers
                 insurer.LogoFileId = model.LogoId;
                 insurer.Email = model.Email;
                 insurer.Color = model.Color;
-                insurer.CreatedBy = user;
                 insurer.CreatedById = userId;
                 insurer.CreatedDate = DateTime.Now;
                 insurer.Status = InsurerStatus.Active;
+                insurer.Description = model.Description;
 
                 unitOfWork.InsurerRepository.Insert(insurer);
-                await unitOfWork.SaveAsync();
-
-                PolicyType vehicleCar = new PolicyType();
-                vehicleCar.GroupName = "Vehicle";
-                vehicleCar.PolicyTypeName = "Car";
-                vehicleCar.PolicyGroupType = PolicyGroupType.Vehicle;
-                vehicleCar.CreatedById = DbConstants.SystemUserId;
-                vehicleCar.CreatedDate = DateTime.Now;
-                vehicleCar.InsurerId = insurer.Id;
-                vehicleCar.Status = Status.Active;
-                unitOfWork.PolicyTypeRepository.Insert(vehicleCar);
-
-                PolicyType vehicleMotorbike = new PolicyType();
-                vehicleMotorbike.GroupName = "Vehicle";
-                vehicleMotorbike.PolicyTypeName = "Motorbike";
-                vehicleMotorbike.PolicyGroupType = PolicyGroupType.Vehicle;
-                vehicleMotorbike.CreatedById = DbConstants.SystemUserId;
-                vehicleMotorbike.CreatedDate = DateTime.Now;
-                vehicleMotorbike.InsurerId = insurer.Id;
-                vehicleMotorbike.Status = Status.Active;
-                unitOfWork.PolicyTypeRepository.Insert(vehicleMotorbike);
-
-                PolicyType meMedical = new PolicyType();
-                meMedical.GroupName = "Me";
-                meMedical.PolicyTypeName = "Medical";
-                meMedical.PolicyGroupType = PolicyGroupType.Life;
-                meMedical.CreatedById = DbConstants.SystemUserId;
-                meMedical.CreatedDate = DateTime.Now;
-                meMedical.InsurerId = insurer.Id;
-                meMedical.Status = Status.Active;
-                unitOfWork.PolicyTypeRepository.Insert(meMedical);
-
-                PolicyType meTravel = new PolicyType();
-                meTravel.GroupName = "Me";
-                meTravel.PolicyTypeName = "Travel";
-                meTravel.PolicyGroupType = PolicyGroupType.Life;
-                meTravel.CreatedById = DbConstants.SystemUserId;
-                meTravel.CreatedDate = DateTime.Now;
-                meTravel.InsurerId = insurer.Id;
-                meTravel.Status = Status.Active;
-                unitOfWork.PolicyTypeRepository.Insert(meTravel);
-
-                await unitOfWork.SaveAsync();
-
-                PolicyTypeField vehicleCarColor = new PolicyTypeField();
-                vehicleCarColor.PolicyTypeId = vehicleCar.Id;
-                vehicleCarColor.FieldName = "Color";
-                vehicleCarColor.FieldType = PolicyTypeFieldType.List;
-                vehicleCarColor.ListDesription = "[\"red\",\"black\",\"white\",\"blue\",\"green\"]";
-                vehicleCarColor.CreatedById = DbConstants.SystemUserId;
-                vehicleCarColor.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleCarColor);
-
-                PolicyTypeField vehicleBodyType = new PolicyTypeField();
-                vehicleBodyType.PolicyTypeId = vehicleCar.Id;
-                vehicleBodyType.FieldName = "Body Type";
-                vehicleBodyType.FieldType = PolicyTypeFieldType.List;
-                vehicleBodyType.ListDesription = "[\"off-road\",\"sedan\",\"station wagon\"]";
-                vehicleBodyType.CreatedById = DbConstants.SystemUserId;
-                vehicleBodyType.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleBodyType);
-
-                PolicyTypeField vehicleCarImmobilaser = new PolicyTypeField();
-                vehicleCarImmobilaser.PolicyTypeId = vehicleCar.Id;
-                vehicleCarImmobilaser.FieldName = "Immobilaser";
-                vehicleCarImmobilaser.FieldType = PolicyTypeFieldType.Bool;
-                vehicleCarImmobilaser.DefaultValue = "0";
-                vehicleCarImmobilaser.CreatedById = DbConstants.SystemUserId;
-                vehicleCarImmobilaser.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleBodyType);
-
-                PolicyTypeField vehicleCarNumberOfKeys = new PolicyTypeField();
-                vehicleCarNumberOfKeys.PolicyTypeId = vehicleCar.Id;
-                vehicleCarNumberOfKeys.FieldName = "Number Of Keys";
-                vehicleCarNumberOfKeys.FieldType = PolicyTypeFieldType.Int;
-                vehicleCarNumberOfKeys.CreatedById = DbConstants.SystemUserId;
-                vehicleCarNumberOfKeys.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleCarNumberOfKeys);
-
-                PolicyTypeField vehicleCarSecondDriver = new PolicyTypeField();
-                vehicleCarSecondDriver.PolicyTypeId = vehicleCar.Id;
-                vehicleCarSecondDriver.FieldName = "Second Driver";
-                vehicleCarSecondDriver.FieldType = PolicyTypeFieldType.String;
-                vehicleCarSecondDriver.CreatedById = DbConstants.SystemUserId;
-                vehicleCarSecondDriver.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleCarSecondDriver);
-
-                PolicyTypeField vehicleCarThirdDriver = new PolicyTypeField();
-                vehicleCarThirdDriver.PolicyTypeId = vehicleCar.Id;
-                vehicleCarThirdDriver.FieldName = "Third Driver";
-                vehicleCarThirdDriver.FieldType = PolicyTypeFieldType.String;
-                vehicleCarThirdDriver.CreatedById = DbConstants.SystemUserId;
-                vehicleCarThirdDriver.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleCarThirdDriver);
-                await unitOfWork.SaveAsync();
-
-                PolicyTypeField vehicleMotorbikeColor = new PolicyTypeField();
-                vehicleMotorbikeColor.PolicyTypeId = vehicleMotorbike.Id;
-                vehicleMotorbikeColor.FieldName = "Color";
-                vehicleMotorbikeColor.FieldType = PolicyTypeFieldType.List;
-                vehicleMotorbikeColor.ListDesription = "[\"red\",\"black\",\"white\",\"blue\",\"green\"]";
-                vehicleMotorbikeColor.CreatedById = DbConstants.SystemUserId;
-                vehicleMotorbikeColor.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleMotorbikeColor);
-
-                PolicyTypeField vehicleMotorbikeNumberOfKeys = new PolicyTypeField();
-                vehicleMotorbikeNumberOfKeys.PolicyTypeId = vehicleMotorbike.Id;
-                vehicleMotorbikeNumberOfKeys.FieldName = "Number Of Keys";
-                vehicleMotorbikeNumberOfKeys.FieldType = PolicyTypeFieldType.Int;
-                vehicleMotorbikeNumberOfKeys.DefaultValue = "0";
-                vehicleMotorbikeNumberOfKeys.CreatedById = DbConstants.SystemUserId;
-                vehicleMotorbikeNumberOfKeys.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(vehicleMotorbikeNumberOfKeys);
-                await unitOfWork.SaveAsync();
-
-                PolicyTypeField meMedicalPersone = new PolicyTypeField();
-                meMedicalPersone.PolicyTypeId = meMedical.Id;
-                meMedicalPersone.FieldName = "Persone Full Name";
-                meMedicalPersone.FieldType = PolicyTypeFieldType.String;
-                meMedicalPersone.CreatedById = DbConstants.SystemUserId;
-                meMedicalPersone.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(meMedicalPersone);
-
-                PolicyTypeField meTravelPersone = new PolicyTypeField();
-                meTravelPersone.PolicyTypeId = meTravel.Id;
-                meTravelPersone.FieldName = "Persone Full Name";
-                meTravelPersone.FieldType = PolicyTypeFieldType.String;
-                meTravelPersone.CreatedById = DbConstants.SystemUserId;
-                meTravelPersone.CreatedDate = DateTime.Now;
-
-                unitOfWork.PolicyTypeFieldRepository.Insert(meTravelPersone);
                 await unitOfWork.SaveAsync();
 
                 unitOfWork.CommitTransaction();
@@ -228,107 +82,66 @@ namespace Advisr.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ActionName("Groups")]
+        [ActionName("PolicyTypes")]
         public IHttpActionResult GetInsurerPolicyTypes(int insurerId)
         {
             using (IUnitOfWork unitOfWork = UnitOfWork.Create())
             {
-                var groups = unitOfWork.PolicyTypeRepository.GetAll().Where(g => g.InsurerId == insurerId)
+                var policyTypes = unitOfWork.PolicyTypeRepository.GetAll().Where(g => g.InsurerId == insurerId)
                     .Select(a => new
                     {
-                        groupid = a.Id,
-                        groupName = a.GroupName,
-                        groupType = a.PolicyGroupType.ToString(),
-                        subGroupName = a.PolicyTypeName,
+                        policyTypeId = a.Id,
+                        policyGroupName = a.GroupName,
+                        policyGroupType = a.PolicyGroupType,
+                        policyTypeName = a.PolicyTypeName,
                         createdDate = a.CreatedDate,
-                        status = a.Status.ToString()
+                        status = a.Status
                     }
                     ).ToList();
 
-                return Json(groups);
+                return Json(policyTypes);
             }
         }
 
         /// <summary>
         /// Gets policy type by policy type id.
         /// </summary>
-        /// <param name="groupId"></param>
+        /// <param name="policyTypeId"></param>
         /// <returns></returns>
         [HttpGet]
-        [ActionName("GetGroup")]
-        public IHttpActionResult GetPolicyType(int groupId)
+        [ActionName("PolicyType")]
+        public IHttpActionResult GetPolicyType(int policyTypeId)
         {
             using (IUnitOfWork unitOfWork = UnitOfWork.Create())
             {
-                var group = unitOfWork.PolicyTypeRepository.GetAll().FirstOrDefault(g => g.Id == groupId);
-                var groupFields = unitOfWork.PolicyTypeFieldRepository.GetAll().Where(gf => gf.PolicyTypeId == groupId && gf.Status != FieldStatus.Deleted);
-                List<dynamic> types = new List<dynamic>();
-                List<dynamic> statuses = new List<dynamic>();
-                List<dynamic> fieldTypes = new List<dynamic>();
-                int counter = 0;
-
-                foreach (var item in Enum.GetNames(typeof(PolicyGroupType)).ToList())
+                var typeDb = unitOfWork.PolicyTypeRepository.GetAll().Where(g => g.Id == policyTypeId).Select(g => new
                 {
-                    types.Add(new { id = counter, name = item });
-                    counter++;
-                }
-                counter = 0;
-
-                foreach (var item in Enum.GetNames(typeof(Status)).ToList())
-                {
-                    statuses.Add(new { id = counter, name = item });
-                    counter++;
-                }
-
-                counter = 0;
-                foreach (var item in Enum.GetNames(typeof(PolicyTypeFieldType)).ToList())
-                {
-                    fieldTypes.Add(new { id = counter, name = item });
-                    counter++;
-                }
-
-                var groupDb = unitOfWork.PolicyTypeRepository.GetAll().Where(g => g.Id == groupId).Select(g => new
-                {
-                    groupId = g.Id,
-                    groupName = g.GroupName,
-                    groupType = g.PolicyGroupType.ToString(),
-                    subGroupName = g.PolicyTypeName,
+                    policyTypeId = g.Id,
+                    policyGroupName = g.GroupName,
+                    policyGroupType = g.PolicyGroupType,
+                    policyTypeName = g.PolicyTypeName,
                     createdDate = g.CreatedDate,
-                    status = g.Status.ToString(),
+                    status = g.Status,
                     insurerId = g.InsurerId,
-                    additionalProperties = groupFields.Select(f => new
+                    additionalProperties = g.PolicyTypeFields.Where(af=>af.Status != FieldStatus.Deleted).
+                    Select(f => new
                     {
                         fieldId = f.Id,
                         fieldName = f.FieldName,
-                        fieldType = f.FieldType.ToString(),
+                        fieldType = f.FieldType,
                         defaultValue = f.DefaultValue,
                         listDescription = f.ListDesription
                     })
                 }).FirstOrDefault();
 
-                if (group == null)
+                if (typeDb == null)
                 {
-                    return this.JsonError(HttpStatusCode.NotFound, 0, "not found the policy", ModelState);
+                    return this.JsonError(HttpStatusCode.NotFound, 0, "not found the group", ModelState);
                 }
-                var groupType = types.FirstOrDefault(t => t.name == groupDb.groupType);
-                var status = statuses.FirstOrDefault(s => s.name == groupDb.status);
-                groupDb.additionalProperties.ToList();
 
-                var result = new
-                {
-                    groupId = groupDb.groupId,
-                    groupName = groupDb.groupName,
-                    groupType = groupType,
-                    subGroupName = groupDb.subGroupName,
-                    status = status,
-                    additionalProperties = groupDb.additionalProperties,
-                    insurerId = groupDb.insurerId,
-                    groupTypes = types,
-                    statuses = statuses,
-                    fieldTypes = fieldTypes
-                };
+                typeDb.additionalProperties.ToList();
 
-                return Json(result);
+                return Json(typeDb);
             }
         }
 
@@ -338,7 +151,7 @@ namespace Advisr.Web.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> EditGroup([FromBody] PolicyGroupModel model)
+        public async Task<IHttpActionResult> EditPolicyType([FromBody] PolicyTypeModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -348,28 +161,22 @@ namespace Advisr.Web.Controllers
             using (var unitOfWork = UnitOfWork.Create())
             {
                 var userId = User.Identity.GetUserId();
-                var group = unitOfWork.PolicyTypeRepository.GetAll().FirstOrDefault(i => i.Id == model.GroupId);
-                var user = unitOfWork.UserRepository.GetAll().FirstOrDefault(u => u.Id == userId);
+                var group = unitOfWork.PolicyTypeRepository.GetAll().FirstOrDefault(i => i.Id == model.PolicyTypeId);
 
                 if (group == null)
                 {
                     return JsonError(HttpStatusCode.BadRequest, 10, "Such group doesn't exist.", ModelState);
                 }
 
-                unitOfWork.BeginTransaction();
-
-                group.GroupName = model.GroupName;
-                group.PolicyGroupType = model.GroupType;
-                group.PolicyTypeName = model.SubgroupName;
-                group.ModifiedBy = user;
+                group.GroupName = model.PolicyGroupName; // TODO: change to policy group name
+                group.PolicyGroupType = model.PolicyGroupType;
+                group.PolicyTypeName = model.PolicyTypeName; //TODO: change to policy type name
                 group.ModifiedById = userId;
                 group.ModifiedDate = DateTime.Now;
                 group.InsurerId = model.InsurerId;
                 group.Status = model.Status;
                 unitOfWork.PolicyTypeRepository.Edit(group);
                 await unitOfWork.SaveAsync();
-
-                unitOfWork.CommitTransaction();
 
                 return Ok();
             }
@@ -382,35 +189,35 @@ namespace Advisr.Web.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [ActionName("AddGroup")]
-        public async Task<IHttpActionResult> AddGroup([FromBody] PolicyGroupModel model)
+        public async Task<IHttpActionResult> AddPolicyType([FromBody] PolicyTypeModel model)
         {
             if (!ModelState.IsValid)
             {
-                return JsonError(HttpStatusCode.BadRequest, 10, "Need to fill all required fields.", ModelState);
+                return JsonError(HttpStatusCode.BadRequest, 10, "Warning", ModelState);
             }
 
             using (var unitOfWork = UnitOfWork.Create())
             {
                 var userId = User.Identity.GetUserId();
-                var user = unitOfWork.UserRepository.GetAll().FirstOrDefault(u => u.Id == userId);
                 var group = new PolicyType();
+                //TODO check if insurer already has group with such groupName, type and type name
+                var repeats = unitOfWork.PolicyTypeRepository.GetAll().FirstOrDefault(g => g.InsurerId == model.InsurerId && g.PolicyTypeName == model.PolicyTypeName);
 
-                unitOfWork.BeginTransaction();
+                if (repeats != null)
+                {
+                    return JsonError(HttpStatusCode.BadRequest, 10, "Such policy type have been already created for this insurer", ModelState);
+                }
 
-                group.GroupName = model.GroupName;
-                group.PolicyGroupType = model.GroupType;
-                group.PolicyTypeName = model.SubgroupName;
+                group.GroupName = model.PolicyGroupName;
+                group.PolicyGroupType = model.PolicyGroupType;
+                group.PolicyTypeName = model.PolicyTypeName;
                 group.CreatedById = userId;
                 group.CreatedDate = DateTime.Now;
-                group.CreatedBy = user;
                 group.InsurerId = model.InsurerId;
                 group.Status = model.Status;
                 
                 unitOfWork.PolicyTypeRepository.Insert(group);
                 await unitOfWork.SaveAsync();
-
-                unitOfWork.CommitTransaction();
 
                 var result = new
                 {
@@ -433,16 +240,13 @@ namespace Advisr.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return JsonError(HttpStatusCode.BadRequest, 10, "Need to fill all required fields.", ModelState);
+                return JsonError(HttpStatusCode.BadRequest, 10, "Warning", ModelState);
             }
 
             using (var unitOfWork = UnitOfWork.Create())
             {
                 var userId = User.Identity.GetUserId();
-                var user = unitOfWork.UserRepository.GetAll().FirstOrDefault(u => u.Id == userId);
                 var field = new PolicyTypeField();
-
-                unitOfWork.BeginTransaction();
 
                 field.FieldName = model.FieldName;
                 field.FieldType = model.FieldType;
@@ -451,12 +255,10 @@ namespace Advisr.Web.Controllers
                 field.CreatedDate = DateTime.Now;
                 field.DefaultValue = model.DefaultValue;
                 field.ListDesription = model.ListDescription;
-                field.PolicyTypeId = model.PolicyGroupId;
+                field.PolicyTypeId = model.PolicyTypeId;
 
                 unitOfWork.PolicyTypeFieldRepository.Insert(field);
                 await unitOfWork.SaveAsync();
-
-                unitOfWork.CommitTransaction();
 
                 var result = new
                 {
@@ -470,7 +272,7 @@ namespace Advisr.Web.Controllers
         /// <summary>
         /// Deletes policy type additional property.
         /// </summary>
-        /// <param name="fieldId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
         [ActionName("DeleteField")]
@@ -482,21 +284,92 @@ namespace Advisr.Web.Controllers
 
                 if (field == null)
                 {
-                    return JsonError(HttpStatusCode.BadRequest, 10, "Insurer was not found or already deleted.", ModelState);
+                    return JsonError(HttpStatusCode.BadRequest, 10, "Field was not found or already deleted.", ModelState);
                 }
 
-                unitOfWork.BeginTransaction();
 
+                field.ModifiedById = User.Identity.GetUserId();
+                field.ModifiedDate = DateTime.Now;
                 field.Status = FieldStatus.Deleted;
 
+                unitOfWork.PolicyTypeFieldRepository.Edit(field);
                 await unitOfWork.SaveAsync();
-
-                unitOfWork.CommitTransaction();
 
                 return Ok();
             }
         }
 
+        /// <summary>
+        /// Gets policy type field.
+        /// </summary>
+        /// <param name="fieldId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("GetField")]
+        public IHttpActionResult GetField(int fieldId)
+        {
+            using (IUnitOfWork unitOfWork = UnitOfWork.Create())
+            {
+                var fieldDb = unitOfWork.PolicyTypeFieldRepository.GetAll().Where(g => g.Id == fieldId).Select(g => new
+                {
+                    fieldId = g.Id,
+                    fieldName = g.FieldName,
+                    fieldType = g.FieldType,
+                    defaultValue = g.DefaultValue,
+                    listDescription = g.ListDesription,
+                    createdDate = g.CreatedDate,
+                    status = g.Status,
+                    policyTypeId = g.PolicyTypeId
+                }).FirstOrDefault();
+
+                if (fieldDb == null)
+                {
+                    return this.JsonError(HttpStatusCode.NotFound, 0, "not found the policy", ModelState);
+                }
+
+                return Json(fieldDb);
+            }
+        }
+
+        /// <summary>
+        /// Saves the additional property edited by user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("SaveField")]
+        public async Task<IHttpActionResult> SaveField([FromBody] PolicyGroupFieldModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return JsonError(HttpStatusCode.BadRequest, 10, "Warning", ModelState);
+            }
+
+            using (var unitOfWork = UnitOfWork.Create())
+            {
+                var userId = User.Identity.GetUserId();
+                var field = unitOfWork.PolicyTypeFieldRepository.GetAll().FirstOrDefault(f => f.Id == model.FieldId);
+
+                if (field == null)
+                {
+                    return JsonError(HttpStatusCode.BadRequest, 10, "Field was not found.", ModelState);
+                }
+
+
+                field.FieldName = model.FieldName;
+                field.FieldType = model.FieldType;
+                field.Status = FieldStatus.Active;
+                field.ModifiedById = userId;
+                field.ModifiedDate = DateTime.Now;
+                field.DefaultValue = model.DefaultValue;
+                field.ListDesription = model.ListDescription;
+
+                unitOfWork.PolicyTypeFieldRepository.Edit(field);
+                await unitOfWork.SaveAsync();
+
+                return Ok();
+            }
+        }
         /// <summary>
         /// Edits existing insurer.
         /// </summary>
@@ -508,14 +381,13 @@ namespace Advisr.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return JsonError(HttpStatusCode.BadRequest, 10, "Need to fill all required fields.", ModelState);
+                return JsonError(HttpStatusCode.BadRequest, 10, "Warning", ModelState);
             }
 
             using (var unitOfWork = UnitOfWork.Create())
             {
                 var userId = User.Identity.GetUserId();
                 var insurer = unitOfWork.InsurerRepository.GetAll().FirstOrDefault(i => i.Id == model.Id);
-                var user = unitOfWork.UserRepository.GetAll().FirstOrDefault(u => u.Id == userId);
                 var file = unitOfWork.FileRepository.GetAll().FirstOrDefault(f => f.Id == model.LogoId);
                 
                 if (insurer == null)
@@ -527,23 +399,22 @@ namespace Advisr.Web.Controllers
                 {
                     return JsonError(HttpStatusCode.BadRequest, 10, "Selected logo file is invalid.", ModelState);
                 }
+                unitOfWork.BeginTransaction();
 
                 if (model.LogoId != insurer.LogoFileId)
                 {
                     SaveFileAsLogo(unitOfWork, file);
                 }
 
-                unitOfWork.BeginTransaction();
-
                 insurer.Name = model.Name;
                 insurer.Phone = model.Phone;
                 insurer.PhoneOverseas = model.PhoneOverseas;
                 insurer.URL = model.URL;
-                insurer.ModifiedBy = user;
                 insurer.ModifiedById = userId;
                 insurer.ModifiedDate = DateTime.Now;
                 insurer.LogoFileId = model.LogoId;
                 insurer.Color = model.Color;
+                insurer.Description = model.Description;
                 unitOfWork.InsurerRepository.Edit(insurer);
                 await unitOfWork.SaveAsync();
 
@@ -573,19 +444,14 @@ namespace Advisr.Web.Controllers
                     insurers = insurers.Where(i => i.Name.StartsWith(q) || i.Name.Contains(q));
                 }
 
-                var insurersCount = insurers.Count();
+                var dataCount = insurers.Count();
 
                 var startLinkToLogo = Url.Link("Default", new { controller = "files", action = "getlogo" });
-                if (insurers.Count() == 0)
-                {
-                    return Json("");
-                }
 
                 var insurersList = insurers
                             .OrderBy(i => i.Name)
                             .Skip(offset)
                             .Take(count)
-                            .ToList()
                             .Select(insurer => new
                             {
                                 insurerId = insurer.Id,
@@ -606,7 +472,7 @@ namespace Advisr.Web.Controllers
 
                 var result = new
                 {
-                    count = insurersCount,
+                    count = dataCount,
                     data = insurersList
                 };
 
@@ -621,51 +487,13 @@ namespace Advisr.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         [ActionName("Get")]
-        public IHttpActionResult Get(string id)
+        public IHttpActionResult Get(int id)
         {
             using (var unitOfWork = UnitOfWork.Create())
             {
                 var startLinkToLogo = Url.Link("Default", new { controller = "files", action = "getlogo" });
-                int result;
-                List<dynamic> types = new List<dynamic>();
-                List<dynamic> statuses = new List<dynamic>();
-                List<dynamic> fieldTypes = new List<dynamic>();
-                int counter = 0;
 
-                if (!int.TryParse(id, out result))
-                {
-                    return JsonError(HttpStatusCode.BadRequest, 10, "Insurer is invalid.", ModelState);
-                }
-
-                var insurerId = Int32.Parse(id);
-                var insurerDb = unitOfWork.InsurerRepository.GetAll().FirstOrDefault(i => i.Id == insurerId && i.Status != InsurerStatus.Deleted);
-
-                if (insurerDb == null)
-                {
-                    return JsonError(HttpStatusCode.BadRequest, 10, "Insurer was not found", ModelState);
-                }
-
-                foreach (var item in Enum.GetNames(typeof(PolicyGroupType)).ToList())
-                {
-                    types.Add(new { id = counter, name = item });
-                    counter++;
-                }
-                counter = 0;
-
-                foreach (var item in Enum.GetNames(typeof(Status)).ToList())
-                {
-                    statuses.Add(new { id = counter, name = item });
-                    counter++;
-                }
-
-                counter = 0;
-                foreach (var item in Enum.GetNames(typeof(PolicyTypeFieldType)).ToList())
-                {
-                    fieldTypes.Add(new { id = counter, name = item });
-                    counter++;
-                }
-
-                var insurer = unitOfWork.InsurerRepository.GetAll().Where(i => i.Id == insurerId).Select(
+                var insurer = unitOfWork.InsurerRepository.GetAll().Where(i => i.Id == id).Select(
                     i => new
                     {
                         id = i.Id,
@@ -682,30 +510,15 @@ namespace Advisr.Web.Controllers
                         },
                         color = i.Color,
                         joinedDate = i.CreatedDate,
-                    }).First();
+                        description = i.Description
+                    }).FirstOrDefault();
 
-                var value = new
+                if (insurer == null)
                 {
-                    id = insurer.id,
-                    name = insurer.name,
-                    url = insurer.url,
-                    email = insurer.email,
-                    phone = insurer.phone,
-                    phoneOverseas = insurer.phoneOverseas,
-                    logo = new
-                    {
-                        id = insurer.logo.id,
-                        name = insurer.logo.name,
-                        url = insurer.logo.url
-                    },
-                    color = insurer.color,
-                    joinedDate = insurer.joinedDate,
-                    groupTypes = types,
-                    statuses = statuses,
-                    fieldTypes = fieldTypes
-                };
+                    return JsonError(HttpStatusCode.BadRequest, 10, "Insurer was not found", ModelState);
+                }
 
-                return Json(value);
+                return Json(insurer);
             }
         }
 
@@ -716,31 +529,24 @@ namespace Advisr.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("Delete")]
-        public async Task<IHttpActionResult> Delete(string id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
             using (var unitOfWork = UnitOfWork.Create())
             {
-                int result;
-                if (!int.TryParse(id, out result))
-                {
-                    return JsonError(HttpStatusCode.BadRequest, 10, "Insurer is invalid.", ModelState);
-                }
-
-                var insurerId = int.Parse(id);
-                var insurer = unitOfWork.InsurerRepository.GetAll().FirstOrDefault(i => i.Id == insurerId);
+                var insurer = unitOfWork.InsurerRepository.GetAll().FirstOrDefault(i => i.Id == id && i.Status == InsurerStatus.Active);
 
                 if (insurer == null)
                 {
                     return JsonError(HttpStatusCode.BadRequest, 10, "Insurer was not found or already deleted.", ModelState);
                 }
 
-                unitOfWork.BeginTransaction();
-
+                insurer.ModifiedById = User.Identity.GetUserId();
+                insurer.ModifiedDate = DateTime.Now;
                 insurer.Status = InsurerStatus.Deleted;
 
-                await unitOfWork.SaveAsync();
+                unitOfWork.InsurerRepository.Edit(insurer);
 
-                unitOfWork.CommitTransaction();
+                await unitOfWork.SaveAsync();
 
                 return Ok();
             }
@@ -773,13 +579,39 @@ namespace Advisr.Web.Controllers
 
                     Image cropped = new Bitmap(original, s);
 
-                    cropped.Save(logoPath, ImageFormat.Jpeg);
+                    Bitmap image = new Bitmap(cropped);
 
-                    cropped.Dispose();
+                    Color backColor = image.GetPixel(1, 1);
+
+                    if (backColor.Name == "0")
+                    {
+                        image.MakeTransparent(backColor);
+
+                        using (var b = new Bitmap(image.Width, image.Height))
+                        {
+                            b.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                            using (var g = Graphics.FromImage(b))
+                            {
+                                g.Clear(Color.White);
+                                g.DrawImageUnscaled(image, 0, 0);
+                            }
+
+                            b.Save(logoPath, ImageFormat.Jpeg);
+                            
+
+                            b.Dispose();
+                        }
+                    }
+                    else
+                    {
+                        cropped.Save(logoPath, ImageFormat.Jpeg);
+                        cropped.Dispose();
+                    }
 
                     file.LocationPath = logoPath;
                     file.FileName = fileName;
-                    file.ContentType = "jpg";
+                    file.ContentType = "image/jpeg";
                     file.IsTemp = false;
 
                     unitOfWork.FileRepository.Edit(file);

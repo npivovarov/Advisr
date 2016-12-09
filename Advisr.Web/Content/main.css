@@ -44,6 +44,15 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 10px;
 }
 
+.login-page #page-wrapper:after {
+  content: "";
+  display: block;
+}
+
+.footer, .login-page #page-wrapper:after {
+  height: 100px; 
+}
+
 .w-dropdown {
     display: inline-block;
     position: relative;
@@ -139,6 +148,61 @@ body.login-page {
 .wrapper {
   padding-left: 25px;
   padding-right: 25px;
+}
+
+.link-text.phone-link:hover {
+  text-decoration: none;
+}
+
+.section-row {
+  padding: 20px 0;
+}
+
+.w-tab-content .panel-group {
+  margin-bottom: 0;
+}
+
+a.read-more, a.read-less {
+	cursor: pointer;
+	color: #3390da;
+}
+
+span.more-text {
+	display: none;
+}
+
+span.more-text.show {
+	display: inline !important
+}
+
+.notifications span {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  position: absolute;
+  top: 11px;
+  right: 38px;
+  border-radius: 20px;
+  color: #0068b9;
+  text-align: center;
+}
+
+/*coverage*/
+.coverageDetails {
+  margin-top: 17px;
+  background-color: #f7f7f9;
+  padding: 10px 0;
+}
+
+.coverageIsActive {
+  text-align: center;
+  width: 100px;
+  margin: 25px auto;
+}
+
+.coverageRow.detail-row {
+  height: 100%;
 }
 
 /*Navbar*/
@@ -365,7 +429,9 @@ a.navlink-dropdown.profile:focus
   outline: none;
 }
 
-.ui-form .input-group-btn .btn-default {
+.ui-form .input-group-btn .btn-default,
+.input-group-btn .btn-default
+ {
   border: 2px solid #e8e8eb;
   padding: 8px 12px;
   border-left: 1px;
@@ -373,7 +439,7 @@ a.navlink-dropdown.profile:focus
   outline: none;
 }
 
-.ui-form .form-control {
+.ui-form .form-control, input.form-control {
   box-shadow: none;
 }
 
@@ -514,6 +580,82 @@ textarea {
 
 #updatePolicy .default-button {
   margin-bottom: 10px;
+}
+
+/*accordion*/
+.panel-default > .panel-heading {
+  background-color: transparent;
+  width: 100%;
+  padding-right: 40px;
+  padding-left:0px;
+  padding-top:0px;
+  padding-bottom:0px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 700;
+  margin: 6px 0;
+}
+
+.panel-default.panel-open .panel-collapse > .panel-body {
+  border-top: none;
+}
+
+.panel-default .panel-heading .panel-title a:before {
+  background: url("../Content/images/Cover_Down_Arrow.svg") no-repeat center center;
+  content: '';
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  right: -30px;
+  top: 0;
+  transform-style: preserve-3d;
+  transition: transform 200ms;
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(-90deg);
+}
+
+.panel-default.panel-open .panel-title a:before {
+  transform-style: preserve-3d;
+  transition: transform 200ms;
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+}
+
+.panel-default .panel-heading .panel-title a {
+  position: relative;
+}
+
+.panel-default .panel-heading .panel-title {
+  font-size: 14px;
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.panel-default .panel-heading .panel-title a:hover,
+.panel-default .panel-heading .panel-title a:active,
+.panel-default .panel-heading .panel-title a:focus
+ {
+  text-decoration: none;
+  outline: none;
+}
+
+.panel-default .panel-body {
+  padding: 0 0 0 28px;
+}
+
+.panel-group .panel {
+  margin-bottom: 0px;
+  border: none;
+  border-bottom: 2px solid #e9e9eb;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.panel-default > .panel-heading:hover {
+  background-color: #f7f7f9;
+}
+
+.panel-group .panel + .panel {
+  margin-top: 0;
 }
 
 /*Alert*/
@@ -878,6 +1020,10 @@ div.dropdown.open.sort .btn {
   color: #3390da;
 }
 
+.cover-label {
+     margin-bottom:0px !important;
+ }
+
 .dropdown.sort .btn:focus,
 div.dropdown.sort.open .btn:focus,
 .dropdown.sort .btn:active
@@ -914,6 +1060,10 @@ div.dropdown.sort.open .btn:focus,
 
 .w-col-6 {
   width: 50%;
+}
+
+.w-col-10 {
+    width: 83.33333333%;
 }
 
 /*Webflow */
@@ -1034,6 +1184,10 @@ div.dropdown.sort.open .btn:focus,
   .w-col-small-12 {
     width: 100%;
   }
+
+ .cover-label {
+     margin-bottom:0px !important;
+ }
 }
 @media screen and (max-width: 479px) {
   .w-container {

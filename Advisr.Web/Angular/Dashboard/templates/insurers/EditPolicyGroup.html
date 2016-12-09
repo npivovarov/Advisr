@@ -11,46 +11,64 @@
                         <div ng-repeat="error in validationErrors['insurerName']">{{error}} <br /></div>
                     </div>
                     <label class="field-label required" for="group name">Group Name</label>
-                    <input class="default-input w-input" data-name="groupName" id="groupName" maxlength="256" name="groupName" placeholder="Enter policy group name"
-                           type="text" ng-model="data.groupName" ng-change="clearError('groupName', validationErrors)">
-                    <div ng-show="paramExists('groupName', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['groupName']">{{error}} <br /></div>
-                    </div>
-                    <label class="field-label" for="group type">Group Type</label>
-                    <ui-select ng-model="data.groupType">
+                    <ui-select ng-model="data.policyGroupName" ng-change="clearError('policyGroupName', validationErrors)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (data.groupTypes | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (groupNames | filter: $select.search) track by item.id">
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <div ng-show="paramExists('groupType', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['groupType']">{{error}} <br /></div>
+                    <div ng-show="paramExists('policyGroupName', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyGroupName']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label" for="policy type">Policy Type Name</label>
-                    <input class="default-input w-input" data-name="subGroup" id="subGroup" maxlength="256" name="subGroup" placeholder="Enter insurers phone overseas"
-                           type="text" ng-model="data.subGroupName" ng-change="clearError('subGroupName', validationErrors)">
-                    <div ng-show="paramExists('subGroupName', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['subGroupName']">{{error}} <br /></div>
-                    </div>
-                    <label class="field-label" for="status">Status</label>
-                    <ui-select ng-model="data.status">
+                    <label class="field-label" for="group type">Group Type</label>
+                    <ui-select ng-model="data.policyGroupType" ng-change="clearError('policyGroupType', validationErrors)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (data.statuses | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (groupTypes | filter: $select.search) track by item.id">
+                            <span ng-bind="item.name"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <div ng-show="paramExists('policyGroupType', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyGroupType']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="policy type">Policy Type Name</label>
+                    <input class="default-input w-input" data-name="subGroup" id="subGroup" maxlength="256" name="subGroup" placeholder="Enter insurers phone overseas"
+                           type="text" ng-model="data.policyTypeName" ng-change="clearError('policyTypeName', validationErrors)">
+                    <div ng-show="paramExists('policyTypeName', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyTypeName']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="status">Status</label>
+                    <ui-select ng-model="data.status" ng-change="clearError('status', validationErrors)">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.name"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (statuses | filter: $select.search) track by item.id">
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
                     <div ng-show="paramExists('status', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['status']">{{error}} <br /></div>
                     </div>
-                    
+                    <button class="default-button w-button" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
+                    <a class="default-button w-button" data-wait="Please wait..." ng-href="#/admin/editinsurer/{{data.insurerId}}"
+                       button-spinner="submitInProgress">
+                        Back
+                    </a>
                     <br />
-                    <h3>Additional Properties</h3>
-                    <a class="small-button w-button pull-right" ng-click="openAddPopup()" style="margin-bottom:10px">+ Add New</a>
-                    <div class="form-group">
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <h3>Additional Properties</h3>
+            <div class="col-md-12">
+                <div class="row"><a class="default-button w-button pull-right" ng-click="openAddPopup()" style="margin-bottom:10px">+ Add New</a></div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -60,26 +78,55 @@
                                     <th>Default Value</th>
                                     <th>List Description</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="property in data.additionalProperties track by property.fieldId">
-                                    <td scope="row">{{$index + 1}}</td>
-                                    <td>{{property.fieldName}}</td>
-                                    <td>{{property.fieldType}}</td>
-                                    <td>{{property.defaultValue}}</td>
-                                    <td>{{property.listDescription}}</td>
-                                    <td><a class="small-button w-button" ng-click="deleteField(property.fieldId)">Delete</a></td>
+                                    <td scope="row" class="table-content-align">{{$index + 1}}</td>
+                                    <td class="table-content-align">{{property.fieldName}}</td>
+                                    <td class="table-content-align">{{property.fieldType}}</td>
+                                    <td class="table-content-align">{{property.defaultValue}}</td>
+                                    <td class="table-content-align">{{property.listDescription}}</td>
+                                    <td class="table-content-align"><a class="small-button w-button upload-button pull-right" ng-click="openEditPopup(property.fieldId)">Edit</a></td>
+                                    <td class="table-content-align"><a class="small-button w-button upload-button pull-right" ng-click="deleteField(property.fieldId)">Delete</a></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <button class="small-button w-button" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
-                    <a class="small-button w-button" data-wait="Please wait..." ng-href="#/admin/editinsurer/{{data.insurerId}}"
-                       button-spinner="submitInProgress">
-                        Back
-                    </a>
-                </form>
+                </div>
+            </div>
+            <h3>Coverages</h3>
+            <div class="col-md-12">
+                <div class="row">
+                    <a class="default-button w-button pull-right" ng-click="openAddCoverage(data.insurer.id)" style="margin-bottom:10px">+ Add New</a>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="coverage in data.coverages track by coverage.id">
+                                    <td scope="row" class="table-content-align">{{$index + 1}}</td>
+                                    <td class="table-content-align">{{coverage.title}}</td>
+                                    <td class="table-content-align">{{coverage.type}}</td>
+                                    <td class="table-content-align">{{coverage.description}}</td>
+                                    <td class="table-content-align"><a class="small-button w-button upload-button pull-right" ng-click="openEditCoverage(coverage.id)">Edit</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

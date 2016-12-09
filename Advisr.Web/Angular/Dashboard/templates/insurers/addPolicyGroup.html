@@ -11,35 +11,41 @@
                         <div ng-repeat="error in validationErrors['insurerName']">{{error}} <br /></div>
                     </div>
                     <label class="field-label required" for="group name">Group Name</label>
-                    <input class="default-input w-input" data-name="groupName" id="groupName" maxlength="256" name="groupName" placeholder="Enter policy group name"
-                           type="text" ng-model="data.groupName" ng-change="clearError('groupName', validationErrors)">
-                    <div ng-show="paramExists('groupName', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['groupName']">{{error}} <br /></div>
-                    </div>
-                    <label class="field-label" for="group type">Group Type</label>
-                    <ui-select ng-model="data.groupType">
+                    <ui-select ng-model="data.policyGroupName" ng-change="clearError('policyGroupName', validationErrors)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (data.insurer.groupTypes | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (groupNames | filter: $select.search) track by item.id">
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <div ng-show="paramExists('groupType', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['groupType']">{{error}} <br /></div>
+                    <div ng-show="paramExists('policyGroupName', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyGroupName']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label" for="policy type">Policy Type Name</label>
-                    <input class="default-input w-input" data-name="subGroup" id="subGroup" maxlength="256" name="subGroup" placeholder="Enter insurers phone overseas"
-                           type="text" ng-model="data.subGroupName" ng-change="clearError('subGroupName', validationErrors)">
-                    <div ng-show="paramExists('subGroupName', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['subGroupName']">{{error}} <br /></div>
-                    </div>
-                    <label class="field-label" for="status">Status</label>
-                    <ui-select ng-model="data.status">
+                    <label class="field-label" for="group type">Group Type</label>
+                    <ui-select ng-model="data.policyGroupType" ng-change="clearError('policyGroupType', validationErrors)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (data.insurer.statuses | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (groupTypes | filter: $select.search) track by item.id">
+                            <span ng-bind="item.name"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <div ng-show="paramExists('policyGroupType', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyGroupType']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="policy type">Policy Type Name</label>
+                    <input class="default-input w-input" data-name="subGroup" id="subGroup" maxlength="256" name="subGroup" placeholder="Enter insurers phone overseas"
+                           type="text" ng-model="data.policyTypeName" ng-change="clearError('policyTypeName', validationErrors)">
+                    <div ng-show="paramExists('policyTypeName', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyTypeName']">{{error}} <br /></div>
+                    </div>
+                    <label class="field-label" for="status">Status</label>
+                    <ui-select ng-model="data.status" ng-change="clearError('status', validationErrors)">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.name"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (statuses | filter: $select.search) track by item.id">
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>

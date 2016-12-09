@@ -1,8 +1,7 @@
-﻿<h3>Vehicle</h3>
-<div class="bordered-box">
+﻿<div>
     <label class="field-label required" for="VehiclePolicyYear">Year</label>
-    <input class="default-input w-input" data-name="VehiclePolicyYear" id="VehiclePolicyYear" maxlength="256" name="VehiclePolicyYear"
-        placeholder="Enter Year" required="required" type="text" ng-model="data.VehiclePolicyModel.Year"
+    <input class="default-input w-input" data-name="VehiclePolicyYear" id="VehiclePolicyYear" type="number" min="1900" name="VehiclePolicyYear"
+        placeholder="Enter Year" required="required" ng-model="data.VehiclePolicyModel.Year"
         ng-change="clearError('vehiclePolicyModel.Year', validationErrors)"
         >
     <div ng-show="paramExists('vehiclePolicyModel.Year', validationErrors)" class="field-validation-error">
@@ -27,15 +26,6 @@
         <div ng-repeat="error in validationErrors['vehiclePolicyModel.Model']">{{error}} <br /></div>
     </div>
 
-    <label class="field-label required" for="VehiclePolicyMileage">Mileage</label>
-    <input class="default-input w-input" data-name="VehiclePolicyMileage" id="VehiclePolicyMileage" maxlength="256" name="VehiclePolicyMileage"
-        placeholder="Enter Mileage" required="required" type="text" ng-model="data.VehiclePolicyModel.Mileage"
-        ng-change="clearError('vehiclePolicyModel.Mileage', validationErrors)"
-        >
-    <div ng-show="paramExists('vehiclePolicyModel.Mileage', validationErrors)" class="field-validation-error">
-        <div ng-repeat="error in validationErrors['vehiclePolicyModel.Mileage']">{{error}} <br /></div>
-    </div>
-
     <label class="field-label required" for="VehiclePolicyRegistredDriverName">Registred Driver Name</label>
     <input class="default-input w-input" data-name="VehiclePolicyRegistredDriverName" id="VehiclePolicyRegistredDriverName" maxlength="256" name="VehiclePolicyRegistredDriverName"
         placeholder="Enter Registred Driver Name" required="required" type="text" ng-model="data.VehiclePolicyModel.RegistredDriverName"
@@ -52,15 +42,6 @@
         >
     <div ng-show="paramExists('vehiclePolicyModel.RegistrationNumber', validationErrors)" class="field-validation-error">
         <div ng-repeat="error in validationErrors['vehiclePolicyModel.RegistrationNumber']">{{error}} <br /></div>
-    </div>
-
-    <label class="field-label required" for="VehiclePolicyRegistrationState">Registration State</label>
-    <input class="default-input w-input" data-name="VehiclePolicyRegistrationState" id="VehiclePolicyRegistrationState" maxlength="256" name="VehiclePolicyRegistrationState"
-        placeholder="Enter Registration State" required="required" type="text" ng-model="data.VehiclePolicyModel.RegistrationState"
-        ng-change="clearError('vehiclePolicyModel.RegistrationState', validationErrors)"
-        >
-    <div ng-show="paramExists('vehiclePolicyModel.RegistrationState', validationErrors)" class="field-validation-error">
-        <div ng-repeat="error in validationErrors['vehiclePolicyModel.RegistrationState']">{{error}} <br /></div>
     </div>
 
     <label class="field-label required">Commercial</label>

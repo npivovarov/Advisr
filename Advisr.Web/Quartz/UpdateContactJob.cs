@@ -3,6 +3,7 @@ using Advisr.Web.Providers;
 using log4net;
 using Quartz;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Advisr.Web.Quartz
@@ -64,6 +65,43 @@ namespace Advisr.Web.Quartz
                 log.Fatal(ex.Message, ex);
             }
             
+        }
+    }
+
+
+    public class UpdateContactsJob : IJob
+    {
+        AutopilotProvider provider;
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public UpdateContactsJob()
+        {
+            provider = AutopilotProvider.Create();
+        }
+
+        public void Execute(IJobExecutionContext context)
+        {
+            provider.CheckErrorBuffer();
+
+            JobDataMap datamap = context.JobDetail.JobDataMap;
+
+            string operation = datamap.GetString("OperationType");
+            try
+            {
+                List<Tuple<string, string, string, string, bool>> contacts = (List<Tuple<string, string, string, string, bool>>)datamap["autopilotUpdateContacts"];
+
+                foreach (var item in contacts)
+                {
+                    if (item.Item5)
+                    {
+                        var result = provider.TriggerUserToJourney(item.Item4, item.Item2, item.Item1).Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Fatal(ex.Message, ex);
+            }
+
         }
     }
 }

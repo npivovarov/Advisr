@@ -33,6 +33,8 @@ namespace Advisr.Domain.DbModels
 
         public string Color { get; set; }
 
+        public string Description { get; set; }
+
         public InsurerStatus  Status { get; set; }
 
         /// -----------

@@ -37,9 +37,6 @@ namespace Advisr.Web.Models
 
         [Required]
         public decimal? PolicyExcess { get; set; }
-        
-        [Required]
-        public string Description { get; set; }
 
         //------------------------------------
         //------------------------------------
@@ -60,9 +57,14 @@ namespace Advisr.Web.Models
         //------------------------------------
 
         /// <summary>
-        /// Additional Properties from PolicyGroupFields
+        /// Additional Properties from PolicyTypeFields
         /// </summary>
         public List<AdditionalProperty> AdditionalProperties { get; set; }
+        
+        /// <summary>
+        /// Coverages for the policy
+        /// </summary>
+        public List<PolicyCoverageModel> Coverages { get; set; }
 
         [Required]
         public bool IsConfirmed { get; set; }
@@ -76,6 +78,23 @@ namespace Advisr.Web.Models
         [Required]
         public dynamic Value { get; set; }
     }
+
+
+    public class PolicyCoverageModel
+    {
+        [Required]
+        public int CoverageId { get; set; }
+
+        //[Required]
+        public bool? IsActive { get; set; }
+
+        //[Required]
+        public decimal? Excess { get; set; }
+
+        //[Required]
+        public string Limit { get; set; }
+    }
+
     
     public class VehiclePolicyModel
     {
@@ -87,19 +106,13 @@ namespace Advisr.Web.Models
 
         [Required]
         public string Model { get; set; }
-
-        [Required]
-        public int? Mileage { get; set; }
-
+        
         [Required]
         public string RegistredDriverName { get; set; }
 
         [Required]
         public string RegistrationNumber { get; set; }
-
-        [Required]
-        public string RegistrationState { get; set; }
-
+        
         [Required]
         public bool? IsCommercial { get; set; }
     }

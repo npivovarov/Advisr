@@ -104,7 +104,7 @@ namespace Advisr.Web.Controllers
             {
                 var userId = User.Identity.GetUserId();
 
-                var query = unitOfWork.CustomerDetailsRepository.GetAll()
+                var query = unitOfWork.CustomerDetailsRepository.GetAll().Where(user=>user.UserId != DbConstants.AdminUserId)
                    .Where(a => a.User.Hidden == false);
 
                 if (!string.IsNullOrEmpty(q))
@@ -361,6 +361,12 @@ namespace Advisr.Web.Controllers
                 {
                     return JsonError(HttpStatusCode.BadRequest, 10, "Customer was not found", ModelState);
                 }
+
+                if (user.Id == User.Identity.GetUserId())
+                {
+                    return JsonError(HttpStatusCode.BadRequest, 10, "Admin cannot be locked.", ModelState);
+                }
+
                 if (actionName == "Lock")
                 {
                     user.LockedByAdmin = true;

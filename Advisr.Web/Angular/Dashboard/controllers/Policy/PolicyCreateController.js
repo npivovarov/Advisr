@@ -3,12 +3,17 @@
 angular.module('DashboardApp').controller('PolicyCreateController', ['$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'ngDialog', 'ConfigService', 'PolicyService', 'Upload', function ($scope, $rootScope, $state, $stateParams, $timeout, ngDialog, ConfigService, PolicyService, Upload) {
 
     $scope.data = {
-        fileIds: []
+        fileIds: [],
+        prePolicyType: ''
     };
+
+    $scope.listPolicyType = {};
+    $scope.listPolicyType.selected = _.head(ConfigService.policyType);
+
+    $scope.policyType = ConfigService.policyType;
 
     function _creationConfirmed() {
         ngDialog.close();
-        $state.go('poicyCreate');
         $state.reload();
     }
 
@@ -19,13 +24,14 @@ angular.module('DashboardApp').controller('PolicyCreateController', ['$scope', '
 
     function _save() {
         $scope.submitInProgress = true;
+        $scope.data.prePolicyType = $scope.listPolicyType.selected.value;
 
         PolicyService.createPolicy($scope.data).then(function (res) {
             $scope.submitInProgress = false;
             $scope.disabled = true;
             $rootScope.alerts.push({ type: 'success', msg: 'Policy has been created.' });
             
-            ngDialog.open({ template: 'confirmMessage', controller: 'PolicyCreateController', showClose: false, closeByDocument: false });
+            ngDialog.open({ template: '../Angular/Dashboard/templates/policy/PolicyCreateConfirm.html', controller: 'PolicyCreateController', showClose: false, closeByDocument: false });
 
         }, function (res) {
             var data = res.data;

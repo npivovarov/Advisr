@@ -7,8 +7,10 @@ namespace Advisr.Web.Models
     public class CreatePolicyModel
     {
         [Required]
-        public List<Guid> FileIds { get; set; }
+        public string PrePolicyType { get; set; }
 
+        [Required]
+        public List<Guid> FileIds { get; set; }
 
     }
 }

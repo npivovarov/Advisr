@@ -1,0 +1,72 @@
+﻿<div class="details grey-block">Coverages</div>
+<div class="wrapper">
+    <div class="detail-list-div">
+        <div class="detail-row document sortby">
+            <div class="details-collumns w-row">
+                <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-4">
+                    <div>#</div>
+                </div>
+                <div class="w-col w-col-4 w-col-small-small-stack w-col-tiny-4">
+                    <div>Title</div>
+                </div>
+                <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-4">
+                    <div>Type</div>
+                </div>
+                <div class="w-col w-col-4 w-col-small-small-stack w-col-tiny-4">
+                    <div>Description</div>
+                </div>
+            </div>
+        </div>
+        <div class="detail-row document coverageRow" ng-repeat="coverage in coveragesDetails">
+            <div class="details-collumns w-row">
+                <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <div>
+                        <checkbox class="checkbox" ng-model="coverage.isSelected"
+                        ng-change="onChangeCoverage(coverage.isSelected, $index)"
+                        ></checkbox>
+                    </div>
+                </div>
+                <div class="w-col w-col-4 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <div>{{coverage.title}}</div>
+                </div>
+                <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <div>{{getCoverageType(coverage.type)}}</div>
+                </div>
+                <div class="w-col w-col-2 w-col-small-small-stack w-col-tiny-tiny-stack">
+                    <div>
+                        <p read-more limit="60" content={{coverage.description}}></p>
+                    </div>
+                </div>
+            </div><!--details-collumns w-row-->
+            <div class="row coverageDetails fadeAnimate" ng-show="coverage.isSelected">
+                <div class="col-lg-2"
+                ng-if="coverage.type === 1 || coverage.type === 2"
+                >
+                    <div class="coverageIsActive">
+                        <checkbox class="checkbox" ng-model="coverage.isActive"></checkbox>
+                        <label class="field-label">Is Active</label>
+                    </div>
+                </div>
+                <div class="col-lg-2"
+                ng-if="coverage.type === 0 || coverage.type === 1"
+                >
+                    <label class="field-label">Excess</label>
+                    <div class="input-group">
+                        <input class="default-input w-input form-control" type="number" mask="99999" clean="true" ng-model="coverage.excess"  />
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-usd"></i>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-4"
+                 ng-if="coverage.type === 0 || coverage.type === 1"
+                >
+                    <label class="field-label">Limit</label>
+                    <input class="default-input w-input" type="text" ng-model="coverage.limit" />
+                </div>
+            </div><!--coverageDetails-->
+        </div>
+    </div>
+    <!--detail-list-div-->
+</div><!--wrapper-->
