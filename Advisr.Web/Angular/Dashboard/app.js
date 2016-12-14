@@ -23,7 +23,7 @@ DashboardApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 'u
             controller: 'PortfolioController'
         })
         .state('portfolioListPager', {
-            url: '/portfolio/page/:page?q&groupName&status',
+            url: '/portfolio/page/:page?q&groupName&status&active',
             templateUrl: '/Angular/Dashboard/templates/portfolio/portfolio.html',
             controller: 'PortfolioController'
         })
@@ -58,19 +58,25 @@ DashboardApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 'u
             controller: 'PolicyCreateController'
         })
         .state('policyDetails', {
-            url: '/policy/:id',
+            url: '/policy/:id?tabname',
             templateUrl: '/Angular/Dashboard/templates/policy/policyDetails.html',
             controller: 'PolicyDetailsController'
         })
         .state('policies', {
             url: '/policies',
             templateUrl: '/Angular/Dashboard/templates/policy/policyList.html',
-            controller: 'PolicyListController'
+            controller: 'PolicyListController',
+            data : {
+                cssClassnames : 'grey'
+            }
         })
         .state('policiesPager', {
             url: '/policies/page/:page?q&sortType',
             templateUrl: '/Angular/Dashboard/templates/policy/policyList.html',
-            controller: 'PolicyListController'
+            controller: 'PolicyListController',
+            data: {
+                cssClassnames: 'grey'
+            }
         })
         .state('policyViewUpload', {
             url: '/policy/view-upload/:id',
@@ -146,7 +152,7 @@ DashboardApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 'u
 }]);
 
 DashboardApp.run(['$rootScope', '$cookies', '$location', '$state', '$anchorScroll', '$q', 'UserService', 'NotificationsService', 'ConfigService', function ($rootScope, $cookies, $location, $state, $anchorScroll, $q, UserService, NotificationsService, ConfigService) {
-    
+
     UserService.getProfile().then(function (res) {
         $rootScope.currentUser = res.data;
         $cookies.put('userId', res.data.id);
@@ -242,7 +248,9 @@ DashboardApp.run(['$rootScope', '$cookies', '$location', '$state', '$anchorScrol
         checkRole: _checkRole,
         getPrevNumber: _getPrevNumber,
         getTimeAgo: _getTimeAgo,
-        alerts: []
+        alerts: [],
+        format: 'dd.MM.yyyy',
+        altInputFormats: ['d!.M!.yyyy'],
     });
 
 }]);

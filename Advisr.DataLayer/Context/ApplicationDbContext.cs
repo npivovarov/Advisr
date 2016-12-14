@@ -19,17 +19,19 @@ namespace Advisr.DataLayer.Context
         public virtual DbSet<CustomerLog> CustomerChanges { get; set; }
         //public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public virtual DbSet<CustomerDetails> CustomerDetails { get; set; }
-        public virtual DbSet<Home_P> Home_Ps { get; set; }
-        public virtual DbSet<Life_P> Life_Ps { get; set; }
-        public virtual DbSet<Vehicle_P> Vehicle_Ps { get; set; }
         public virtual DbSet<Insurer> Insurers { get; set; }
         public virtual DbSet<Policy> Policies { get; set; }
         public virtual DbSet<PolicyCoverage> PolicyCoverages { get; set; }
         public virtual DbSet<PolicyFile> PolicyFiles { get; set; }
+        public virtual DbSet<PolicyGroup> PolicyGroups { get; set; }
         public virtual DbSet<PolicyType> PolicyTypes { get; set; }
-        public virtual DbSet<PolicyTypeField> PolicyTypeFields { get; set; }
+        public virtual DbSet<PolicyProperty> PolicyProperties { get; set; }
+        public virtual DbSet<PolicyTypePolicyProperty> PolicyTypePolicyProperties { get; set; }
         public virtual DbSet<PolicyTypeCoverage> PolicyTypeCoverage { get; set; }
-        public virtual DbSet<AdditionalPolicyProperty> AdditionalPolicyProperties { get; set; }
+        public virtual DbSet<PolicyPolicyProperty> PolicyPolicyProperties { get; set; }
+        public virtual DbSet<PolicyTemplate> PolicyTemplates { get; set; }
+        public virtual DbSet<PolicyTemplatePolicyProperty> PolicyTemplatePolicyProperties { get; set; }
+
         public virtual DbSet<UserPolicy> UserPolicies { get; set; }
         public virtual DbSet<VehicleModel> VehicleModels { get; set; }
         public virtual DbSet<VehicleMake> VehicleMakes { get; set; }
@@ -57,11 +59,6 @@ namespace Advisr.DataLayer.Context
             //            .WithOptional()
             //            .HasForeignKey(g => g.VehicleMakeId)
             //            .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Vehicle_P>()
-                        .HasRequired(c => c.Make)
-                        .WithMany()
-                        .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<VehicleModel>()
                         .HasRequired(s => s.VehicleMake)

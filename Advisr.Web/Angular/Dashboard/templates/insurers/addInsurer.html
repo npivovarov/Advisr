@@ -44,11 +44,11 @@
                     <div ng-show="paramExists('color', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['color']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label required">Description</label>
+                    <!--<label class="field-label required">Description</label>
                     <textarea class="form-control default-input" rows="10" placeholder="Enter Description" ng-model="data.description" ng-change="clearError('description', validationErrors)"></textarea>
                     <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
-                    </div>
+                    </div>-->
                     <br />
                     <br />
                     <button class="default-button w-button" data-wait="Please wait..." ng-click="create()" button-spinner="submitInProgress">Save</button>

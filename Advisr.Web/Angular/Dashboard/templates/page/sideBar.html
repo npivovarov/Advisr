@@ -7,7 +7,7 @@
         </li>
         <li>
             <a data-toggle="collapse" data-target=".navbar-collapse" href="#/notifications" class="_5 tab w-inline-block w-tab-link notifications" data-w-tab="Tab 5" ng-class="{'w--current': getClass('/notifications') }">
-                <span>
+                <span ng-if="countNotification > 0">
                     <small>{{countNotification}}</small>
                 </span>
                 <div class="sidebar-label">NOTIFICATIONS</div>

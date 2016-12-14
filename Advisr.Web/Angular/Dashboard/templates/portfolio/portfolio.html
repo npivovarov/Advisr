@@ -1,5 +1,6 @@
 ﻿<div ng-show="loading" ng-if="data == 0" ng-include="'/Angular/Dashboard/templates/portfolio/portfolioEmpty.html'"></div>
-<div ng-show="loading" ng-if="data > 0" ng-include="'/Angular/Dashboard/templates/portfolio/portfolioChart.html'"></div>
+<div style="overflow: hidden;" ng-show="loading" ng-if="currency.commertial > 0" ng-include="'/Angular/Dashboard/templates/portfolio/portfolioChart.html'"></div>
+<div style="overflow: hidden;" ng-show="loading" ng-if="currency.commertial === 0 && data > 0" ng-include="'/Angular/Dashboard/templates/portfolio/portfolioChartV1.html'"></div>
 
 
 

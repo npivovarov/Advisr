@@ -152,17 +152,18 @@ namespace Advisr.Web.Controllers
                             }
                             else
                             {
+                                if (user.LockedByAdmin)
+                                {
+                                    message = "Your account has been locked by admin.";
+                                    return JsonError(HttpStatusCode.BadRequest, 10, message, ModelState);
+                                }
+
                                 if ((await SignInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, shouldLockout: false)) != SignInStatus.Success)
                                 {
                                     message = "Invalid login attempt **";
                                 }
                                 else
                                 {
-                                    if (user.LockedByAdmin)
-                                    {
-                                        message = "Your account has been locked by admin.";
-                                        return JsonError(HttpStatusCode.BadRequest, 10, message, ModelState);
-                                    }
                                     // When token is verified correctly, clear the access failed count used for lockout
                                     await UserManager.ResetAccessFailedCountAsync(user.Id);
 

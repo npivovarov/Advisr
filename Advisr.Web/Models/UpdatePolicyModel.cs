@@ -12,7 +12,7 @@ namespace Advisr.Web.Models
         public int Id { get; set; }
 
         [Required]
-        public int PolicyGroupId { get; set; }
+        public int PolicyTypeId { get; set; }
 
         [Required]
         public int InsurerId { get; set; }
@@ -45,11 +45,11 @@ namespace Advisr.Web.Models
         //------------------------------------
         
 
-        public VehiclePolicyModel VehiclePolicyModel { get; set; }
+        //public VehiclePolicyModel VehiclePolicyModel { get; set; }
 
-        public LifePolicyModel LifePolicyModel { get; set; }
+        //public LifePolicyModel LifePolicyModel { get; set; }
 
-        public HomePolicyModel HomePolicyModel { get; set; }
+        //public HomePolicyModel HomePolicyModel { get; set; }
 
         //------------------------------------
         //------------------------------------
@@ -59,8 +59,14 @@ namespace Advisr.Web.Models
         /// <summary>
         /// Additional Properties from PolicyTypeFields
         /// </summary>
-        public List<AdditionalProperty> AdditionalProperties { get; set; }
-        
+        public List<PolicyPropertyModel> AdditionalProperties { get; set; }
+
+        /// <summary>
+        /// Properties for Policy Group
+        /// </summary>
+        [Required]
+        public List<PolicyPropertyModel> PolicyProperties { get; set; }
+
         /// <summary>
         /// Coverages for the policy
         /// </summary>
@@ -70,13 +76,43 @@ namespace Advisr.Web.Models
         public bool IsConfirmed { get; set; }
     }
 
-    public class AdditionalProperty
+    public class PolicyPropertyModel
     {
         [Required]
-        public int GroupFieldId { get; set; }
+        public int PropertyId { get; set; }
 
         [Required]
         public dynamic Value { get; set; }
+
+        public PolicyTypeFieldType FieldType { get; set; }
+        
+        public string GetValueAsString(PolicyTypeFieldType type)
+        {
+            string value = null;
+
+            if (type == PolicyTypeFieldType.List)
+            {
+                value = string.Format("{0}", this.Value.value);
+            }
+            else if (type == PolicyTypeFieldType.Bool)
+            {
+                value = "No";
+
+                try
+                {
+                    value = this.Value.id == true ? "Yes" : "No";
+                }
+                catch (Exception)
+                {
+                }
+            }
+            else
+            {
+                value = string.Format("{0}", this.Value);
+            }
+            
+            return value;
+        }
     }
 
 
@@ -96,42 +132,42 @@ namespace Advisr.Web.Models
     }
 
     
-    public class VehiclePolicyModel
-    {
-        [Required]
-        public int? Year { get; set; }
+    //public class VehiclePolicyModel
+    //{
+    //    [Required]
+    //    public int? Year { get; set; }
 
-        [Required]
-        public string Make { get; set; }
+    //    [Required]
+    //    public string Make { get; set; }
 
-        [Required]
-        public string Model { get; set; }
+    //    [Required]
+    //    public string Model { get; set; }
         
-        [Required]
-        public string RegistredDriverName { get; set; }
+    //    [Required]
+    //    public string RegistredDriverName { get; set; }
 
-        [Required]
-        public string RegistrationNumber { get; set; }
+    //    [Required]
+    //    public string RegistrationNumber { get; set; }
         
-        [Required]
-        public bool? IsCommercial { get; set; }
-    }
+    //    [Required]
+    //    public bool? IsCommercial { get; set; }
+    //}
 
-    public class LifePolicyModel
-    {
-        [Required]
-        public string Medication { get; set; }
+    //public class LifePolicyModel
+    //{
+    //    [Required]
+    //    public string Medication { get; set; }
 
-        [Required]
-        public string MedicationCondition { get; set; }
-    }
+    //    [Required]
+    //    public string MedicationCondition { get; set; }
+    //}
 
-    public class HomePolicyModel
-    {
-        [Required]
-        public string Address { get; set; }
+    //public class HomePolicyModel
+    //{
+    //    [Required]
+    //    public string Address { get; set; }
 
-        [Required]
-        public DateTime? BuildDate { get; set; }
-    }
+    //    [Required]
+    //    public DateTime? BuildDate { get; set; }
+    //}
 }

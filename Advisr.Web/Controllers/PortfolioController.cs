@@ -34,7 +34,7 @@ namespace Advisr.Web.Controllers
                             .Where(a => a.Status == PolicyStatus.Confirmed && a.CreatedById == userId && a.EndDate > currentDate)
                             .Select(a => new
                             {
-                                groupName = a.PolicyType.GroupName,
+                                groupName = a.PolicyType.PolicyGroup.Name,
                                 amount = a.PolicyPremium
                             }).ToList();
 
@@ -47,7 +47,7 @@ namespace Advisr.Web.Controllers
                     vehicle = policies.Where(a=> a.groupName == "Vehicle").Select(a=>a.amount).DefaultIfEmpty(0.0m).Sum(),
                     personal = policies.Where(a => a.groupName == "Personal").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
                     property = policies.Where(a => a.groupName == "Property").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
-                    commertial = policies.Where(a => a.groupName == "Commertial").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
+                    commertial = policies.Where(a => a.groupName == "Commercial").Select(a => a.amount).DefaultIfEmpty(0.0m).Sum(),
                 };
 
                 return Json(result);

@@ -14,18 +14,22 @@
             <form novalidate class="ui-form" data-name="form-policy" id="wf-form-policy-form" name="wf-form-policy-form">
                 <div class="col-lg-6">
                     <label class="field-label">Policy type</label>
-                    <ui-select ng-model="listPolicyType.selected">
-                        <ui-select-match>
+                    <ui-select ng-model="listPolicyType.selected" on-select="onSelected()">
+                        <ui-select-match placeholder="Select policy type">
                             <span ng-bind="$select.selected.value"></span>
                         </ui-select-match>
                         <ui-select-choices repeat="item in (policyType | filter: $select.search) track by item.key">
                             <span ng-bind="item.value"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <button style="margin-top:10px;" class="small-button w-button upload-button" ngf-select="uploadFiles($files, $invalidFiles)" ngf-multiple="true" name="fileInput"
-                        accept="image/*, application/pdf, application/msword, application/rtf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                        ngf-max-size="10MB" button-spinner="submitInProgressFile">+ Upload file here
-                                </button>
+                    <button style="margin-top:10px;" class="small-button w-button upload-button" 
+                     ngf-pattern="'.doc,.docx,.xls,.ppt,.pps,.pptx,.txt,.rtf,.pdf,.jpg,.jpeg,.gif,.png'"
+                    ngf-select="uploadFiles($files, $invalidFiles)" ngf-multiple="true" name="fileInput"
+                        ngf-accept="'.doc, .docx, .xls, .ppt, .pps, .pptx, .txt, image/*,application/pdf,application/msword,application/rtf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document'"
+                        ngf-max-size="10MB" button-spinner="submitInProgressFile || progress >= 0 && progress != 100"
+                        ng-disabled="addFile"
+                        >+ Add files
+                    </button>
                     <label class="form-help-text" for="email-2">Files extension: txt, rtf, doc, docx, pdf, gif, jpeg/jpg, png</label>
                     <div class="field-validation-error" ng-show="paramExists('fileIds', validationErrors)">
                         <div ng-repeat="error in validationErrors['fileIds']">{{error}}</div>
@@ -51,8 +55,8 @@
     </div>
     <div class="detail-row document" ng-repeat="fileName in fileNames track by fileName.id">
         <div class="details-collumns w-row">
-            <div class="w-col w-col-5 w-col-small-small-stack w-col-tiny-tiny-stack">
-                <div>{{fileName.fileName}}</div>
+            <div class=" w-col w-col-5 w-col-small-small-stack w-col-tiny-tiny-stack">
+                <div class="text-ellipsis">{{fileName.fileName}}</div>
             </div>
             <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack">
                 <div>{{fileName.uploadedDate | date:'dd.MM.yyyy'}} at {{fileName.uploadedDate | date:'hh:mm'}}</div>
@@ -71,7 +75,19 @@
     <div class="row">
         <div class="col-lg-12">
             <button class="default-button w-button pull-left save-btn" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress"
-                ng-disabled="disabled || !fileNames.length > 0">Save</button>
+                ng-disabled="disabled || !fileNames.length > 0">Save Policy</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div style="margin-top: 20px;">
+                <p class="paragraph">
+                    <strong>You can also email your policy documents to <a href="mailto:policies@advisr.com.au">policies@advisr.com.au</a></strong>
+                </p>
+                <p class="paragraph">
+                    <strong>We will upload them for you and let you know once they are available.</strong>
+                </p>
+            </div>
         </div>
     </div>
 </div>

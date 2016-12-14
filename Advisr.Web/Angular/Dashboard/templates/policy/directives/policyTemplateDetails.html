@@ -1,0 +1,95 @@
+﻿<div ng-repeat="field in policyProperties">
+    <div ng-switch on="field.fieldType">
+    <div ng-switch-when="0">
+        <label class="field-label" for="field_{{field.id}}"
+        ng-class="{required: field.isRequired}"
+        >{{field.fieldName}}</label>
+        <input class="default-input w-input" data-name="field_{{field.id}}" id="field_{{field.id}}" maxlength="256" name="field_{{field.id}}" placeholder={{field.fieldName}}
+        type="text" ng-model="data.policyProperties[$index].value"
+        ng-change="clearError('policyProperties_' + $index, validationErrors)"
+        >
+        <div ng-show="paramExists('policyProperties_' + $index, validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['policyProperties_' + $index]">{{error}} <br /></div>
+        </div>
+    </div>
+    <div ng-switch-when="1">
+        <label class="field-label" for="field_{{field.id}}"
+        ng-class="{required: field.isRequired}"
+        >{{field.fieldName}}</label>
+        <input class="default-input w-input" data-name="field_{{field.id}}" id="field_{{field.id}}" maxlength="256" name="field_{{field.id}}" placeholder="{{field.fieldName}}"
+        type="number" min="0" ng-model="data.policyProperties[$index].value"
+        ng-change="clearError('policyProperties_' + $index, validationErrors)"
+        >
+        <div ng-show="paramExists('policyProperties_' + $index, validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['policyProperties_' + $index]">{{error}} <br /></div>
+        </div>
+    </div>
+    <div ng-switch-when="2">
+        <label class="field-label" for="field_{{field.id}}"
+        ng-class="{required: field.isRequired}"
+        >{{field.fieldName}}</label>
+        <ui-select ng-model="data.policyProperties[$index].value" ng-change="clearError('policyProperties_' + $index, validationErrors)">
+            <ui-select-match placeholder="Select {{field.fieldName}}">
+                <span ng-bind="$select.selected.name"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (bool | filter: $select.search) track by item.id">
+                <span ng-bind="item.name"></span>
+            </ui-select-choices>
+        </ui-select>
+    <div ng-show="paramExists('policyProperties_' + $index, validationErrors)" class="field-validation-error">
+        <div ng-repeat="error in validationErrors['policyProperties_' + $index]">{{error}} <br /></div>
+    </div>
+    </div>
+    <div ng-switch-when="3">
+        <label class="field-label" for="field_{{field.id}}"
+        ng-class="{required: field.isRequired}"
+        >{{field.fieldName}}</label>
+        <input class="default-input w-input" data-name="field_{{field.id}}" id="field_{{field.id}}" maxlength="256" name="field_{{field.id}}"
+            placeholder="{{field.fieldName}}" 
+            type="number" min="0" step="0.01" ng-model="data.policyProperties[$index].value"
+            ng-change="clearError('policyProperties_' + $index, validationErrors)"
+            >
+        <div ng-show="paramExists('policyProperties_' + $index, validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['policyProperties_' + $index]">{{error}} <br /></div>
+        </div>
+    </div>
+    <div ng-switch-when="4">
+        <label class="field-label" for="field_{{field.id}}"
+        ng-class="{required: field.isRequired}"
+        >{{field.fieldName}}</label>
+        <ui-select ng-model="data.policyProperties[$index].value" ng-change="clearError('policyProperties_' + $index, validationErrors)">
+            <ui-select-match placeholder="Select {{field.fieldName}}">
+                <span ng-bind="$select.selected.value"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (field.listDescription | filter: $select.search)  track by item.id">
+                <span ng-bind="item.value"></span>
+            </ui-select-choices>
+        </ui-select>
+        <div ng-show="paramExists('policyProperties_' + $index, validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['policyProperties_' + $index]">{{error}} <br /></div>
+        </div>
+    </div>
+    <div ng-switch-when="5">
+        <label class="field-label" for="field_{{field.id}}"
+        ng-class="{required: field.isRequired}"
+        >{{field.fieldName}}</label>
+        <div class="input-group">
+            <input type="text" class="form-control default-input w-input" placeholder="Select {{field.fieldName}}" 
+                   uib-datepicker-popup="{{format}}" ng-model="data.policyProperties[$index].value" is-open="openedProperty[$index]"
+                   close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" 
+                   ng-change="clearError('policyProperties_' + $index, validationErrors)"
+                   />
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openDateProperty($index)">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+            </span>
+        </div>
+        <div ng-show="paramExists('policyProperties_' + $index, validationErrors)" class="field-validation-error">
+            <div ng-repeat="error in validationErrors['policyProperties_' + $index]">{{error}} <br /></div>
+        </div>
+    </div>
+    <div ng-switch-default>
+    </div>
+</div>
+</div>

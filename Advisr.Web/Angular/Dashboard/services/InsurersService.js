@@ -105,6 +105,18 @@
         return $http.post(ConfigService.urls.insurer.assignCoverage, data);
     }
 
+    function _getGroups() {
+        return $http.get(ConfigService.urls.insurer.getGroups);
+    }
+
+    function _getGroupTemplates(groupId) {
+        return $http.get(ConfigService.urls.insurer.getGroupTemplates, {
+            params: {
+                groupId: groupId
+            }
+        });
+    }
+
     _.extend(InsurersService, {
         create: _create,
         getInsurer: _getInsurer,
@@ -124,7 +136,9 @@
         getCoverage: _getCoverage,
         saveCoverage: _saveCoverage,
         addCoverage: _addCoverage,
-        assignCoverage: _assignCoverage
+        assignCoverage: _assignCoverage,
+        getGroups: _getGroups,
+        getGroupTemplates: _getGroupTemplates
     })
 
     return InsurersService;

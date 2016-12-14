@@ -13,11 +13,13 @@ namespace Advisr.Domain.DbModels
 
         public int InsurerId { get; set; }
 
-        public string GroupName { get; set; }
+        public int PolicyTemplateId { get; set; }
 
+        public int PolicyGroupId { get; set; }
+        
         public string PolicyTypeName { get; set; }
 
-        public PolicyGroupType PolicyGroupType { get; set; }
+        public string Description { get; set; }
 
         public PolicyTypeStatus? Status { get; set; }
 
@@ -32,10 +34,14 @@ namespace Advisr.Domain.DbModels
 
         //-----------------------------------
         public virtual ICollection<Policy> Policies { get; set; }
+        
+        public virtual ICollection<PolicyTypePolicyProperty> PolicyTypePolicyProperties { get; set; }
 
-        public virtual ICollection<AdditionalPolicyProperty> AdditionalPolicyFields { get; set; }
+        [ForeignKey("PolicyTemplateId")]
+        public virtual PolicyTemplate PolicyTemplate { get; set; }
 
-        public virtual ICollection<PolicyTypeField> PolicyTypeFields { get; set; }
+        [ForeignKey("PolicyGroupId")]
+        public virtual PolicyGroup PolicyGroup { get; set; }
 
         [ForeignKey("InsurerId")]
         public virtual Insurer Insurer { get; set; }

@@ -14,11 +14,11 @@
 
 <div class="notification-div">
     <div class="notification" ng-repeat="notification in notifications">
-        <div class="grey-block notification" data-ix="notification-openclose" style="transition: opacity 0.2s ease 0s;"
+        <div class="grey-block notification text-ellipsis" data-ix="notification-openclose" style="transition: opacity 0.2s ease 0s;"
         ng-click="showDetails($index, notification.id)"
         ng-class="{'unread' : notification.isUnread}"
         >
-            <div class="notification-title" data-ix="notification-openclose">
+            <div class="notification-title text-ellipsis" data-ix="notification-openclose">
                 <strong>{{notification.subjectTitleFirst}} •</strong> {{notification.subjectTitleSecond}}</div>
             <div class="notification-time-stamp">{{getTimeAgo(notification.createdDate)}}</div>
         </div>

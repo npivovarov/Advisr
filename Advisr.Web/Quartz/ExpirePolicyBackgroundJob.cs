@@ -133,7 +133,7 @@ namespace Advisr.Web.Quartz
                             userId = a.CreatedById,
                             userAutopilotContactId = a.CreatedBy.AutopilotContactId,
                             autopilotTrack = a.CreatedBy.AutopilotTrack,
-                            policyType = a.PolicyType.GroupName + " " + a.PolicyType.PolicyTypeName
+                            policyType = a.PolicyType.PolicyGroup.Name + " " + a.PolicyType.PolicyTypeName
                         }).ToList();
 
                     foreach (var policy in policies)
@@ -160,6 +160,7 @@ namespace Advisr.Web.Quartz
                         {
                             notificationTargetType = NotificationTargetType.ExpirePolicyToday;
                             expireDays = "today";
+                            subjectSecond = string.Format("Insurance expires {0}.", expireDays);
                             message = messageToday;
                             title = string.Format("Your {0} {1} {2} Insurance policy will need to be renewed today", policy.insurerName, policy.title, policy.subTitle);
                         }
@@ -168,6 +169,7 @@ namespace Advisr.Web.Quartz
                             notificationTargetType = NotificationTargetType.ExpirePolicy10days;
                             expireDays = expDays == 1 ? "in 1 day" : string.Format("in {0} days", expDays);
                             message = messageNdays;
+                            subjectSecond = string.Format("Insurance expires {0}.", expireDays);
                             title = string.Format("Your {0} {1} {2} Insurance policy will need to be renewed before {3:d}", policy.insurerName, policy.title, policy.subTitle, policy.expireDate);
                         }
                         else if (expDays <= 30)
@@ -175,6 +177,7 @@ namespace Advisr.Web.Quartz
                             notificationTargetType = NotificationTargetType.ExpirePolicy30days;
                             expireDays = string.Format("in {0} days", expDays);
                             message = messageNdays;
+                            subjectSecond = string.Format("Insurance expires {0}.", expireDays);
                             title = string.Format("Your {0} {1} {2} Insurance policy will need to be renewed before {3:d}", policy.insurerName, policy.title, policy.subTitle, policy.expireDate);
                         }
                         else

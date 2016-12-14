@@ -20,7 +20,8 @@ angular.module('DashboardApp').controller('PortfolioController', ['$scope', '$st
         $scope.showPanel = true;
         $state.go('portfolioListPager', {
             groupName: group,
-            status: 1, 
+            status: 1,
+            active: 1,
             page: 1 
         });
 

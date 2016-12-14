@@ -3,6 +3,7 @@
 angular.module('DashboardApp').controller('PolicyDetailsController', ['$scope', '$rootScope', '$state', '$stateParams', '$window', 'ConfigService', 'PolicyService', function ($scope, $rootScope, $state, $stateParams, $window, ConfigService, PolicyService) {
 
     var id = $stateParams.id;
+    var tab = $stateParams.tabname;
 
     $scope.tabs = [
         { title: 'Information', url: '/Angular/Dashboard/templates/policy/details/policyInformation.html' },
@@ -35,6 +36,10 @@ angular.module('DashboardApp').controller('PolicyDetailsController', ['$scope', 
 
     $scope.currentTab = '/Angular/Dashboard/templates/policy/details/policyInformation.html';
 
+    if (tab != null) {
+        $scope.currentTab = _.find($scope.tabs, { title: tab }).url;
+    }
+
     $scope.onClickTab = function (tab) {
         $scope.currentTab = tab.url;
     }
@@ -45,6 +50,17 @@ angular.module('DashboardApp').controller('PolicyDetailsController', ['$scope', 
 
     PolicyService.getPolicy(id).then(function (res) {
         $scope.policy = res.data;
+
+        if ($scope.policy.properties != null) {
+            for (var i = 0; i < $scope.policy.properties.length; i++) {
+                if ($scope.policy.properties[i].fieldName == "Life Insurance Premium Type") {
+                    $scope.policy.properties.splice(i, 1);
+                }
+                if ($scope.policy.properties[i].fieldType == 5) {
+                    $scope.policy.properties[i].value = new Date($scope.policy.properties[i].value);
+                }
+            }
+        }
     });
 
     PolicyService.getCoverages(id).then(function (res) {

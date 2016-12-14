@@ -45,11 +45,11 @@
                     <div ng-show="paramExists('color', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['color']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label required">Description</label>
+                    <!--<label class="field-label required">Description</label>
                     <textarea class="form-control default-input" rows="10" placeholder="Enter Description" ng-model="data.description" ng-change="clearError('description', validationErrors)"></textarea>
                     <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
-                    </div>
+                    </div>-->
                     <button class="default-button w-button" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
                     <a class="default-button w-button" data-wait="Please wait..." ng-href="#/admin/insurers" button-spinner="submitInProgress">
                         Back
@@ -76,7 +76,8 @@
                                     <th>Group Type</th>
                                     <th>Policy Type Name</th>
                                     <th>Created date</th>
-                                    <th></th>
+                                    <th>Status</th>
+                                    <th>Description</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -84,10 +85,11 @@
                                 <tr ng-repeat="policyType in data.policyTypes track by policyType.policyTypeId">
                                     <td scope="row" class="table-content-align">{{$index + 1}}</td>
                                     <td class="table-content-align">{{policyType.policyGroupName}}</td>
-                                    <td class="table-content-align">{{policyType.policyGroupType}}</td>
+                                    <td class="table-content-align">{{policyType.policyTemplate}}</td>
                                     <td class="table-content-align">{{policyType.policyTypeName}}</td>
-                                    <td class="table-content-align">{{policyType.createdDate}}</td>
+                                    <td class="table-content-align">{{policyType.createdDate | date:'dd.MM.yyyy'}}</td>
                                     <td class="table-content-align">{{policyType.status}}</td>
+                                    <td class="table-content-align"><p read-more limit="60" content={{policyType.description}}></p></td>
                                     <td class="table-content-align"><a class="small-button w-button pull-right upload-button" ng-href="#/admin/insurers/editInsurerPolicyType/{{policyType.policyTypeId}}">Edit</a></td>
                                 </tr>
                             </tbody>

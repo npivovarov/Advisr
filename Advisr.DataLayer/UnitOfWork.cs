@@ -222,6 +222,19 @@ namespace Advisr.DataLayer
             }
         }
 
+        private IRepository<PolicyGroup> policyGroupRepository;
+        public IRepository<PolicyGroup> PolicyGroupRepository
+        {
+            get
+            {
+                if (this.policyGroupRepository == null)
+                {
+                    this.policyGroupRepository = new Repository<PolicyGroup>(this.dbContext);
+                }
+                return this.policyGroupRepository;
+            }
+        }
+
         private IRepository<PolicyType> policyTypeRepository;
         public IRepository<PolicyType> PolicyTypeRepository
         {
@@ -235,16 +248,29 @@ namespace Advisr.DataLayer
             }
         }
 
-        private IRepository<PolicyTypeField> policyTypeFieldRepository;
-        public IRepository<PolicyTypeField> PolicyTypeFieldRepository
+        private IRepository<PolicyProperty> policyPropertyRepository;
+        public IRepository<PolicyProperty> PolicyPropertyRepository
         {
             get
             {
-                if (this.policyTypeFieldRepository == null)
+                if (this.policyPropertyRepository == null)
                 {
-                    this.policyTypeFieldRepository = new Repository<PolicyTypeField>(this.dbContext);
+                    this.policyPropertyRepository = new Repository<PolicyProperty>(this.dbContext);
                 }
-                return this.policyTypeFieldRepository;
+                return this.policyPropertyRepository;
+            }
+        }
+
+        private IRepository<PolicyTypePolicyProperty> policyTypePolicyPropertyRepository;
+        public IRepository<PolicyTypePolicyProperty> PolicyTypePolicyPropertyRepository
+        {
+            get
+            {
+                if (this.policyTypePolicyPropertyRepository == null)
+                {
+                    this.policyTypePolicyPropertyRepository = new Repository<PolicyTypePolicyProperty>(this.dbContext);
+                }
+                return this.policyTypePolicyPropertyRepository;
             }
         }
         
@@ -261,16 +287,43 @@ namespace Advisr.DataLayer
             }
         }
 
-        private IRepository<AdditionalPolicyProperty> additionalPolicyPropertyRepository;
-        public IRepository<AdditionalPolicyProperty> AdditionalPolicyPropertyRepository
+        private IRepository<PolicyPolicyProperty> policyPolicyPropertyRepository;
+        public IRepository<PolicyPolicyProperty> PolicyPolicyPropertyRepository
         {
             get
             {
-                if (this.additionalPolicyPropertyRepository == null)
+                if (this.policyPolicyPropertyRepository == null)
                 {
-                    this.additionalPolicyPropertyRepository = new Repository<AdditionalPolicyProperty>(this.dbContext);
+                    this.policyPolicyPropertyRepository = new Repository<PolicyPolicyProperty>(this.dbContext);
                 }
-                return this.additionalPolicyPropertyRepository;
+                return this.policyPolicyPropertyRepository;
+            }
+        }
+
+
+        private IRepository<PolicyTemplate> policyTemplateRepository;
+        public IRepository<PolicyTemplate> PolicyTemplateRepository
+        {
+            get
+            {
+                if (this.policyTemplateRepository == null)
+                {
+                    this.policyTemplateRepository = new Repository<PolicyTemplate>(this.dbContext);
+                }
+                return this.policyTemplateRepository;
+            }
+        }
+
+        private IRepository<PolicyTemplatePolicyProperty> policyTemplatePolicyPropertyRepository;
+        public IRepository<PolicyTemplatePolicyProperty> PolicyTemplatePolicyPropertyRepository
+        {
+            get
+            {
+                if (this.policyTemplatePolicyPropertyRepository == null)
+                {
+                    this.policyTemplatePolicyPropertyRepository = new Repository<PolicyTemplatePolicyProperty>(this.dbContext);
+                }
+                return this.policyTemplatePolicyPropertyRepository;
             }
         }
 
@@ -286,46 +339,7 @@ namespace Advisr.DataLayer
                 return this.userPolicyRepository;
             }
         }
-
-        private IRepository<Home_P> home_PRepository;
-        public IRepository<Home_P> Home_PRepository
-        {
-            get
-            {
-                if (this.home_PRepository == null)
-                {
-                    this.home_PRepository = new Repository<Home_P>(this.dbContext);
-                }
-                return this.home_PRepository;
-            }
-        }
-
-        private IRepository<Life_P> life_PRepository;
-        public IRepository<Life_P> Life_PRepository
-        {
-            get
-            {
-                if (this.life_PRepository == null)
-                {
-                    this.life_PRepository = new Repository<Life_P>(this.dbContext);
-                }
-                return this.life_PRepository;
-            }
-        }
-
-        private IRepository<Vehicle_P> vehicle_PRepository;
-        public IRepository<Vehicle_P> Vehicle_PRepository
-        {
-            get
-            {
-                if (this.vehicle_PRepository == null)
-                {
-                    this.vehicle_PRepository = new Repository<Vehicle_P>(this.dbContext);
-                }
-                return this.vehicle_PRepository;
-            }
-        }
-
+        
         private IRepository<VehicleModel> vehicleModelRepository;
         public IRepository<VehicleModel> VehicleModelRepository
         {

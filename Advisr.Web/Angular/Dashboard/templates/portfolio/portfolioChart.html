@@ -22,16 +22,20 @@
 <!-- Heading 4 -->
 <div class="graph-div-mobile w-hidden-main w-hidden-medium" data-ix="graphic-lod-and-select-mobile" style="opacity: 1; transform: scaleX(1) scaleY(1) scaleZ(1); transition: opacity 500ms, transform 500ms;">
     <div class="graph-block w-clearfix">
-    <div class="graph-com"><img class="block-image" height="50" src="/Content/images/Commercial.svg" width="76">
+    <div class="graph-com" ng-click="showPolicy('commercial')">
+        <img class="block-image" height="50" src="/Content/images/Commercial.svg" width="76">
         <h5 class="block-text-heading">{{currency.commertial | currency:"$":0}}<br>Commercial</h5>
     </div>
-    <div class="graph-me"><img class="block-image com" height="50" src="/Content/images/me.svg" width="36">
+    <div class="graph-me" ng-click="showPolicy('personal')">
+        <img class="block-image com" height="50" src="/Content/images/me.svg" width="36">
         <h5 class="block-text-heading">{{currency.personal | currency:"$":0}}<br>Personal</h5>
     </div>
-    <div class="graph-veh"><img class="block-image-veh-selected w-hidden-main w-hidden-medium" height="50" src="/Content/images/Vehicle_selected.svg" width="76" style="transition: opacity 200ms; opacity: 0;"><img class="block-image veh" height="50" src="/Content/images/Vehicle.svg" width="76">
+    <div class="graph-veh" ng-click="showPolicy('vehicle')">
+        <img class="block-image-veh-selected w-hidden-main w-hidden-medium" height="50" src="/Content/images/Vehicle_selected.svg" width="76" style="transition: opacity 200ms; opacity: 0;"><img class="block-image veh" height="50" src="/Content/images/Vehicle.svg" width="76">
         <h5 class="block-text-heading">{{currency.vehicle | currency:"$":0}}<br>Vehicle</h5>
     </div>
-    <div class="graph-prop"><img class="block-image" height="50" src="/Content/images/Property.svg" width="76">
+    <div class="graph-prop" ng-click="showPolicy('property')">
+        <img class="block-image" height="50" src="/Content/images/Property.svg" width="76">
         <h5 class="block-text-heading">{{currency.property | currency:"$":0}}<br>Property</h5>
     </div>
     </div>
@@ -88,98 +92,4 @@
     </div>
 </div>
 <!-- Text content -->
-<div id="policy" class="policy-panel fadeAnimate" style="transform-style: preserve-3d; display: block; transition: transform 400ms; transform: translateX(0px) translateY(0%) translateZ(0px);" ng-show="showPanel">
-    <div class="bottom grey-block portfolio w-clearfix">
-        <img class="card-container-cross" data-ix="policy-panel-close" height="19" src="/Content/images/Card_Container_X.svg" width="19"
-        ng-click="closePortfolio()"
-        >
-        <div class="text-capitalize">{{portfolioList.length}} {{groupName}} Policies</div>
-    </div>
-    <div class="card-container">
-        <div ng-repeat="policy in portfolioList">
-            <div class="card mobile" ng-style="{'border-left-color' : policy.insurer.color}">
-                <div class="mobile-card-title w-hidden-main w-hidden-medium w-row">
-                    <div class="mobile-card-left-col w-col w-col-7 w-col-small-7 w-col-tiny-7 w-hidden-main">
-                        <div class="mobile-card-left-div">
-                            <img class="mobile-card-image" ng-src={{policy.insurer.logoUrl}}>
-                            <h5 class="mobile-card-heading">{{policy.title}}</h5>
-                        </div>
-                        <div>{{policy.subTitle}}</div>
-                        <div>{{policy.policyGroup.groupName}}</div>
-                        <div>{{policy.policyGroup.policyType}}</div>
-                    </div>
-                    <div class="mobile-card-right-col w-col w-col-3 w-col-small-3 w-col-tiny-3">
-                        <div class="mobile-card-right-div">
-                            <h5 class="mobile-card-title-header">
-                                {{policy.policyPaymentAmount | currency:"$":0}}/{{getPayment(policy.policyPaymentFrequency) | limitTo: 1 | lowercase}}
-                            </h5>
-                            <div>Expires on {{policy.endDate | date:'dd.MM.yyyy'}}</div>
-                        </div>
-                    </div>
-                    <div class="moble-card-arrow-col w-clearfix w-col w-col-2 w-col-small-2 w-col-tiny-2">
-                        <div class="mobile-card-arrow w-clearfix">
-                            <a href="#policy/{{policy.id}}">
-                                <img class="mobile-card-arrow-image" data-ix="show-policy-details" src="/Content/images/mobile_card_arrow2x.png">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-title w-clearfix w-hidden-small w-hidden-tiny">
-                    <img class="aami card-title-image" ng-src={{policy.insurer.logoUrl}}>
-                    <div class="card-columns w-row">
-                        <div class="w-col w-col-2">
-                            <h5>{{policy.title}}</h5>
-                            <div>{{policy.subTitle}}</div>
-                        </div>
-                        <div class="w-col w-col-3">
-                            <h5>
-                                {{policy.policyPaymentAmount | currency:"$":0}}/{{getPayment(policy.policyPaymentFrequency) | limitTo: 1 | lowercase}}
-                            </h5>
-                            <div>{{policy.policyGroup.groupName}}</div>
-                            <div>{{policy.policyGroup.policyType}}</div>
-                        </div>
-                        <div class="w-col w-col-3">
-                            <h5>Insurance</h5>
-                            <div>Expires on {{policy.endDate | date:'dd.MM.yyyy'}}</div>
-                        </div>
-                        <div class="w-col w-col-2">
-                            <h5>Policy Number</h5>
-                            <div>{{policy.policyNumber}}</div>
-                        </div>
-                        <div class="w-col w-col-2"></div>
-                    </div>
-                    <div class="accordian w-dropdown" data-delay="0" ng-click="openDetails($index, policy.id)">
-                        <div class="card-accordian w-dropdown-toggle" data-ix="accordion-openclose">
-                            <div class="card-drop-down-icon w-icon-dropdown-toggle"></div>
-                        </div>
-                        <nav class="drop-down-card w-dropdown-list"></nav>
-                    </div>
-                </div>
-                <div class="card-body w-hidden-small w-hidden-tiny fadeAnimate" ng-show="policyDetails[$index]">
-                    <div class="w-row">
-                        <div class="w-col w-col-6">
-                            <h5 class="heading-5">Policy Details</h5>
-                            <p class="paragraph">
-                                {{ policyInfo[$index].descrition | limitTo: 200 }}{{policyInfo[$index].descrition.length > 200 ? '...' : ''}}
-                                </p><a class="card-links link-text" data-ix="show-policy-details" ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;" ng-show="policyInfo[$index].descrition.length > 200">Continue Reading</a>
-                        </div>
-                        <div class="contact-col w-col w-col-2">
-                            <h5 class="heading-5">Contact</h5><a target="_blank" class="card-links contact link-text" ng-href="http://{{policyInfo[$index].insurer.url}}">{{policyInfo[$index].insurer.url}}</a>
-                            <span class="card-links link-text phone-link" href="#">{{policyInfo[$index].insurer.phone}}</span>
-                            <h5 class="contact-sub-title heading-5">Overseas no.</h5>
-                            <span class="card-links contact link-text phone-link" href="#">{{policyInfo[$index].insurer.phoneOverseas}}</span>
-                        </div>
-                        <div class="right-col w-col w-col-4">
-                            <a class="default-button w-button" href="#">Make a claim</a>
-                            <a class="card-links link-text" data-ix="show-policy-details"
-                                ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;">View Insurance Documents</a>
-                            <a class="card-links link-text" data-ix="show-policy-details" ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;">Standard &amp; Optional Cover</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--card-->
-    </div>
-    <nav ng-show="portfolioList.length" ng-include="'/Angular/Dashboard/templates/page/pager.html'" ng-init="path = '/'"></nav>
-</div>
+ <div ng-include="'/Angular/Dashboard/templates/portfolio/portfolioPolicyList.html'"></div>

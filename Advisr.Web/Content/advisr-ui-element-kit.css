@@ -884,6 +884,7 @@ ul li .tab-current.w--current {
   color: #4b4b4b;
   line-height: 20px;
   font-weight: 400;
+  word-wrap: break-word;
 }
 
 .paragraph.text-links {
@@ -1797,7 +1798,7 @@ ul li .tab-current.w--current {
 }
 
 .tab-header {
-  height: 75px;
+  height: 76px;
   background-color: transparent;
 }
 
@@ -1872,13 +1873,9 @@ ul li .tab-current.w--current {
 
 .policy-panel {
   position: static;
-  display: none;
   width: 100%;
   margin-top: 80px;
   padding-bottom: 0px;
-  -webkit-transform: translate(0px, 100%);
-  -ms-transform: translate(0px, 100%);
-  transform: translate(0px, 100%);
 }
 
 .processing-cta {
@@ -2986,6 +2983,19 @@ ul li .tab-current.w--current {
   .text-link.ask-advisr {
     float: right;
   }
+  .chunk.me.v1 {
+    top: 0%;
+  }
+  .me-text.v2 {
+    left: -38%;
+  }
+  .veh-text.v2 {
+    left: -40%;
+  }
+  .chunk-image.me.v2 {
+    left: 24%;
+    top: 21%;
+  }
 }
 
 @media (max-width: 767px) {
@@ -3004,6 +3014,12 @@ ul li .tab-current.w--current {
   }
   .nav-menu {
     background-color: #1f3a55;
+  }
+  .mobile-login-block {
+      min-height:500px;
+  }
+  .footer {
+      position:fixed;
   }
   .default-button {
     width: 100%;
@@ -3354,7 +3370,21 @@ ul li .tab-current.w--current {
     background-color: #a4d5fc;
   }
 
-    .block-image {
+  .graph-me.v1 {
+    width: 33.33%;
+    background-color: #a4d5fc;
+  }
+
+  .graph-veh.v1 {
+    width: 33.33%;
+  }
+
+  .graph-prop.v1 {
+    width: 33.33%;
+    background-color: #3390da;
+  }
+
+  .block-image {
     display: block;
     width: 36px;
     margin: 10px auto 6px;
@@ -3451,6 +3481,8 @@ ul li .tab-current.w--current {
   .text-link.ask-advisr {
     float: none;
   }
+
+
 }
 
 @media (max-width: 479px) {
@@ -3613,11 +3645,36 @@ ul li .tab-current.w--current {
   }
   .cover-title {
     margin-right: 7px;
+    max-width: 195px;
   }
   .cover-image.ticked {
     margin-right: 12px;
   }
   .ui-form {
+    text-align: center;
+  }
+  .tab-title {
+    display: inline;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    float: none;
+    font-size: 20px;
+    text-align: left;
+  }
+  .tab-title.light {
+    margin-top: 0px;
+  }
+  .tab-header {
+    height: auto;
+    margin-top: 15px;
+    text-align: center;
+  }
+  .tab-subtitle.details-header {
+    width: auto;
+    margin-left: 0px;
+    padding-left: 0px;
+    float: none;
+    font-size: 10px;
     text-align: center;
   }
 }

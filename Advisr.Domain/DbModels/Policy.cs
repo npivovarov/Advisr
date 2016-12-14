@@ -70,17 +70,11 @@ namespace Advisr.Domain.DbModels
         
         public virtual ICollection<PolicyFile> PolicyFiles { get; set; }
 
-        public virtual ICollection<AdditionalPolicyProperty> AdditionalPolicyFields { get; set; }
+        public virtual ICollection<PolicyPolicyProperty> PolicyPolicyProperties { get; set; }
 
         public virtual ICollection<PolicyCoverage> PolicyCoverages { get; set; }
 
         public virtual ICollection<UserPolicy> PolicyUsers { get; set; }
-
-        public virtual ICollection<Vehicle_P> VehicleItems { get; set; }
-
-        public virtual ICollection<Life_P> LifeItems { get; set; }
-
-        public virtual ICollection<Home_P> HomeItems { get; set; }
     }
     
     public enum PolicyStatus
@@ -88,7 +82,8 @@ namespace Advisr.Domain.DbModels
         None = -1,
         Unconfirmed = 0,
         Confirmed = 1,
-        Rejected = 2 
+        Rejected = 2,
+        Hidden = 3
     }
 
     public enum PolicyPaymentFrequency

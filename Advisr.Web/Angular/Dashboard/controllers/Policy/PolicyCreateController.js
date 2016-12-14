@@ -8,8 +8,6 @@ angular.module('DashboardApp').controller('PolicyCreateController', ['$scope', '
     };
 
     $scope.listPolicyType = {};
-    $scope.listPolicyType.selected = _.head(ConfigService.policyType);
-
     $scope.policyType = ConfigService.policyType;
 
     function _creationConfirmed() {
@@ -52,9 +50,9 @@ angular.module('DashboardApp').controller('PolicyCreateController', ['$scope', '
         if (dataUrl.length > 0) {
 
             $scope.disabled = true;
-            $scope.submitInProgressFile = true;
 
             for (var i = 0; i < dataUrl.length; i++) {
+            $scope.submitInProgressFile = true;
             
             Upload.upload({
                     url: ConfigService.urls.file.upload,
@@ -82,6 +80,9 @@ angular.module('DashboardApp').controller('PolicyCreateController', ['$scope', '
 
                 if (response.status > 0)
                     $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    Upload.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                    $scope.progress = Upload.progress;
                 });
             }
         }
@@ -95,12 +96,16 @@ angular.module('DashboardApp').controller('PolicyCreateController', ['$scope', '
     function _showConfirmPopup() {
         
     };
-
+    
+    function _onSelected() {
+        $scope.addFile = false;
+    }
 
     _.extend($scope, {
         uploadFiles: _uploadFiles,
         removeFile: _removeFile,
         save: _save,
+        onSelected: _onSelected,
         confirmed: _creationConfirmed,
         rejected: _creationRejected,
         validationErrors: {},
@@ -108,7 +113,8 @@ angular.module('DashboardApp').controller('PolicyCreateController', ['$scope', '
         fileNames: [],
         submitInProgress: false,
         submitInProgressFile: false,
-        disabled: false
+        disabled: false,
+        addFile: true
     });
 
 }]);

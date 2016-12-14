@@ -26,7 +26,7 @@
                 <div class="detail-row document" ng-repeat="fileName in fileNames track by fileName.id">
                     <div class="details-collumns w-row">
                         <div class="w-col w-col-5 w-col-small-small-stack w-col-tiny-tiny-stack">
-                            <div>{{fileName.fileName}}</div>
+                            <div class="text-ellipsis">{{fileName.fileName}}</div>
                         </div>
                         <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack">
                             <div>{{fileName.uploadedDate | date:'dd.MM.yyyy'}} at {{fileName.uploadedDate | date:'hh:mm'}}</div>
@@ -72,7 +72,7 @@
                                 </ui-select-choices>
                             </ui-select>
                             <label class="field-label">Policy Type</label>
-                            <ui-select ng-model="list.categories" on-select="changeCategories($item)">
+                            <ui-select ng-model="list.categories">
                                 <ui-select-match>
                                     <span ng-bind="$select.selected.name"></span>
                                 </ui-select-match>
@@ -83,7 +83,7 @@
                             <!--Base Info-->
                             <label class="field-label required" for="startDate">Inception Date</label>
                             <div class="input-group">
-                                <input type="text" class="form-control default-input w-input" placeholder="yyyy/mm/dd" uib-datepicker-popup="{{format}}"
+                                <input type="text" class="form-control default-input w-input" placeholder="dd.mm.yyyy" uib-datepicker-popup="{{format}}"
                                     ng-model="data.startDate" is-open="openedStartDate" close-text="Close" show-button-bar="false" alt-input-formats="altInputFormats"
                                     ng-change="clearError('startDate', validationErrors)"
                                 />
@@ -98,7 +98,7 @@
                             </div>
                             <label class="field-label required" for="startDate">Renewal Date</label>
                             <div class="input-group">
-                                <input type="text" class="form-control default-input w-input" placeholder="yyyy/mm/dd" uib-datepicker-popup="{{format}}"
+                                <input type="text" class="form-control default-input w-input" placeholder="dd.mm.yyyy" uib-datepicker-popup="{{format}}"
                                     ng-model="data.endDate" is-open="openedEndDate" close-text="Close" show-button-bar="false" alt-input-formats="altInputFormats"
                                     ng-change="clearError('endDate', validationErrors)"
                                 />
@@ -154,8 +154,13 @@
                             </div>
 
                             <label class="field-label required" for="PolicyExcess">Policy Excess</label>
-                            <input class="default-input w-input" data-name="PolicyExcess" id="PolicyExcess" maxlength="256" name="PolicyExcess" placeholder="Enter Policy Excess"
+                            <div class="input-group">
+                                <input class="default-input w-input form-control" data-name="PolicyExcess" id="PolicyExcess" maxlength="256" name="PolicyExcess" placeholder="Enter Policy Excess"
                                 required="required" type="number" min="0" mask="99999" clean="true" ng-model="data.policyExcess" ng-change="clearError('policyExcess', validationErrors)">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-usd"></i>
+                                </span>
+                            </div>
                             <div ng-show="paramExists('policyExcess', validationErrors)" class="field-validation-error">
                                 <div ng-repeat="error in validationErrors['policyExcess']">{{error}} <br /></div>
                             </div>
@@ -169,18 +174,12 @@
 </div> <!--wrapper-->
 
 
-<div class="details grey-block">Details</div>
+<div class="details grey-block">Policy Properties • {{list.categories.name}}</div>
 <div class="wrapper">
     <div class="row section-row">
         <div class="col-lg-6">
-            <div ng-if="policyTemplate == 0">
-                <policy-template-vehicle></policy-template-vehicle>
-            </div>
-            <div ng-if="policyTemplate == 1">
-                <policy-template-home></policy-template-home>
-            </div>
-            <div ng-if="policyTemplate == 2">
-                <policy-template-life></policy-template-life>
+            <div>
+                <policy-template-details></policy-template-details>
             </div>
         </div>
     </div>
@@ -196,13 +195,27 @@
     </div>
 </div>
 
-<div ng-include="'/Angular/Dashboard/templates/policy/policyAdmin/policyCoverages.html'"></div>
+<div ng-if="coveragesDetails.length" ng-include="'/Angular/Dashboard/templates/policy/policyAdmin/policyCoverages.html'"></div>
 
 <div style="overflow: hidden;" class="wrapper">
     <div class="row">
         <div class="col-lg-12">
             <button class="default-button w-button" ng-click="save(false)" button-spinner="submitInProgressSave">Save</button>
-            <button class="default-button w-button" ng-click="save(true)" button-spinner="submitInProgressConfirmed">Save And Confirm</button>
+            <button class="default-button w-button" 
+            ng-click="save(true)" 
+            button-spinner="submitInProgressConfirmed"
+            ng-if="policy.status != 1 && policy.status != 3"
+            >Save And Confirm</button>
+            <button class="default-button w-button" 
+            ng-click="hideStatus()" 
+            button-spinner="submitInProgressStatus"
+            ng-if="policy.status === 1"
+            >Hide for Customer</button>
+            <button class="default-button w-button" 
+            ng-click="showStatus()" 
+            button-spinner="submitInProgressStatus"
+            ng-if="policy.status === 3"
+            >Show for Customer</button>
         </div>
     </div>
 </div>

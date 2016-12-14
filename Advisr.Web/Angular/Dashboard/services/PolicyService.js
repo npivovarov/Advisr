@@ -34,6 +34,7 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
             offset: offset,
             count: count,
             status: 1,
+            active: 1,
             groupName: $stateParams.groupName,
             q: $stateParams.q || null
         }
@@ -75,11 +76,9 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
             });
     }
 
-    function _getGroupFields(groupId) {
+    function _getGroupFields(data) {
         return $http.get(ConfigService.urls.policy.groupFields, {
-            params: {
-                policyGroupId: groupId
-            }
+            params: data
         });
     }
 
@@ -121,6 +120,14 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
         });
     }
 
+    function _setHideStatus(id) {
+        return $http.post(ConfigService.urls.policy.hide, {}, { params: { id: id } })
+    }
+
+    function _setShowStatus(id) {
+        return $http.post(ConfigService.urls.policy.show, {}, { params: { id: id } })
+    }
+
     _.extend(PolicyService, {
         createPolicy: _createPolicy,
         getPolicies: _getPolicies,
@@ -135,7 +142,9 @@ angular.module('DashboardApp').factory('PolicyService', ['$http', '$stateParams'
         getShortDetails: _getShortDetails,
         getPoliciesPortfolio: _getPoliciesPortfolio,
         getCoveragesDetails: _getCoveragesDetails,
-        getCoverages: _getCoverages
+        getCoverages: _getCoverages,
+        setHideStatus: _setHideStatus,
+        setShowStatus: _setShowStatus
     })
 
     return PolicyService;

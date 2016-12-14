@@ -6,7 +6,6 @@
                     <div class="col-lg-8">
                         <h3 class="tab-title">Insurer List</h3>
                     </div>
-                    
                     <div class="col-lg-4">
                         <input class="default-input w-input" data-name="search" id="search" maxlength="256" name="search" placeholder="Search insurers" type="text" ng-model="searchData" ng-keyup="search($event)">
                     </div>
@@ -14,11 +13,14 @@
             </div>
         </div>
     </div>
-    
-    <a class="default-button w-button pull-right" ng-href="#/admin/addinsurer" style="margin-bottom:10px">+ Add new insurer</a>
+    <div class="col-md-12">
+        <div class="row">
+            <a class="default-button w-button pull-right" ng-href="#/admin/addinsurer" style="margin-bottom:10px">+ Add new insurer</a>
+        </div>
+    </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>

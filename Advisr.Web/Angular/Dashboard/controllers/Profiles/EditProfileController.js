@@ -115,7 +115,6 @@ angular.module('DashboardApp').controller('EditProfileController', ['$scope', '$
     }
 
     _.extend($scope, {
-        altInputFormats: ['M!/d!/yyyy'],
         openedPopup: false,
         submitInProgressLock: false,
         submitInProgressUnlock: false,

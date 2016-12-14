@@ -35,16 +35,16 @@ namespace Advisr.DataLayer
         IRepository<Policy> PolicyRepository { get; }
         IRepository<PolicyCoverage> PolicyCoverageRepository { get; }
         IRepository<PolicyFile> PolicyFileRepository { get; }
+        IRepository<PolicyGroup> PolicyGroupRepository { get; }
         IRepository<PolicyType> PolicyTypeRepository { get; }
-        IRepository<PolicyTypeField> PolicyTypeFieldRepository { get; }
+        IRepository<PolicyProperty> PolicyPropertyRepository { get; }
+        IRepository<PolicyTypePolicyProperty> PolicyTypePolicyPropertyRepository { get; }
         IRepository<PolicyTypeCoverage> PolicyTypeCoverageRepository { get; }
-        IRepository<AdditionalPolicyProperty> AdditionalPolicyPropertyRepository { get; }
-
-
+        IRepository<PolicyPolicyProperty> PolicyPolicyPropertyRepository { get; }
+        IRepository<PolicyTemplate> PolicyTemplateRepository { get; }
+        IRepository<PolicyTemplatePolicyProperty> PolicyTemplatePolicyPropertyRepository { get; }
+        
         IRepository<UserPolicy> UserPolicyRepository { get; }
-        IRepository<Home_P> Home_PRepository { get; }
-        IRepository<Life_P> Life_PRepository { get; }
-        IRepository<Vehicle_P> Vehicle_PRepository { get; }
         IRepository<VehicleModel> VehicleModelRepository { get; }
         IRepository<VehicleMake> VehicleMakeRepository { get; }
         //------------------------------------------------

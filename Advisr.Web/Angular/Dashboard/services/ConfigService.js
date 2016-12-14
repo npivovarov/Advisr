@@ -20,15 +20,17 @@ angular.module('DashboardApp').factory('ConfigService', function () {
                 list: '/api/Policy/List',
                 viewAll: '/api/Policy/ViewAll',
                 insurerList: '/api/Insurer/list',
-                groups: '/api/policy/groups/',
-                groupFields: '/api/Policy/GroupFields/Description',
+                groups: '/api/policy/policyTypes/', //rename
+                groupFields: '/api/Policy/GroupFields/Description', 
                 update: '/api/Policy/Update',
                 shortDetails: '/api/policy/ShortDetails',
-                getFilledFields: '/api/Policy/GroupFields/PolicyFields',
+                getFilledFields: '/api/Policy/GroupFields/PolicyFields', //remove
                 // Coverage
                 coveragesDescription: '/api/policy/Coverages/Description',
-                getCoverages: '/api/policy/GetCoverages'
-
+                getCoverages: '/api/policy/GetCoverages',
+                // Status
+                hide: '/api/policy/hideforcustomer',
+                show: '/api/policy/showforcustomer'
             },
             file: {
                 upload: '/api/file/upload',
@@ -37,7 +39,7 @@ angular.module('DashboardApp').factory('ConfigService', function () {
             insurer: {
                 create: '/api/Insurer/Add',
                 get: '/api/Insurer/Get/',
-                list: '/api/Insurer/List',
+                list: '/api/Insurer/ListAdmin',
                 edit: '/api/Insurer/Edit/',
                 delete: '/api/Insurer/Delete/',
                 getPolicyTypes: '/api/Insurer/PolicyTypes/',
@@ -52,7 +54,9 @@ angular.module('DashboardApp').factory('ConfigService', function () {
                 editPolicyType: '/api/Insurer/EditPolicyType/',
                 addField: '/api/Insurer/AddField',
                 saveField: '/api/Insurer/SaveField',
-                getField: '/api/Insurer/GetField/'
+                getField: '/api/Insurer/GetField/',
+                getGroups: '/api/Insurer/GetPolicyGroups',
+                getGroupTemplates: '/api/Insurer/GetPolicyGroupTemplates/'
             },
             portfolio: {
                 chartDetails: '/api/Portfolio/PieChartDetails'
@@ -84,7 +88,7 @@ angular.module('DashboardApp').factory('ConfigService', function () {
             { key: -1, value: 'All' },
             { key: 0, value: 'Unconfirmed' },
             { key: 1, value: 'Confirmed' },
-            { key: 2, value: 'Rejected' },
+            { key: 2, value: 'Hidden' }
         ],
         sortType: [
             { key: 0, value: 'All' },

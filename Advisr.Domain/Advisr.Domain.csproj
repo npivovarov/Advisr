@@ -62,7 +62,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbModels\AdditionalPolicyProperty.cs" />
+    <Compile Include="DbModels\PolicyGroup.cs" />
+    <Compile Include="DbModels\PolicyPolicyProperty.cs" />
     <Compile Include="DbModels\Address.cs" />
     <Compile Include="DbModels\ApplicationUser.cs" />
     <Compile Include="DbModels\AutopilotErrorBuffer.cs" />
@@ -70,11 +71,12 @@
     <Compile Include="DbModels\CustomerDetails.cs" />
     <Compile Include="DbModels\CustomerModificationHistory.cs" />
     <Compile Include="DbModels\File.cs" />
-    <Compile Include="DbModels\Home_P.cs" />
     <Compile Include="DbModels\IBaseEntity.cs" />
     <Compile Include="DbModels\Insurer.cs" />
-    <Compile Include="DbModels\Life_P.cs" />
-    <Compile Include="DbModels\PolicyTypeField.cs" />
+    <Compile Include="DbModels\PolicyProperty.cs" />
+    <Compile Include="DbModels\PolicyTemplate.cs" />
+    <Compile Include="DbModels\PolicyTemplatePolicyProperty.cs" />
+    <Compile Include="DbModels\PolicyTypePolicyProperty.cs" />
     <Compile Include="DbModels\PolicyTypeCoverage.cs" />
     <Compile Include="DbModels\UserNotification.cs" />
     <Compile Include="DbModels\Policy.cs" />
@@ -82,7 +84,6 @@
     <Compile Include="DbModels\PolicyFile.cs" />
     <Compile Include="DbModels\PolicyType.cs" />
     <Compile Include="DbModels\UserPolicy.cs" />
-    <Compile Include="DbModels\Vehicle_P.cs" />
     <Compile Include="DbModels\VehicleMake.cs" />
     <Compile Include="DbModels\VehicleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -32,10 +32,6 @@ angular.module('DashboardApp').controller('InsurerAdminController', ['$scope', '
             $scope.data.policyTypes = res.data;
 
             for (var i = 0; i < $scope.data.policyTypes.length; i++) {
-                $scope.data.policyTypes[i].policyGroupName = _.find($scope.groupNames,
-                    { 'name': $scope.data.policyTypes[i].policyGroupName }).name;
-                $scope.data.policyTypes[i].policyGroupType = _.find($scope.groupTypes,
-                    { 'id': $scope.data.policyTypes[i].policyGroupType }).name;
                 $scope.data.policyTypes[i].status = _.find($scope.statuses,
                     { 'id': $scope.data.policyTypes[i].status }).name;
             }

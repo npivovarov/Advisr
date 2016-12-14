@@ -44,10 +44,10 @@ angular.module('DashboardApp').controller('PolicyViewUploadController', ['$scope
 
     function _uploadFiles(dataUrl) {
         if (dataUrl.length > 0) {
-            $scope.submitInProgressFile = true;
             $scope.disabled = true;
 
             for (var i = 0; i < dataUrl.length; i++) {
+                $scope.submitInProgressFile = true;
                 Upload.upload({
                     url: ConfigService.urls.file.upload,
                     data: {
@@ -73,6 +73,9 @@ angular.module('DashboardApp').controller('PolicyViewUploadController', ['$scope
                     $scope.submitInProgressFile = false;
                     if (response.status > 0)
                         $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    Upload.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                    $scope.progress = Upload.progress;
                 });
             } 
         }

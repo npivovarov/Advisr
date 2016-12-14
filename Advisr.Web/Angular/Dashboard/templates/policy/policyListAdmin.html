@@ -48,7 +48,7 @@
                         <td>{{policy.insurer.name}}</td>
                         <td>{{policy.createdBy.firstName}}</td>
                         <td>{{policy.createdBy.email}}</td>
-                        <td>{{policy.createdDate  | date:'dd/MM/yyyy'}}</td>
+                        <td>{{policy.createdDate  | date:'dd.MM.yyyy'}}</td>
                         <td>{{getStatus(policy.status)}}</td>
                         <td><a class="small-button w-button" ng-href="#/policy/update/{{policy.id}}">Update</a></td>
                     </tr>

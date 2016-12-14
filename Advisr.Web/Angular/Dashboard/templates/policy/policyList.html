@@ -78,13 +78,12 @@
             <img class="mobile-card-image" ng-src={{policy.insurer.logoUrl}}>
             <h5 class="mobile-card-heading">{{policy.title}}</h5>
           </div>
-          <div>{{policy.subTitle}}</div>
-          <div>{{policy.policyGroup.groupName}}</div>
-          <div>{{policy.policyGroup.policyType}}</div>
+          <div>{{policy.subTitle}} <span ng-show="policy.policyGroup.policyTemplate == 'Travel'">Travellers</span></div>
+          <div>{{policy.policyGroup.policyTemplate}} {{policy.policyGroup.policyType}}</div>
         </div>
         <div class="mobile-card-right-col w-col w-col-3 w-col-small-3 w-col-tiny-3">
           <div class="mobile-card-right-div">
-            <h5 class="mobile-card-title-header">${{policy.policyPaymentAmount}}/{{getPayment(policy.policyPaymentFrequency)}}</h5>
+            <h5 class="mobile-card-title-header">${{policy.policyPaymentAmount}}/{{getPayment(policy.policyPaymentFrequency)}} <span ng-show="policy.lifeInsurancePremiumType != null">{{policy.lifeInsurancePremiumType.value}}</span></h5>
             <div>Expires on {{policy.endDate | date:'dd.MM.yyyy'}}</div>
           </div>
         </div>
@@ -101,11 +100,11 @@
         <div class="card-columns w-row">
           <div class="w-col w-col-2">
             <h5>{{policy.title}}</h5>
-            <div>{{policy.subTitle}}</div>
+            <div>{{policy.subTitle}} <span ng-show="policy.policyGroup.policyTemplate == 'Travel'">Travellers</span></div>
           </div>
           <div class="w-col w-col-3">
-            <h5>${{policy.policyPaymentAmount}}/{{getPayment(policy.policyPaymentFrequency)}}</h5>
-            <div>{{policy.policyGroup.groupName}} {{policy.policyGroup.policyType}}</div>
+            <h5>${{policy.policyPaymentAmount}}/{{getPayment(policy.policyPaymentFrequency)}} <span ng-show="policy.lifeInsurancePremiumType != null">{{policy.lifeInsurancePremiumType.value}}</span></h5>
+            <div class="text-ellipsis">{{policy.policyGroup.policyTemplate}} {{policy.policyGroup.policyType}}</div>
           </div>
           <div class="w-col w-col-3">
             <h5>Insurance</h5>
@@ -122,6 +121,11 @@
             <div class="card-drop-down-icon w-icon-dropdown-toggle"></div>
           </div>
           <nav class="drop-down-card w-dropdown-list"></nav>
+            <div class="mobile-card-arrow w-clearfix">
+            <a href="#policy/{{policy.id}}">
+              <img class="mobile-card-arrow-image" data-ix="show-policy-details" src="/Content/images/mobile_card_arrow2x.png">
+            </a>
+          </div>
         </div>
       </div>
       <div class="card-body w-hidden-small w-hidden-tiny fadeAnimate" ng-show="policyDetails[$index]">
@@ -129,9 +133,9 @@
           <div class="w-col w-col-6">
             <h5 class="heading-5">Policy Details</h5>
             <p class="paragraph">
-              {{ policyInfo[$index].insurer.description | limitTo: 400 }}{{policyInfo[$index].descrition.length > 400 ? '...' : ''}}
+              <pre class="pre-formatted-text paragraph">{{ policyInfo[$index].description | limitTo: 400 }}{{policyInfo[$index].description.length > 400 ? '...' : ''}}</pre>
               </p><a class="card-links link-text"
-              data-ix="show-policy-details" ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;" ng-show="policyInfo[$index].descrition.length > 200">Continue Reading</a>
+              data-ix="show-policy-details" ng-href="#policy/{{policy.id}}?tabname=Description" style="transition: color 0.2s ease 0s;" ng-show="policyInfo[$index].description.length > 400">Continue Reading</a>
           </div>
           <div class="contact-col w-col w-col-2">
             <h5 class="heading-5">Contact</h5>
@@ -145,8 +149,8 @@
             <span class="card-links contact link-text phone-link">{{policyInfo[$index].insurer.phoneOverseas}}</span>
           </div>
           <div class="right-col w-col w-col-4"><a class="default-button w-button" href="#">Make a claim</a><a class="card-links link-text" data-ix="show-policy-details"
-              ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;">View Insurance Documents</a><a class="card-links link-text"
-              data-ix="show-policy-details" ng-href="#policy/{{policy.id}}" style="transition: color 0.2s ease 0s;">Standard &amp; Optional Cover</a>
+              ng-href="#policy/{{policy.id}}?tabname=Documents" style="transition: color 0.2s ease 0s;">View Insurance Documents</a><a class="card-links link-text"
+              data-ix="show-policy-details" ng-href="#policy/{{policy.id}}?tabname=Cover" style="transition: color 0.2s ease 0s;">Standard &amp; Optional Cover</a>
           </div>
         </div>
       </div>

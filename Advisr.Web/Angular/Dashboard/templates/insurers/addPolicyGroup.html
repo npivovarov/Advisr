@@ -10,8 +10,8 @@
                     <div ng-show="paramExists('insurerName', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['insurerName']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label required" for="group name">Group Name</label>
-                    <ui-select ng-model="data.policyGroupName" ng-change="clearError('policyGroupName', validationErrors)">
+                    <label class="field-label required" for="group name">Policy Group Name</label>
+                    <ui-select ng-model="data.policyGroupName" ng-change="clearError('policyGroupName', validationErrors)" on-select="onSelection($select.selected)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
@@ -22,20 +22,20 @@
                     <div ng-show="paramExists('policyGroupName', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['policyGroupName']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label" for="group type">Group Type</label>
-                    <ui-select ng-model="data.policyGroupType" ng-change="clearError('policyGroupType', validationErrors)">
+                    <label class="field-label" for="group type">Policy Template</label>
+                    <ui-select ng-model="data.policyTemplate" ng-change="clearError('policyTemplate', validationErrors)">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (groupTypes | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (policyGroupTemplates | filter: $select.search) track by item.id">
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <div ng-show="paramExists('policyGroupType', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['policyGroupType']">{{error}} <br /></div>
+                    <div ng-show="paramExists('policyTemplate', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyTemplate']">{{error}} <br /></div>
                     </div>
                     <label class="field-label" for="policy type">Policy Type Name</label>
-                    <input class="default-input w-input" data-name="subGroup" id="subGroup" maxlength="256" name="subGroup" placeholder="Enter insurers phone overseas"
+                    <input class="default-input w-input" data-name="subGroup" id="subGroup" maxlength="256" name="subGroup" placeholder="Enter policy type name"
                            type="text" ng-model="data.policyTypeName" ng-change="clearError('policyTypeName', validationErrors)">
                     <div ng-show="paramExists('policyTypeName', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['policyTypeName']">{{error}} <br /></div>
@@ -52,7 +52,9 @@
                     <div ng-show="paramExists('status', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['status']">{{error}} <br /></div>
                     </div>
-                    
+                    <label class="field-label" for="description">Description</label>
+                    <textarea class="default-input w-input" data-name="description" id="description" name="description" placeholder="Enter description"
+                              type="range" ng-model="data.description" ng-change="clearError('description', validationErrors)" rows="10"></textarea>
                     <div class="form-group" ng-show="data.additionalProperties.length" style="margin-top: 5px;">
                         <a class="small-button w-button pull-right" ng-click="openAddPopup()">+ Add New</a>
                         <label>Additional Properties</label>
@@ -81,8 +83,8 @@
                             </table>
                         </div>
                     </div>
-                    <button class="small-button w-button" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
-                    <a class="small-button w-button" data-wait="Please wait..." ng-href="#/admin/editinsurer/{{data.insurer.id}}"
+                    <button class="default-button w-button" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
+                    <a class="default-button w-button" data-wait="Please wait..." ng-href="#/admin/editinsurer/{{data.insurer.id}}"
                        button-spinner="submitInProgress">
                         Back
                     </a>

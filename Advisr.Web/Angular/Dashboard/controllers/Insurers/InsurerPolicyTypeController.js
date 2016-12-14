@@ -15,8 +15,6 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
         { 'id': false, 'name': 'No' }
     ];
 
-    $scope.groupNames = ConfigService.policyGroupName;
-    $scope.groupTypes = ConfigService.policyTypeName;
     $scope.statuses = ConfigService.policyTypeStatus;
     $scope.fieldTypes = ConfigService.policyTypeFieldTypes;
     $scope.coverageTypes = ConfigService.coverageTypes;
@@ -25,10 +23,19 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
 
     var policyTypeId = $stateParams.id;
 
+    InsurersService.getGroups().then(function (res) {
+        $scope.groupNames = res.data;
+    });
+
     InsurersService.getPolicyType(policyTypeId).then(function (res) {
         $scope.data = res.data;
         $scope.data.policyGroupName = _.find($scope.groupNames, { 'name': $scope.data.policyGroupName });
-        $scope.data.policyGroupType = _.find($scope.groupTypes, { 'id': $scope.data.policyGroupType });
+
+        InsurersService.getGroupTemplates($scope.data.policyGroupName.id).then(function (res) {
+            $scope.policyGroupTemplates = res.data;
+            $scope.data.policyTemplate = _.find($scope.policyGroupTemplates, { 'name': $scope.data.policyTemplate });
+        });
+
         $scope.data.status = _.find($scope.statuses, { 'id': $scope.data.status });
 
         for (var i = 0; i < $scope.data.additionalProperties.length; i++) {
@@ -51,8 +58,8 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
 
     function _save() {
         var policyType = angular.copy($scope.data);
-        policyType.policyGroupName = $scope.data.policyGroupName.name;
-        policyType.policyGroupType = $scope.data.policyGroupType.id;
+        policyType.policyGroupId = $scope.data.policyGroupName.id;
+        policyType.policyTemplateId = $scope.data.policyTemplate.id;
         policyType.status = $scope.data.status.id;
 
         InsurersService.editPolicyType(policyType).then(function (res) {
@@ -85,10 +92,11 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
         field.fieldType = $scope.field.fieldType.id;
         field.policyTypeId = $scope.data.policyTypeId;
 
-        ngDialog.close();
+        
 
         InsurersService.addField(field).then(function (res) {
             $scope.submitInProgress = false;
+            ngDialog.close();
             $rootScope.alerts.push({ type: 'success', msg: 'Field has been saved.' });
 
             $state.reload();
@@ -190,7 +198,10 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
             InsurersService.getPolicyType(policyTypeId).then(function (res) {
                 $scope.data = res.data;
                 $scope.data.policyGroupName = _.find($scope.groupNames, { 'name': $scope.data.policyGroupName });
-                $scope.data.policyGroupType = _.find($scope.groupTypes, { 'id': $scope.data.policyGroupType });
+                InsurersService.getGroupTemplates($scope.data.policyGroupName.id).then(function (res) {
+                    $scope.policyGroupTemplates = res.data;
+                    $scope.data.policyTemplate = _.find($scope.policyGroupTemplates, { 'name': $scope.data.policyTemplate });
+                });
                 $scope.data.status = _.find($scope.statuses, { 'id': $scope.data.status });
 
                 for (var i = 0; i < $scope.data.additionalProperties.length; i++) {
@@ -200,7 +211,15 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
 
                 InsurersService.getInsurer($scope.data.insurerId).then(function (res) {
                     $scope.data.insurer = res.data;
-                })
+                });
+
+                InsurersService.getPolicyTypeCoverages(policyTypeId).then(function (res) {
+                    $scope.data.coverages = res.data;
+
+                    for (var i = 0; i < $scope.data.coverages.length; i++) {
+                        $scope.data.coverages[i].type = _.find($scope.coverageTypes, { 'id': $scope.data.coverages[i].type }).name;
+                    }
+                });
             });
 
             $rootScope.alerts.push({ type: 'success', msg: 'Field has been deleted.' });
@@ -348,16 +367,25 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
         });
     }
 
+    function _onGroupSelected(item) {
+        InsurersService.getGroupTemplates(item.id).then(function (res) {
+            $scope.policyGroupTemplates = res.data;
+            $scope.data.policyTemplate = _.find($scope.policyGroupTemplates, { 'name': $scope.data.policyTemplate });
+        });
+    }
+
     function _onTypeSelected(item) {
         if (item.name == 'List') {
             $scope.listSelected = true;
-            $scope.field.listDescription = "[item1, item2]"
+            $scope.field.listDescription = "[\"item1\", \"item2\"]"
         } else {
             if (item.name == 'Bool') {
                 $scope.boolSelected = true;
+                $scope.field.listDescription = null;
             } else {
                 $scope.boolSelected = false;
             }
+            $scope.field.listDescription = null;
             $scope.listSelected = false;
         }
     }
@@ -374,6 +402,7 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeController', ['$scop
         openEditCoverage: _openEditCoverage,
         openAddCoverage: _openAddCoverage,
         onSelection: _onSelection,
+        onGroupSelected: _onGroupSelected,
         saveCoverage: _saveCoverage,
         addCoverage: _addCoverage,
         assignCoverage: _assignCoverage,

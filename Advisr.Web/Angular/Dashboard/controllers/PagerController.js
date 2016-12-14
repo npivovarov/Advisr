@@ -26,7 +26,7 @@ function ($scope, $q, $state, $stateParams, ConfigService, ProfileService, Polic
         }
     },
 
-    queryParams = ['q', 'status', 'group'],
+    queryParams = ['q', 'status', 'group', 'active'],
     queryParamsList = {},
     service = services[$scope.$parent.serviceName],
     args = [ConfigService.countPerPage * ($scope.activePage - 1), ConfigService.countPerPage];

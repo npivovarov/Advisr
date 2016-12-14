@@ -10,8 +10,9 @@
                     <div ng-show="paramExists('insurerName', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['insurerName']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label required" for="group name">Group Name</label>
-                    <ui-select ng-model="data.policyGroupName" ng-change="clearError('policyGroupName', validationErrors)">
+                    <label class="field-label required" for="group name">Policy Group Name</label>
+                    <ui-select ng-model="data.policyGroupName" ng-change="clearError('policyGroupName', validationErrors)" 
+                               on-select="onGroupSelected($select.selected)" ng-disabled="true">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
@@ -22,17 +23,17 @@
                     <div ng-show="paramExists('policyGroupName', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['policyGroupName']">{{error}} <br /></div>
                     </div>
-                    <label class="field-label" for="group type">Group Type</label>
-                    <ui-select ng-model="data.policyGroupType" ng-change="clearError('policyGroupType', validationErrors)">
+                    <label class="field-label" for="group type">Policy Template Type</label>
+                    <ui-select ng-model="data.policyTemplate" ng-change="clearError('policyTemplate', validationErrors)" ng-disabled="true">
                         <ui-select-match>
                             <span ng-bind="$select.selected.name"></span>
                         </ui-select-match>
-                        <ui-select-choices repeat="item in (groupTypes | filter: $select.search) track by item.id">
+                        <ui-select-choices repeat="item in (policyGroupTemplates | filter: $select.search) track by item.id">
                             <span ng-bind="item.name"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <div ng-show="paramExists('policyGroupType', validationErrors)" class="field-validation-error">
-                        <div ng-repeat="error in validationErrors['policyGroupType']">{{error}} <br /></div>
+                    <div ng-show="paramExists('policyTemplate', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['policyTemplate']">{{error}} <br /></div>
                     </div>
                     <label class="field-label" for="policy type">Policy Type Name</label>
                     <input class="default-input w-input" data-name="subGroup" id="subGroup" maxlength="256" name="subGroup" placeholder="Enter insurers phone overseas"
@@ -52,6 +53,13 @@
                     <div ng-show="paramExists('status', validationErrors)" class="field-validation-error">
                         <div ng-repeat="error in validationErrors['status']">{{error}} <br /></div>
                     </div>
+                    <label class="field-label" for="description">Description</label>
+                    <textarea class="default-input w-input" data-name="description" id="description" name="description" placeholder="Enter description"
+                              type="range" ng-model="data.description" ng-change="clearError('description', validationErrors)" rows="10"></textarea>
+                    <div ng-show="paramExists('description', validationErrors)" class="field-validation-error">
+                        <div ng-repeat="error in validationErrors['description']">{{error}} <br /></div>
+                    </div>
+
                     <button class="default-button w-button" data-wait="Please wait..." ng-click="save()" button-spinner="submitInProgress">Save</button>
                     <a class="default-button w-button" data-wait="Please wait..." ng-href="#/admin/editinsurer/{{data.insurerId}}"
                        button-spinner="submitInProgress">
@@ -88,8 +96,8 @@
                                     <td class="table-content-align">{{property.fieldType}}</td>
                                     <td class="table-content-align">{{property.defaultValue}}</td>
                                     <td class="table-content-align">{{property.listDescription}}</td>
-                                    <td class="table-content-align"><a class="small-button w-button upload-button pull-right" ng-click="openEditPopup(property.fieldId)">Edit</a></td>
-                                    <td class="table-content-align"><a class="small-button w-button upload-button pull-right" ng-click="deleteField(property.fieldId)">Delete</a></td>
+                                    <td class="table-content-align"><a class="small-button w-button upload-button pull-right" ng-click="openEditPopup(property.policyPropertyId)">Edit</a></td>
+                                    <td class="table-content-align"><a class="small-button w-button upload-button pull-right" ng-click="deleteField(property.policyPropertyId)">Delete</a></td>
                                 </tr>
                             </tbody>
                         </table>

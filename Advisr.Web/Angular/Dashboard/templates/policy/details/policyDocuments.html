@@ -19,7 +19,7 @@
         <div class="detail-row document" ng-repeat="fileName in policy.files">
             <div class="details-collumns w-row">
                 <div class="w-col w-col-5 w-col-small-small-stack w-col-tiny-tiny-stack">
-                    <div>{{fileName.fileName}}</div>
+                    <div class="text-ellipsis">{{fileName.fileName}}</div>
                 </div>
                 <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack">
                     <div>{{fileName.uploadedDate | date:'dd.MM.yyyy'}} at {{fileName.uploadedDate | date:'hh:mm'}}</div>

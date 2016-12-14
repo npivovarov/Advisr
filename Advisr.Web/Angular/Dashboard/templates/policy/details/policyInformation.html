@@ -116,134 +116,15 @@
         </div>
     </div>-->
     <!--detail-row-->
-    <div ng-if="policy.lifePolicyModel">
-        <div class="details grey-block">Life Details</div>
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Medication</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.lifePolicyModel.Medication}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>MedicationCondition</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.lifePolicyModel.MedicationCondition}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-    </div><!--lifePolicyModel-->
-    <div ng-if="policy.homePolicyModel">
-        <div class="details grey-block">Home Details</div>
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Address</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.homePolicyModel.Address}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Build Date</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.homePolicyModel.BuildDate}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-    </div>
-    <div ng-if="policy.vehiclePolicyModel">
-        <div class="details grey-block">Vehicle Details</div>
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Year</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.vehiclePolicyModel.Year}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Make</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.vehiclePolicyModel.Make}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Model</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.vehiclePolicyModel.Model}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Registred Driver Name</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.vehiclePolicyModel.RegistredDriverName}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Registration Number</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{policy.vehiclePolicyModel.RegistrationNumber}}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-        <div class="detail-row">
-            <div class="details-collumns w-row">
-                <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>Commercial</div>
-                </div>
-                <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{ (policy.vehiclePolicyModel.IsCommercial === true) ? 'Yes' : 'No' }}</div>
-                </div>
-            </div>
-        </div>
-        <!--detail-row-->
-    </div><!--vehiclePolicyModel-->
-    <div ng-if="policy.additionalProperties.length > 0">
-        <div class="details grey-block">Other Details</div>
-        <div class="detail-row" ng-repeat="property in policy.additionalProperties">
+    <div ng-if="policy.properties.length > 0">
+        <div class="details grey-block">Policy Details • {{policy.policyGroup.policyTypeName}}</div>
+        <div class="detail-row" ng-repeat="property in policy.properties">
             <div class="details-collumns w-row">
                 <div class="w-col w-col-2 w-col-small-6 w-col-tiny-tiny-stack">
                     <div>{{property.fieldName}}</div>
                 </div>
                 <div class="w-col w-col-10 w-col-small-6 w-col-tiny-tiny-stack">
-                    <div>{{ (property.fieldType === 2)  ? (property.value === 'True') ? 'Yes' : 'No' : property.value}}</div>
+                    <div>{{ (property.fieldType === 2)  ? (property.value === 'Yes') ? 'Yes' : 'No' : (property.fieldType != 5) ? property.value : (property.value | date: 'dd.MM.yyyy')}}</div>
                 </div>
             </div>
         </div>

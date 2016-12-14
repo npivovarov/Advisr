@@ -11,7 +11,6 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
         policyGroupId: 0
     };
 
-    $scope.groupNames = ConfigService.policyGroupName;
     $scope.groupTypes = ConfigService.policyTypeName;
     $scope.statuses = ConfigService.policyTypeStatus;
     $scope.fieldTypes = ConfigService.policyTypeFieldTypes;
@@ -21,12 +20,22 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
 
     InsurersService.getInsurer(insurerId).then(function (res) {
         $scope.data.insurer = res.data;
+
+        InsurersService.getGroups().then(function (res) {
+            $scope.groupNames = res.data;
+            $scope.data.policyGroupName = $scope.groupNames[0];
+
+            InsurersService.getGroupTemplates($scope.groupNames[0].id).then(function (res) {
+                $scope.policyGroupTemplates = res.data;
+                $scope.data.policyTemplate = _.find($scope.policyGroupTemplates, { 'name': $scope.data.policyTemplate });
+            });
+        });
     })
 
     function _add() {
         var policyType = angular.copy($scope.data);
-        policyType.policyGroupName = $scope.data.policyGroupName.name;
-        policyType.policyGroupType = $scope.data.policyGroupType.id;
+        policyType.policyGroupId = $scope.data.policyGroupName.id;
+        policyType.policyTemplateId = $scope.data.policyTemplate.id;
         policyType.status = $scope.data.status.id;
         policyType.insurerId = $scope.data.insurer.id;
 
@@ -92,6 +101,13 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
             });
     }
 
+    function _onSelection(item) {
+        InsurersService.getGroupTemplates(item.id).then(function (res) {
+            $scope.policyGroupTemplates = res.data;
+            $scope.data.policyTemplate = _.find($scope.policyGroupTemplates, { 'name': $scope.data.policyTemplate });
+        });
+    }
+
     function _deleteField(fieldId) {
 
         InsurersService.deleteField(fieldId).then(function (res) {
@@ -131,6 +147,7 @@ angular.module('DashboardApp').controller('InsurerPolicyTypeCreateController', [
         openAddPopup: _openAddPopup,
         addField: _addField,
         deleteField: _deleteField,
+        onSelection: _onSelection,
         loading: false,
     });
 

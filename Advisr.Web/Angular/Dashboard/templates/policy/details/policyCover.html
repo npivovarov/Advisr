@@ -5,12 +5,12 @@
       <uib-accordion>
         <div uib-accordion-group class="panel-default" heading="{{group.title}}" ng-repeat="group in groupsCover.standart">
             <uib-accordion-heading>
-                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" width="22">
+                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" height="25">
                 <h5 class="cover-title ticked">{{group.title}}</h5>
             </uib-accordion-heading>
             <div class="cover-detail">
-                <div class="col-md-12"><label class="pull-left cover-label">Limit:</label>${{group.limit}}</div>
-                <div class="col-md-12"><label class="pull-left cover-label">Excess:</label>${{group.excess}}</div>
+                <div class="col-md-12" ng-show="group.excess != null"><label class="pull-left cover-label">Excess: &nbsp;</label>${{group.excess}}</div>
+                <div class="col-md-12" ng-show="group.limit != null"><label class="pull-left cover-label">Limit: &nbsp;</label>{{group.limit}}</div>
                 <br />
                 <p class="accordian-paragraph">
                     <pre class="accordian-paragraph pre-formatted-text"> {{group.description}}</pre>
@@ -26,13 +26,13 @@
       <uib-accordion>
         <div uib-accordion-group class="panel-default" heading="{{group.title}}" ng-repeat="group in groupsCover.optional">
             <uib-accordion-heading>
-                <img class="cover-image ticked" src="/Content/images/Cover_Crossed.svg" width="22" ng-if="!group.isActive">
-                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" width="22" ng-if="group.isActive">
+                <img class="cover-image ticked" src="/Content/images/Cover_Crossed.svg" height="25" ng-if="!group.isActive">
+                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" height="25" ng-if="group.isActive">
                 <h5 class="cover-title">{{group.title}}</h5>
             </uib-accordion-heading>
             <div class="cover-detail">
-                <div class="col-md-12"><label class="pull-left cover-label">Limit:</label>${{group.limit}}</div>
-                <div class="col-md-12"><label class="pull-left cover-label">Excess:</label>${{group.excess}}</div>
+                <div class="col-md-12" ng-show="group.excess != null"><label class="pull-left cover-label">Excess: &nbsp;</label>${{group.excess}}</div>
+                <div class="col-md-12" ng-show="group.limit != null"><label class="pull-left cover-label">Limit: &nbsp;</label>{{group.limit}}</div>
                 <br />
                 <p class="accordian-paragraph">
                     <pre class="accordian-paragraph pre-formatted-text"> {{group.description}}</pre>
@@ -48,13 +48,13 @@
       <uib-accordion>
         <div uib-accordion-group class="panel-default" ng-repeat="group in groupsCover.exclusions">
             <uib-accordion-heading>
-                <img class="cover-image ticked" src="/Content/images/Cover_Crossed.svg" width="22" ng-if="!group.isActive">
-                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" width="22" ng-if="group.isActive">
+                <img class="cover-image ticked" src="/Content/images/Cover_Crossed.svg" height="25" ng-if="!group.isActive">
+                <img class="cover-image ticked" src="/Content/images/Cover_Tick.svg" height="25" ng-if="group.isActive">
                 <h5 class="cover-title">{{group.title}}</h5>
             </uib-accordion-heading>
                 <div class="cover-detail">
-                    <div class="col-md-12"><label class="pull-left cover-label">Limit:</label>${{group.limit}}</div>
-                    <div class="col-md-12"><label class="pull-left cover-label">Excess:</label>${{group.excess}}</div>
+                    <div class="col-md-12" ng-show="group.excess != null"><label class="pull-left cover-label">Excess: &nbsp;</label>${{group.excess}}</div>
+                    <div class="col-md-12" ng-show="group.limit != null"><label class="pull-left cover-label">Limit: &nbsp;</label>{{group.limit}}</div>
                     <br />
                     <p class="accordian-paragraph">
                         <pre class="accordian-paragraph pre-formatted-text"> {{group.description}}</pre>

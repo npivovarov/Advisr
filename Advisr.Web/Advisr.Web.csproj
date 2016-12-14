@@ -317,10 +317,9 @@
     <Content Include="Angular\Dashboard\controllers\User\ChangePasswordController.js" />
     <Content Include="Angular\Dashboard\controllers\User\UserProfileController.js" />
     <Content Include="Angular\Dashboard\directives\active.js" />
+    <Content Include="Angular\Dashboard\directives\bodyClass.js" />
     <Content Include="Angular\Dashboard\directives\groupFields.js" />
-    <Content Include="Angular\Dashboard\directives\policyTemplateHome.js" />
-    <Content Include="Angular\Dashboard\directives\policyTemplateLife.js" />
-    <Content Include="Angular\Dashboard\directives\policyTemplateVehicle.js" />
+    <Content Include="Angular\Dashboard\directives\policyTemplateDetails.js" />
     <Content Include="Angular\Dashboard\directives\readMore.js" />
     <Content Include="Angular\Dashboard\filters\bytesFilter.js" />
     <Content Include="Angular\Dashboard\services\AnchorSmoothScroll.js" />
@@ -353,9 +352,7 @@
     <Content Include="Angular\Dashboard\templates\policy\details\policyDocuments.html" />
     <Content Include="Angular\Dashboard\templates\policy\details\policyFaq.html" />
     <Content Include="Angular\Dashboard\templates\policy\details\policyInformation.html" />
-    <Content Include="Angular\Dashboard\templates\policy\directives\policyTemplateHome.html" />
-    <Content Include="Angular\Dashboard\templates\policy\directives\policyTemplateLife.html" />
-    <Content Include="Angular\Dashboard\templates\policy\directives\policyTemplateVehicle.html" />
+    <Content Include="Angular\Dashboard\templates\policy\directives\policyTemplateDetails.html" />
     <Content Include="Angular\Dashboard\templates\policy\policyAdmin\policyCoverages.html" />
     <Content Include="Angular\Dashboard\templates\policy\policyCreate.html" />
     <Content Include="Angular\Dashboard\templates\policy\policyCreateConfirm.html" />
@@ -368,6 +365,7 @@
     <Content Include="Angular\Dashboard\templates\portfolio\portfolioChart.html" />
     <Content Include="Angular\Dashboard\templates\portfolio\portfolioChartV1.html" />
     <Content Include="Angular\Dashboard\templates\portfolio\portfolioEmpty.html" />
+    <Content Include="Angular\Dashboard\templates\portfolio\portfolioPolicyList.html" />
     <Content Include="Angular\Dashboard\templates\profiles\editProfile.html" />
     <Content Include="Angular\Dashboard\templates\profiles\profilesList.html" />
     <Content Include="Angular\Dashboard\templates\user\changePassword.html" />

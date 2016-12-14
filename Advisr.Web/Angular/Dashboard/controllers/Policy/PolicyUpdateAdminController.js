@@ -3,16 +3,14 @@
 angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'ConfigService', 'PolicyService', function ($scope, $rootScope, $state, $stateParams, $timeout, ConfigService, PolicyService) {
 
     var id = parseInt($stateParams.id);
+
     $scope.checkboxModel = [];
     $scope.policy = {};
-
     $scope.list = {};
-
     $scope.list.policyPaymentFrequency = ConfigService.policyPaymentFrequency;
 
     $scope.data = {
         id: id,
-        AdditionalProperties: {},
         coverages: []
     };
 
@@ -25,6 +23,12 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
         var data = res.data;
         $scope.fileNames = res.data.files;
         $scope.policy = data;
+        for (var i = 0; i < res.data.properties.length; i++) {
+            if (res.data.properties[i].fieldType == 2) {
+                res.data.properties[i].value = _.find($scope.bool, { name: res.data.properties[i].value });
+            }
+        }
+        $scope.properties = res.data.properties;
 
         _.extend($scope.data, {
             InsurerId: data.insurerId,
@@ -37,20 +41,10 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
             policyPaymentFrequency: (data.policyPaymentFrequency == 0) ? _.head($scope.list.policyPaymentFrequency) : _.find($scope.list.policyPaymentFrequency, { id: data.policyPaymentFrequency }),
             description: data.description,
         });
-        
-        if(data.vehiclePolicyModel != null){
-            $scope.data.VehiclePolicyModel = data.vehiclePolicyModel;
-        }
-        
-        if(data.lifePolicyModel != null){
-            $scope.data.LifePolicyModel = data.lifePolicyModel;
-        }
-
-        if(data.homePolicyModel != null){
-            $scope.data.HomePolicyModel = data.homePolicyModel;
-        }
+    
     }).then(function (data) {
         PolicyService.getInsurerList(0, 100).then(function (res) {
+
             $scope.insurerList = res.data.data;
             $scope.list.insurerList = (_.isNull($scope.data.InsurerId)) ? 
             _.head($scope.insurerList) : _.find($scope.insurerList, { insurerId: $scope.data.InsurerId });
@@ -60,126 +54,102 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
                 $scope.groups = res.data;
                 if ($scope.policy.policyGroup == null) {
                     $scope.list.groups = _.head($scope.groups);
-                    $scope.categories = _.find($scope.groups, { 'groupName': $scope.list.groups.groupName }).categories;
+                    $scope.categories = _.find($scope.groups, { 'groupName': $scope.list.groups.groupName }).policyTypes;
                     $scope.list.categories = _.head($scope.categories);
-
-                    var catId = $scope.list.categories.id;
-                    PolicyService.getGroupFields(catId).then(function (res) {
-                        $scope.groupFields = res.data;
-                    });
                 } else {
+                    var policyTypeId = $scope.policy.policyTypeId;
                     $scope.list.groups = _.find($scope.groups, { 'groupName': $scope.policy.policyGroup.groupName });
-                    $scope.categories = _.find($scope.groups, { 'groupName': $scope.policy.policyGroup.groupName }).categories;
-                    $scope.list.categories = _.head($scope.categories);
-
-                    var catId = $scope.list.categories.id;
-                    PolicyService.getFilledGroupFields(catId, $scope.policy.id).then(function (res) {
-                        $scope.groupFields = res.data;
-                        if ($scope.groupFields.length > 0) {
-                            for (var i = 0; i < $scope.groupFields.length; i++) {
-                                if ($scope.groupFields[i].fieldType == 5) {
-                                    $scope.groupFields[i].value = (_.isNull($scope.groupFields[i].value)) ? '' : new Date($scope.groupFields[i].value)
-                                }
-                            }
-                            $scope.data.AdditionalProperties = $scope.groupFields;
-                        } else {
-                            PolicyService.getGroupFields(catId).then(function (res) {
-                                $scope.groupFields = res.data;
-                            });
-                        }
-                    });
+                    $scope.categories = _.find($scope.groups, { 'groupName': $scope.policy.policyGroup.groupName }).policyTypes;
+                    $scope.list.categories = _.find($scope.categories, { id: policyTypeId});
                 }
-                
-                
             });
         });
     });
 
     function _onSelection(selectedItem) {
-
         PolicyService.getGroups(selectedItem.insurerId).then(function (res) {
             $scope.groups = res.data;
             $scope.list.groups = _.head($scope.groups);
-            $scope.categories = _.find($scope.groups, { 'groupName': $scope.list.groups.groupName }).categories;
+            $scope.categories = _.find($scope.groups, { 'groupName': $scope.list.groups.groupName }).policyTypes;
             $scope.list.categories = _.head($scope.categories);
-
-            var catId = $scope.list.categories.id;
-            PolicyService.getGroupFields(catId).then(function (res) {
-                $scope.groupFields = res.data;
-            });
         });
     }
 
     function _changeGroups(item) {
-        $scope.categories = item.categories;
+        $scope.categories = _.find($scope.groups, { 'groupName': $scope.list.groups.groupName }).policyTypes;
         $scope.list.categories = _.head($scope.categories);
-        var catId = $scope.list.categories.id;
-
-        PolicyService.getGroupFields(catId).then(function (res) {
-            $scope.groupFields = res.data;
-            $scope.data.AdditionalProperties = {};
-        });
     }
 
-    function _changeCategories(item) {
-        PolicyService.getGroupFields(item.id).then(function (res) {
-            $scope.groupFields = res.data;
-            $scope.data.AdditionalProperties = {};
+    function _getFields(policyTypeId, propertyType) {
+        var data = {
+            policyTypeId: policyTypeId,
+            policyId: id,
+            propertyType: propertyType
+        };
+        
+        PolicyService.getGroupFields(data).then(function (res) {
+            var dateField = _.filter(res.data, { fieldType: 5 });
+            if (!_.isUndefined(dateField)) {
+                _.each(dateField, function(item) {
+                    var date = new Date(item.value);
+                    item.value = date;
+                });
+            }
+
+            if (data.propertyType === 0) {
+                $scope.policyProperties = res.data;
+                $scope.data.policyProperties = $scope.policyProperties;
+            }
+            if (data.propertyType === 1) {
+                $scope.groupFields = res.data;
+                $scope.data.AdditionalProperties = $scope.groupFields;
+            }
         });
     }
 
     function _save(isConfirmed) {
-        // console.log( $scope.groupFields, 'groupFields');
-        // console.log($scope.data.AdditionalProperties, 'AdditionalProperties');
-
         $scope.data.IsConfirmed = isConfirmed;
         $scope.submitInProgressSave = !isConfirmed;
         $scope.submitInProgressConfirmed = isConfirmed;
 
-        var AdditionalProperties = [];
-        var data = angular.copy($scope.data);
+        var AdditionalProperties = [],
+            PolicyProperties = [],
+            data = angular.copy($scope.data);
         
         _.extend(data, {
             InsurerId: $scope.list.insurerList.insurerId,
-            PolicyGroupId: $scope.list.categories.id,
+            policyTypeId: $scope.list.categories.id,
             policyPaymentFrequency: $scope.data.policyPaymentFrequency.id
         });
 
+        // Coverage Additional Properties model
         _.each($scope.data.AdditionalProperties, function (item, key) {
-            var id = $scope.groupFields[key].id;
-            var value = item.value;
-            if (value != null) {
+            var id = $scope.groupFields[key].id,
+                value = item.value;
+            if (value != null || item.isRequired) {
                 AdditionalProperties.push({
-                    GroupFieldId: id,
+                    propertyId: id,
                     value: value
-                })
+                });
             }
         });
 
-        if ('VehiclePolicyModel' in data && 'IsCommercial' in data.VehiclePolicyModel) {
-            data.VehiclePolicyModel.IsCommercial = data.VehiclePolicyModel.IsCommercial.id;
-        }
-       
-        if ($scope.list.groups.groupName === 'Personal' && !data.LifePolicyModel) {
-            _.extend(data, {
-                LifePolicyModel: {}
-            });
-        }
+        // Coverage Policy Properties model
+        _.each($scope.data.policyProperties, function (item, key) {
+            var id = $scope.policyProperties[key].id,
+                value = item.value;
+            if (value == "") {
+                value = null;
+            };
+            if (value != null || item.isRequired) {
+                PolicyProperties.push({
+                    propertyId: id,
+                    value: value
+                });
+            }
+        });
 
-        if ($scope.list.groups.groupName === 'Vehicle' && !data.VehiclePolicyModel) {
-            _.extend(data, {
-                VehiclePolicyModel: {}
-            });
-        }
-
-        if ($scope.list.groups.groupName === 'Personal' && !data.HomePolicyModel) {
-            _.extend(data, {
-                HomePolicyModel: {}
-            });
-        }
-
-        data.AdditionalProperties = AdditionalProperties;
-
+        // Coverage model
         _.each($scope.coveragesDetails, function (item) {
             if (item.isSelected) {
                 var coverageIsSelected = {
@@ -191,6 +161,9 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
                 data.coverages.push(coverageIsSelected);
             }
         });
+
+        data.AdditionalProperties = AdditionalProperties;
+        data.policyProperties = PolicyProperties;
 
         PolicyService.updatePolicy(data).then(function (res) {
             $scope.submitInProgressSave = false;
@@ -207,7 +180,11 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
             }
 
             _.each(data.Details, function (field) {
-                $scope.validationErrors[field.field] = field.errors;
+                if (!_.isUndefined(field.index)) {
+                    $scope.validationErrors[field.field + '_' + field.index] = field.errors;
+                } else {
+                    $scope.validationErrors[field.field] = field.errors;
+                }
             });
         });
     }
@@ -224,6 +201,14 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
         $scope.openedBuildDate = true;
     };
 
+    function _openDateProperty(index) {
+        $scope.openedProperty[index] = true;
+    };
+
+    function _openDateAdditional(index) {
+        $scope.openedPropertyAdditional[index] = true;
+    };
+
     function _getCoverageType(id) {
         return _.find(ConfigService.coverageTypes, { 'id': id }).name;
     }
@@ -234,35 +219,62 @@ angular.module('DashboardApp').controller('PolicyUpdateAdminController', ['$scop
         }
     }
 
+    function _hideStatus() {
+        $scope.submitInProgressStatus = true;
+        PolicyService.setHideStatus(id).then(function (res) {
+            $scope.submitInProgressStatus = false;
+            $rootScope.alerts.push({type: 'success', msg: 'Policy status has been updated.' });
+        }, function (res) {
+            $scope.submitInProgressStatus = false;
+            $rootScope.alerts.push({type: 'danger', msg: res.data.Message });
+        });
+    }
+
+    function _showStatus() {
+        $scope.submitInProgressStatus = true;
+        PolicyService.setShowStatus(id).then(function (res) {
+            $scope.submitInProgressStatus = false;
+            $rootScope.alerts.push({type: 'success', msg: 'Policy status has been updated.' });
+        }, function (res) {
+            $scope.submitInProgressStatus = false;
+            $rootScope.alerts.push({type: 'danger', msg: res.data.Message });
+        });
+    }
+
     $scope.$watch('list.categories', function(item) {
         if (!_.isUndefined(item)) {
-            $scope.policyTemplate = item.policyTemplate;
+            _getFields(item.id, 0);
+            _getFields(item.id, 1);
 
             var dataCoverages = {
                 policyId: parseInt($stateParams.id),
                 policyTypeId: item.id
             }
             PolicyService.getCoveragesDetails(dataCoverages).then(function(res) {
-                console.log(res);
                 $scope.coveragesDetails = res.data;
             });
         }
     });
 
     _.extend($scope, {
-        altInputFormats: ['M!/d!/yyyy'],
         openedStartDate: false,
         openedEndDate: false,
+        openedProperty: [],
+        openedPropertyAdditional: [],
         submitInProgressSave: false,
         submitInProgressConfirmed: false,
+        submitInProgressStatus: false,
         changeGroups: _changeGroups,
-        changeCategories: _changeCategories,
         onSelection: _onSelection,
         openStartDate: _openStartDate,
         openEndtDate: _openEndDate,
         openBuildDate: _openBuildDate,
+        openDateProperty: _openDateProperty,
+        openDateAdditional: _openDateAdditional,
         getCoverageType: _getCoverageType,
         onChangeCoverage: _onChangeCoverage,
+        hideStatus: _hideStatus,
+        showStatus: _showStatus,
         groupFields: [],
         validationErrors: {},
         save: _save,

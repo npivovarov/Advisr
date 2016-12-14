@@ -71,6 +71,18 @@
     <Compile Include="Migrations\201612071316575_AddDescriptionToInsurer.Designer.cs">
       <DependentUpon>201612071316575_AddDescriptionToInsurer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612081622597_PolicyDataChanges.cs" />
+    <Compile Include="Migrations\201612081622597_PolicyDataChanges.Designer.cs">
+      <DependentUpon>201612081622597_PolicyDataChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612090847328_AddDescriptionToPolicyType.cs" />
+    <Compile Include="Migrations\201612090847328_AddDescriptionToPolicyType.Designer.cs">
+      <DependentUpon>201612090847328_AddDescriptionToPolicyType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612121513173_TitleForHealth.cs" />
+    <Compile Include="Migrations\201612121513173_TitleForHealth.Designer.cs">
+      <DependentUpon>201612121513173_TitleForHealth.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
@@ -95,6 +107,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612071316575_AddDescriptionToInsurer.resx">
       <DependentUpon>201612071316575_AddDescriptionToInsurer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612081622597_PolicyDataChanges.resx">
+      <DependentUpon>201612081622597_PolicyDataChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612090847328_AddDescriptionToPolicyType.resx">
+      <DependentUpon>201612090847328_AddDescriptionToPolicyType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612121513173_TitleForHealth.resx">
+      <DependentUpon>201612121513173_TitleForHealth.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
